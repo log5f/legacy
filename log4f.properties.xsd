@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:complexType name="appender">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="param" type="param"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="class" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:element name="configuration">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:sequence minOccurs="0">
+					<xs:element name="root" type="root"/>
+				</xs:sequence>
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="appender" type="appender"/>
+				</xs:sequence>
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="logger" type="category"/>
+				</xs:sequence>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="param">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="param">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="param"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Class"/>
+					<xs:enumeration value="String"/>
+					<xs:enumeration value="Number"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="value" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="category">
+		<xs:attribute name="level" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="ALL"/>
+					<xs:enumeration value="DEBUG"/>
+					<xs:enumeration value="INFO"/>
+					<xs:enumeration value="WARN"/>
+					<xs:enumeration value="ERROR"/>
+					<xs:enumeration value="FATAL"/>
+					<xs:enumeration value="OFF"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="appenders" type="xs:string" use="optional"/>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="filter" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="root">
+		<xs:attribute name="level" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="ALL"/>
+					<xs:enumeration value="DEBUG"/>
+					<xs:enumeration value="INFO"/>
+					<xs:enumeration value="WARN"/>
+					<xs:enumeration value="ERROR"/>
+					<xs:enumeration value="FATAL"/>
+					<xs:enumeration value="OFF"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="appenders" type="xs:string" use="optional"/>
+	</xs:complexType>
+</xs:schema>
