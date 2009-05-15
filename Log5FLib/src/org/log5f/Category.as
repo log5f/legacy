@@ -3,9 +3,9 @@
  */
 package org.log5f
 {
-    import org.log5f.events.LogEvent;
-
     import flash.events.Event;
+    
+    import org.log5f.events.LogEvent;
 
     public class Category implements IAppenderAttachable
     {
@@ -233,29 +233,29 @@ package org.log5f
             return this.appenders.removeAppender(key);
         }
 
-        public function debug(message:Object, target:Object=null):void
+        public function debug(message:Object):void
         {
-            this.log(Level.DEBUG, message, target);
+            this.log(Level.DEBUG, message);
         }
 
-        public function info(message:Object, target:Object=null):void
+        public function info(message:Object):void
         {
-            this.log(Level.INFO, message, target);
+            this.log(Level.INFO, message);
         }
 
-        public function warn(message:Object, target:Object=null):void
+        public function warn(message:Object):void
         {
-            this.log(Level.WARN, message, target);
+            this.log(Level.WARN, message);
         }
 
-        public function error(message:Object, target:Object=null):void
+        public function error(message:Object):void
         {
-            this.log(Level.ERROR, message, target);
+            this.log(Level.ERROR, message);
         }
 
-        public function fatal(message:Object, target:Object=null):void
+        public function fatal(message:Object):void
         {
-            this.log(Level.FATAL, message, target);
+            this.log(Level.FATAL, message);
         }
 
         public function getEffectiveLevel():Level
@@ -284,14 +284,14 @@ package org.log5f
 
         // --------------- PROTECTED METHODS -------------- //
 
-        protected function log(level:Level, message:Object, target:Object=null):void
+        protected function log(level:Level, message:Object, stack:String=null):void
         {
             if (!PropertyConfigurator.configured)
             {
                 PropertyConfigurator.addEventListener(Event.COMPLETE, 
                                                       this.propertiesCompleteHandler);
 
-                this.lazyLog(level, message, target);
+                this.lazyLog(level, message, stack);
 
                 return;
             }
@@ -299,7 +299,7 @@ package org.log5f
             if (!level.isGreaterOrEqual(this.getEffectiveLevel()))
                 return;
 
-            var event:LogEvent = new LogEvent(this, level, message, target);
+            var event:LogEvent = new LogEvent(this, level, message);
 
             if (!this.isLoggable(event))
                 return;
@@ -311,12 +311,12 @@ package org.log5f
             }
         }
 
-        protected function lazyLog(level:Level, message:Object, target:Object=null):void
+        protected function lazyLog(level:Level, message:Object, stack:String=null):void
         {
             if (this.lazyLogEvents == null)
                 this.lazyLogEvents = [];
 
-            this.lazyLogEvents.push(new LogObject(level, message, target));
+            this.lazyLogEvents.push(new LogObject(level, message, stack));
         }
 
         // ---------------- PRIVATE METHODS --------------- //
@@ -344,7 +344,7 @@ package org.log5f
 
             while (data)
             {
-                this.log(data.level, data.message, data.target);
+                this.log(data.level, data.message);
 
                 data = this.lazyLogEvents.shift() as LogObject;
             }
@@ -363,14 +363,14 @@ class LogObject
 
     public var message:Object;
 
-    public var target:Object;
+    public var stack:String;
 
-    function LogObject(level:Level=null, message:Object=null, target:Object=null)
+    function LogObject(level:Level=null, message:Object=null, stack:String=null)
     {
         super();
 
         this.level = level;
         this.message = message;
-        this.target = target;
+        this.stack = stack;
     }
 }
