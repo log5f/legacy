@@ -39,8 +39,10 @@ package org.log5f.events
 		
 		public var category:Category;
 		
+		[Deprecated("")]
 		public var packageName:String;
 		
+		[Deprecated("")]
 		public var className:String;
 		
 		public var methodName:String;

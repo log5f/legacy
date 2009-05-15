@@ -1,7 +1,5 @@
 package org.log5f
 {
-	import org.log5f.error.DocumentNotValidError;
-	
 	import flash.errors.IOError;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -9,91 +7,171 @@ package org.log5f
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
+	import mx.resources.ResourceManager;
+	
+	import org.log5f.error.DocumentInvalidError;
+	
 	public class PropertyLoader
 	{
-		// ----------------- STATIC FIELDS ---------------- //
-
+		//----------------------------------------------------------------------
+		//
+		//	Class constatns
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * The name of configuration file.
+		 */
 		public static const FILE:String = "log5f.properties";
 		
+		//----------------------------------------------------------------------
+		//
+		//	Class variables
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * The request of configuration file that used by <code>loader</code>.
+		 */
 		private static var request:URLRequest = new URLRequest(FILE);
 		
+		/**
+		 * The loader that loads configuration file.
+		 */
 		private static var loader:URLLoader = new URLLoader();
-
+		
+		/**
+		 * The flag that indicates if configuration file is loaded.
+		 */
 		private static var loaded:Boolean = false;
 
-		// ---------------- PRIVATE FIELDS ---------------- //
-
-
-
-		// ------------------ CONSTRUCTOR ----------------- //
-
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * Constructor.
+		 */
 		public function PropertyLoader()
 		{
+			super();
 		}
-
-		// ----------------- PUBLIC FIEDS ----------------- //
-
 		
-
-		// --------------- PROTECTED FIELDS --------------- //
-
+		//----------------------------------------------------------------------
+		//
+		//	Variables
+		//
+		//----------------------------------------------------------------------
 		
-
-		// ---------------- PUBLIC METHODS ---------------- //
-
+		//----------------------------------------------------------------------
+		//
+		//	Properties
+		//
+		//----------------------------------------------------------------------
+		
+		//----------------------------------------------------------------------
+		//
+		//	Methods
+		//
+		//----------------------------------------------------------------------
+		
+		//----------------------------------
+		//	Methods: Common
+		//----------------------------------
+		
+		/**
+		 * Loads configuration file, if it is not loaded.
+		 */
 		public static function load():void
 		{
-			if(!loaded)
+			if(!PropertyLoader.loaded)
 			{
-				loaded = true;
+				PropertyLoader.loaded = true;
 				
-				loader.addEventListener(Event.COMPLETE, loaderCompleteHandler);
-				loader.addEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
-				loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
+				PropertyLoader.loader.
+					addEventListener(Event.COMPLETE, loaderCompleteHandler);
 				
-				loader.load(request);
+				PropertyLoader.loader.
+					addEventListener(IOErrorEvent.IO_ERROR, 
+									 loaderIOErrorHandler);
+				
+				PropertyLoader.loader.
+					addEventListener(SecurityErrorEvent.SECURITY_ERROR, 
+									 loaderSecurityErrorHandler);
+				
+				PropertyLoader.loader.load(request);
 			}
 		}
 
-		// --------------- PROTECTED METHODS -------------- //
-
+		//----------------------------------------------------------------------
+		//
+		//	Event handlers
+		//
+		//----------------------------------------------------------------------
 		
-
-		// ---------------- PRIVATE METHODS --------------- //
-
-		
-
-		// ------------------- HANDLERS ------------------- //
-
+		/**
+		 * The handler of "complete" event of <code>loader</code>.
+		 * 
+		 * Initiates configuration of Log5F if loaded configuration file is XML,
+		 * or trows DocumentInvalidError error otherwise.
+		 * 
+		 * @param event The event.
+		 * 
+		 * @trows DocumentInvalidError
+		 */
 		protected static function loaderCompleteHandler(event:Event):void
 		{
 			var properties:XML = new XML((event.target as URLLoader).data);
 			
 			if(properties is XML)
+			{
 				PropertyConfigurator.configure(properties);
+			}
 			else
-				throw new DocumentNotValidError("Properties file is not xml.");
+			{
+				throw new DocumentInvalidError(ResourceManager.getInstance().
+					getString("log5f", "errorPropertiesFileIsNotXML"));
+			}
 		}
 		
+		/**
+		 * The handler of "ioError" event of <code>loader</code>.
+		 * 
+		 * Sets <code>loaded</code> to <code>false</code>, 
+		 * and trows SecurityError error
+		 * 
+		 * @param event The Input/Output Error event.
+		 * 
+		 * @trows IOError
+		 */
 		protected static function loaderIOErrorHandler(event:IOErrorEvent):void
 		{
 			trace("PropertyLoader.loaderIOErrorHandler");
 			
-			loaded = false;
+			PropertyLoader.loaded = false;
 			
 			throw new IOError(event.text);
 		}
 		
+		/**
+		 * The handler of "securityError" event of <code>loader</code>.
+		 * 
+		 * Sets <code>loaded</code> to <code>false</code>, 
+		 * and trows SecurityError error
+		 * 
+		 * @param event The Security Error event.
+		 * 
+		 * @trows SecurityError
+		 */
 		protected static function loaderSecurityErrorHandler(event:SecurityErrorEvent):void
 		{
 			trace("PropertyLoader.loaderSecurityErrorHandler");
 			
-			loaded = false;
+			PropertyLoader.loaded = false;
 			
 			throw new SecurityError(event.text);
 		}
-
-		// --------------- USER INTERACTION --------------- //
-
 	}
 }

@@ -8,12 +8,12 @@ package org.log5f.error
 	
 	[ResourceBoundle("log5f")]
 	
-	public class FilterNotFoundError extends Error
+	public class InvalidConfigError extends Error
 	{
-		public function FilterNotFoundError(className:String)
+		public function InvalidConfigError(file:String)
 		{
 			super(ResourceManager.getInstance().
-				getString("log5f", "errorFilterNotFound", [className]));
+				getString("log5f", "errorInvalidConfig", [file]));
 		}
 		
 	}
