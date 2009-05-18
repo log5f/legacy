@@ -3,374 +3,538 @@
  */
 package org.log5f
 {
-    import flash.events.Event;
-    
-    import org.log5f.events.LogEvent;
+	import flash.events.Event;
+	import flash.system.Capabilities;
+	
+	import org.log5f.events.LogEvent;
+	import org.log5f.layouts.PatternLayout;
 
-    public class Category implements IAppenderAttachable
-    {
-        //----------------------------------------------------------------------
-        //
-        //	Class constants
-        //
-        //----------------------------------------------------------------------
+	public class Category implements IAppenderAttachable
+	{
+		//----------------------------------------------------------------------
+		//
+		//	Class constants
+		//
+		//----------------------------------------------------------------------
 
 
 
-        //----------------------------------------------------------------------
-        //
-        //	Constructor
-        //
-        //----------------------------------------------------------------------
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
 
-        /**
-         * Constructor.
-         */
-        public function Category(name:String)
-        {
-            this.name = name;
-        }
+		/**
+		 * Constructor.
+		 */
+		public function Category(name:String)
+		{
+			this.name = name;
+		}
 
-        //----------------------------------------------------------------------
-        //
-        //	Variables
-        //
-        //----------------------------------------------------------------------
+		//----------------------------------------------------------------------
+		//
+		//	Variables
+		//
+		//----------------------------------------------------------------------
 
-        private var appenders:AppenderAttachable;
+		private var appenders:AppenderAttachable;
 
-        [ArrayElementType("LogObject")]
-        private var lazyLogEvents:Array;
+		[ArrayElementType("LogObject")]
+		private var lazyLogEvents:Array;
 
-        //----------------------------------------------------------------------
-        //
-        //	Properties
-        //
-        //----------------------------------------------------------------------
+		//----------------------------------------------------------------------
+		//
+		//	Properties
+		//
+		//----------------------------------------------------------------------
 
-        //-----------------------------------
-        //	name
-        //-----------------------------------
+		//-----------------------------------
+		//	name
+		//-----------------------------------
 
-        /**
-         * Storage for the name property.
-         */
-        private var _name:String;
+		/**
+		 * Storage for the name property.
+		 */
+		private var _name:String;
 
-        /**
-         *
-         */
-        public function get name():String
-        {
-            return this._name;
-        }
+		/**
+		 *
+		 */
+		public function get name():String
+		{
+			return this._name;
+		}
 
-        /**
-         * @private
-         */
-        public function set name(value:String):void
-        {
-            this._name = value;
-        }
+		/**
+		 * @private
+		 */
+		public function set name(value:String):void
+		{
+			this._name = value;
+		}
 
-        //-----------------------------------
-        //	level
-        //-----------------------------------
+		//-----------------------------------
+		//	level
+		//-----------------------------------
 
-        /**
-         * Storage for the level property.
-         */
-        private var _level:Level;
+		/**
+		 * Storage for the level property.
+		 */
+		private var _level:Level;
 
-        /**
-         *
-         */
-        public function get level():Level
-        {
-            return this._level;
-        }
+		/**
+		 *
+		 */
+		public function get level():Level
+		{
+			return this._level;
+		}
 
-        /**
-         * @private
-         */
-        public function set level(value:Level):void
-        {
-            this._level = value;
-        }
+		/**
+		 * @private
+		 */
+		public function set level(value:Level):void
+		{
+			this._level = value;
+		}
 
-        //-----------------------------------
-        //	filter
-        //-----------------------------------
+		//-----------------------------------
+		//	filter
+		//-----------------------------------
 
-        /**
-         * Storage for the filter property.
-         */
-        private var _filter:IFilter;
+		/**
+		 * Storage for the filter property.
+		 */
+		private var _filter:IFilter;
 
-        /**
-         *
-         */
-        public function get filter():IFilter
-        {
-            return this._filter;
-        }
+		/**
+		 *
+		 */
+		public function get filter():IFilter
+		{
+			return this._filter;
+		}
 
-        /**
-         * @private
-         */
-        public function set filter(value:IFilter):void
-        {
-            this._filter = value;
-        }
+		/**
+		 * @private
+		 */
+		public function set filter(value:IFilter):void
+		{
+			this._filter = value;
+		}
 
-        //-----------------------------------
-        //	parent
-        //-----------------------------------
+		//-----------------------------------
+		//	parent
+		//-----------------------------------
 
-        /**
-         * Storage for the category property.
-         */
-        private var _parent:Category;
+		/**
+		 * Storage for the category property.
+		 */
+		private var _parent:Category;
 
-        /**
-         * The parent category, for root category this property is <code>null</code>.
-         */
-        public function get parent():Category
-        {
-            return this._parent;
-        }
+		/**
+		 * The parent category, for root category this property is <code>null</code>.
+		 */
+		public function get parent():Category
+		{
+			return this._parent;
+		}
 
-        /**
-         * @private
-         */
-        public function set parent(value:Category):void
-        {
-            this._parent = value;
-            
-            this.category = this.name;
-            
+		/**
+		 * @private
+		 */
+		public function set parent(value:Category):void
+		{
+			this._parent = value;
+
+			this.category = this.name;
+
 //			this.category = this.parent != LoggerManager.getRootLogger() ?
 //							this.parent.name :
 //							this.name;
-        }
+		}
 
-        //-----------------------------------
-        //	category
-        //-----------------------------------
+		//-----------------------------------
+		//	category
+		//-----------------------------------
 
-        /**
-         * Storage for the category property.
-         */
-        private var _category:String;
+		/**
+		 * Storage for the category property.
+		 */
+		private var _category:String;
 
-        /**
-         *
-         */
-        public function get category():String
-        {
-            return this._category;
-        }
+		/**
+		 *
+		 */
+		public function get category():String
+		{
+			return this._category;
+		}
 
-        /**
-         * @private
-         */
-        public function set category(value:String):void
-        {
-            this._category = value;
-        }
+		/**
+		 * @private
+		 */
+		public function set category(value:String):void
+		{
+			this._category = value;
+		}
 
-        //----------------------------------------------------------------------
-        //
-        //	Methods
-        //
-        //----------------------------------------------------------------------
+		//----------------------------------------------------------------------
+		//
+		//	Methods
+		//
+		//----------------------------------------------------------------------
 
-        public function addAppender(appender:IAppender):void
-        {
-            if (!this.appenders)
-                this.appenders = new AppenderAttachable();
+		//-----------------------------------
+		//	Methods: Appenders
+		//-----------------------------------
 
-            this.appenders.addAppender(appender);
-        }
+		/**
+		 * Adds appender for this category.
+		 *
+		 * @param appender The appender that will be added.
+		 */
+		public function addAppender(appender:IAppender):void
+		{
+			if (!this.appenders)
+				this.appenders = new AppenderAttachable();
 
-        public function getAllAppenders():Array
-        {
-            if (!this.appenders)
-                return null;
+			this.appenders.addAppender(appender);
+		}
 
-            return this.appenders.getAllAppenders();
-        }
+		/**
+		 * Returns all appender of this category.
+		 *
+		 * @return An array of appenders.
+		 */
+		public function getAllAppenders():Array
+		{
+			if (!this.appenders)
+				return null;
 
-        public function getAppender(name:String):IAppender
-        {
-            if (!this.appenders)
-                return null;
+			return this.appenders.getAllAppenders();
+		}
 
-            return this.appenders.getAppender(name);
-        }
+		/**
+		 * Gets appender by it name.
+		 *
+		 * @param name The name of appender.
+		 *
+		 * @return The appender with specified name.
+		 */
+		public function getAppender(name:String):IAppender
+		{
+			if (!this.appenders)
+				return null;
 
-        public function isAttached(appender:IAppender):Boolean
-        {
-            if (!this.appenders)
-                return false;
+			return this.appenders.getAppender(name);
+		}
 
-            return this.appenders.isAttached(appender);
-        }
+		/**
+		 * Specifies if appender is added to this category.
+		 *
+		 * @param The appender to find.
+		 *
+		 * @return The <code>true</code> if specified appender found in appenders
+		 * list, <code>false</code> - otherwise.
+		 */
+		public function isAttached(appender:IAppender):Boolean
+		{
+			if (!this.appenders)
+				return false;
 
-        public function removeAllAppenders():void
-        {
-            if (!this.appenders)
-                return;
+			return this.appenders.isAttached(appender);
+		}
 
-            return this.appenders.removeAllAppenders();
-        }
+		/**
+		 * Removes all appenders.
+		 */
+		public function removeAllAppenders():void
+		{
+			if (!this.appenders)
+				return;
 
-        public function removeAppender(key:Object):void
-        {
-            if (!this.appenders)
-                return;
+			return this.appenders.removeAllAppenders();
+		}
 
-            return this.appenders.removeAppender(key);
-        }
+		/**
+		 * Remove specified appender.
+		 *
+		 * @param key Can be appender or it name.
+		 */
+		public function removeAppender(key:Object):void
+		{
+			if (!this.appenders)
+				return;
 
-        public function debug(message:Object):void
-        {
-            this.log(Level.DEBUG, message);
-        }
+			return this.appenders.removeAppender(key);
+		}
 
-        public function info(message:Object):void
-        {
-            this.log(Level.INFO, message);
-        }
+		//-----------------------------------
+		//	Methods: Logger
+		//-----------------------------------
 
-        public function warn(message:Object):void
-        {
-            this.log(Level.WARN, message);
-        }
+		/**
+		 * This method logs with <code>DEBUG</code> level.
+		 *
+		 * @param message The string to log.
+		 */
+		public function debug(message:Object):void
+		{
+			this.log5f_internal::log(Level.DEBUG, message);
+		}
 
-        public function error(message:Object):void
-        {
-            this.log(Level.ERROR, message);
-        }
+		/**
+		 * This method logs with <code>INFO</code> level.
+		 *
+		 * @param message The string to log.
+		 */
+		public function info(message:Object):void
+		{
+			this.log5f_internal::log(Level.INFO, message);
+		}
 
-        public function fatal(message:Object):void
-        {
-            this.log(Level.FATAL, message);
-        }
+		/**
+		 * This method logs with <code>WARN</code> level.
+		 *
+		 * @param message The string to log.
+		 */
+		public function warn(message:Object):void
+		{
+			this.log5f_internal::log(Level.WARN, message);
+		}
 
-        public function getEffectiveLevel():Level
-        {
-            for (var c:Category = this; c != null; c = c.parent)
-            {
-                if (c.level)
-                    return c.level;
-            }
+		/**
+		 * This method logs with <code>ERROR</code> level.
+		 *
+		 * @param message The string to log.
+		 */
+		public function error(message:Object):void
+		{
+			this.log5f_internal::log(Level.ERROR, message);
+		}
 
-            return null;
-        }
+		/**
+		 * This method logs with <code>FATAL</code> level.
+		 *
+		 * @param message The string to log.
+		 */
+		public function fatal(message:Object):void
+		{
+			this.log5f_internal::log(Level.FATAL, message);
+		}
+		
+		log5f_internal function log(level:Level, message:Object):void
+		{
+			var stackNeedded:Boolean = false;
 
-        public function callAppenders(event:LogEvent):void
-        {
-            for each (var appender:IAppender in this.getAllAppenders())
-            {
-                appender.doAppend(event);
-            }
-        }
+			for each (var appender:IAppender in this.getAllAppenders())
+			{
+				var pattern:String = appender.layout.conversionPattern;
 
-        public function toString():String
-        {
-            return '[Category name="' + this.name + '" level="' + this.level.toString() + '"]';
-        }
+				PatternLayout.CONVERSION_PATTERN_FILE.lastIndex = 0;
+				PatternLayout.CONVERSION_PATTERN_METHOD.lastIndex = 0;
+				PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.lastIndex = 0;
 
-        // --------------- PROTECTED METHODS -------------- //
+				if (PatternLayout.CONVERSION_PATTERN_FILE.test(pattern) || 
+					PatternLayout.CONVERSION_PATTERN_METHOD.test(pattern) || 
+					PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.test(pattern))
+				{
+					stackNeedded = true;
 
-        protected function log(level:Level, message:Object, stack:String=null):void
-        {
-            if (!PropertyConfigurator.configured)
-            {
-                PropertyConfigurator.addEventListener(Event.COMPLETE, 
-                                                      this.propertiesCompleteHandler);
+					break;
+				}
+			}
 
-                this.lazyLog(level, message, stack);
+			if (Capabilities.isDebugger || 
+				(!stackNeedded && PropertyConfigurator.configured))
+			{
+				this.log(Level.DEBUG, message);
 
-                return;
-            }
+				return;
+			}
 
-            if (!level.isGreaterOrEqual(this.getEffectiveLevel()))
-                return;
+			try
+			{
+				throw new Error();
+			}
+			catch (error:Error)
+			{
+				this.log(Level.DEBUG, message, error.getStackTrace());
+			}
+		}
+		
+		/**
+		 * This method call appenders for logging message.
+		 *
+		 * @param level The specified level
+		 *
+		 * @param message The message to logging.
+		 *
+		 * @param stack The string representation of the call stack.
+		 */
+		protected function log(level:Level, message:Object, stack:String=null):void
+		{
+			if (!PropertyConfigurator.configured)
+			{
+				PropertyConfigurator.addEventListener(Event.COMPLETE, 
+													  this.propertiesCompleteHandler);
 
-            var event:LogEvent = new LogEvent(this, level, message);
+				this.lazyLog(level, message, stack);
 
-            if (!this.isLoggable(event))
-                return;
+				return;
+			}
 
-            for (var c:Category = this; c != null; c = c.parent)
-            {
-                if (level.isGreaterOrEqual(c.getEffectiveLevel()))
-                    c.callAppenders(event);
-            }
-        }
+			if (!level.isGreaterOrEqual(this.getEffectiveLevel()))
+				return;
 
-        protected function lazyLog(level:Level, message:Object, stack:String=null):void
-        {
-            if (this.lazyLogEvents == null)
-                this.lazyLogEvents = [];
+			var event:LogEvent = new LogEvent(this, level, message, stack);
 
-            this.lazyLogEvents.push(new LogObject(level, message, stack));
-        }
+			if (!this.isLoggable(event))
+				return;
 
-        // ---------------- PRIVATE METHODS --------------- //
+			for (var c:Category = this; c != null; c = c.parent)
+			{
+				if (level.isGreaterOrEqual(c.getEffectiveLevel()))
+					c.callAppenders(event);
+			}
+		}
 
-        private function isLoggable(event:LogEvent):Boolean
-        {
-            if (this.filter == null)
-                return true;
+		/**
+		 * This method used if properties file is not loaded yet.
+		 *
+		 * @param level The specified level
+		 *
+		 * @param message The message to logging.
+		 *
+		 * @param stack The string representation of the call stack.
+		 */
+		protected function lazyLog(level:Level, message:Object, stack:String=null):void
+		{
+			if (this.lazyLogEvents == null)
+				this.lazyLogEvents = [];
 
-            return this.filter.isLoggable(event);
-        }
+			this.lazyLogEvents.push(new LogObject(level, message, stack));
+		}
+		
+		/**
+		 * Calculates and returns effective log level.
+		 * 
+		 * @return The effective log level.
+		 */
+		public function getEffectiveLevel():Level
+		{
+			for (var c:Category = this; c != null; c = c.parent)
+			{
+				if (c.level)
+					return c.level;
+			}
 
-        // ------------------- HANDLERS ------------------- //
+			return null;
+		}
+		
+		/**
+		 * Calls <code>doAppend</code> method of all appenders.
+		 * 
+		 * @param event The log event.
+		 * 
+		 * @see org.log5f.IAppender#doAppend
+		 */
+		public function callAppenders(event:LogEvent):void
+		{
+			for each (var appender:IAppender in this.getAllAppenders())
+			{
+				appender.doAppend(event);
+			}
+		}
 
-        protected function propertiesCompleteHandler(event:Event):void
-        {
-            PropertyConfigurator.
-            	removeEventListener(Event.COMPLETE, 
-            						this.propertiesCompleteHandler);
+		/**
+		 * Specifies if log event is loggable for this category.
+		 * 
+		 * @param event The log event.
+		 * 
+		 * @return <code>true</code> if specified log event is loggable for this
+		 * category, <code>false</code> if it is not loggable.
+		 * 
+		 * @see org.log5f.IFilter#isLoggable
+		 */
+		private function isLoggable(event:LogEvent):Boolean
+		{
+			if (this.filter == null)
+				return true;
 
-            if (this.lazyLogEvents == null || this.lazyLogEvents.length == 0)
-                return;
+			return this.filter.isLoggable(event);
+		}
+		
+		/**
+		 * Returns category's name and level in readable form.
+		 * 
+		 * @return The category's name and level in readable form.
+		 */
+		public function toString():String
+		{
+			return '[Category name="' + this.name + 
+				   '" level="' + this.level.toString() + '"]';
+		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Event handlers
+		//
+		//----------------------------------------------------------------------
 
-            var data:LogObject = this.lazyLogEvents.shift() as LogObject;
+		/**
+		 * The handler of "propertiesComplete" event of
+		 * <code>PropertyConfigurator</code>.
+		 *
+		 * @param event The "propertiesComplete" event.
+		 */
+		protected function propertiesCompleteHandler(event:Event):void
+		{
+			PropertyConfigurator.removeEventListener(Event.COMPLETE, 
+													 this.propertiesCompleteHandler);
 
-            while (data)
-            {
-                this.log(data.level, data.message);
+			if (!this.lazyLogEvents || this.lazyLogEvents.length == 0)
+				return;
+			
+			var logs:Array = this.lazyLogEvents;
+			
+			for (var data:LogObject = logs.shift(); data; data = logs.shift())
+			{
+				this.log(data.level, data.message, data.stack);
+			}
+		}
 
-                data = this.lazyLogEvents.shift() as LogObject;
-            }
-        }
-
-        // --------------- USER INTERACTION --------------- //
-
-    }
+	}
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//	Helper classes: DateConverter
+//
+////////////////////////////////////////////////////////////////////////////////
 
 import org.log5f.Level;
 
+/**
+ * This is helper class that used for lazy log functionality.
+ */
 class LogObject
 {
-    public var level:Level;
+	public var level:Level;
 
-    public var message:Object;
+	public var message:Object;
 
-    public var stack:String;
+	public var stack:String;
 
-    function LogObject(level:Level=null, message:Object=null, stack:String=null)
-    {
-        super();
+	function LogObject(level:Level=null, message:Object=null, stack:String=null)
+	{
+		super();
 
-        this.level = level;
-        this.message = message;
-        this.stack = stack;
-    }
+		this.level = level;
+		this.message = message;
+		this.stack = stack;
+	}
 }
