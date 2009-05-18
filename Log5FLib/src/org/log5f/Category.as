@@ -326,9 +326,27 @@ package org.log5f
 			this.log5f_internal::log(Level.FATAL, message);
 		}
 		
+		/**
+		 * Gets call stack if need and call <code>log</code> method.
+		 * 
+		 * @param level The specified level
+		 *
+		 * @param message The message to logging.
+		 */
 		log5f_internal function log(level:Level, message:Object):void
 		{
-			var stackNeedded:Boolean = false;
+			// if relese flash player stack not available
+			
+			if (!Capabilities.isDebugger)
+			{
+				this.log(Level.DEBUG, message);
+				
+				return;
+			}
+			
+			// define if stack is used
+			
+			var stackIsUsed:Boolean = false;
 
 			for each (var appender:IAppender in this.getAllAppenders())
 			{
@@ -342,20 +360,23 @@ package org.log5f
 					PatternLayout.CONVERSION_PATTERN_METHOD.test(pattern) || 
 					PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.test(pattern))
 				{
-					stackNeedded = true;
+					stackIsUsed = true;
 
 					break;
 				}
 			}
-
-			if (Capabilities.isDebugger || 
-				(!stackNeedded && PropertyConfigurator.configured))
+			
+			// if stack is not used and roperties file is loaded
+			
+			if (!stackIsUsed && PropertyConfigurator.configured)
 			{
 				this.log(Level.DEBUG, message);
 
 				return;
 			}
-
+			
+			// if stack is used
+			
 			try
 			{
 				throw new Error();
