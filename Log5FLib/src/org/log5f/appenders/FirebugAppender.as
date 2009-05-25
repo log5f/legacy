@@ -70,34 +70,53 @@ package org.log5f.appenders
 			
 			switch (event.level.toInt())
 			{
-				case Level.ALL.toInt()	 : 
+				case Level.ALL.toInt() : 
+				{
 					method = "function(message){try{console.log(message);}catch(e){}}";
-				break;
+					
+					break;
+				}
 				
-				case Level.DEBUG.toInt() : 
+				case Level.DEBUG.toInt() :
+				{
 					method = "function(message){try{console.debug(message);}catch(e){}}";
-				break;
+					
+					break;
+				}
 				
-				case Level.INFO.toInt()	 : 
+				case Level.INFO.toInt() : 
+				{
 					method = "function(message){try{console.info(message);}catch(e){}}";
-				break;
+					
+					break;
+				}
 				
-				case Level.WARN.toInt()	 : 
+				case Level.WARN.toInt() : 
+				{
 					method = "function(message){try{console.warn(message);}catch(e){}}";
-				break;
+					
+					break;
+				}
 				
-				case Level.ERROR.toInt() : 
+				case Level.ERROR.toInt() :
+				{
 					method = "function(message){try{console.error(message);}catch(e){}}"; 
-				break;
+					
+					break;
+				} 
 				
 				case Level.FATAL.toInt() : 
+				{
 					method = "function(message){try{console.error(message);}catch(e){}}";
-				break;
-				
-				case Level.OFF.toInt()   : 
-					default :
-						return;
+
 					break;
+				}
+				
+				case Level.OFF.toInt() : 
+				default :
+				{
+					break;
+				}
 			}
 			
 			ExternalInterface.call(method, this.layout.format(event));

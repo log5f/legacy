@@ -339,7 +339,7 @@ package org.log5f
 			
 			if (!Capabilities.isDebugger)
 			{
-				this.log(Level.DEBUG, message);
+				this.log(level, message);
 				
 				return;
 			}
@@ -370,7 +370,7 @@ package org.log5f
 			
 			if (!stackIsUsed && PropertyConfigurator.configured)
 			{
-				this.log(Level.DEBUG, message);
+				this.log(level, message);
 
 				return;
 			}
@@ -383,7 +383,7 @@ package org.log5f
 			}
 			catch (error:Error)
 			{
-				this.log(Level.DEBUG, message, error.getStackTrace());
+				this.log(level, message, error.getStackTrace());
 			}
 		}
 		
