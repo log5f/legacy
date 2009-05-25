@@ -11,7 +11,7 @@ package org.log5f
 		public static const ERROR:uint	= 40000;
 		public static const FATAL:uint	= 50000;
 		public static const OFF:uint	= uint.MAX_VALUE;
-
+		
 		// ---------------- PRIVATE FIELDS ---------------- //
 
 		

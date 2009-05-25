@@ -6,7 +6,9 @@ package org.log5f
     import org.log5f.appenders.PysarAppender;
     import org.log5f.appenders.TraceAppender;
     import org.log5f.appenders.XPanelAppender;
-    import org.log5f.filters.CommonFilter;
+    import org.log5f.filters.DenyAllFilter;
+    import org.log5f.filters.LevelRangeFilter;
+    import org.log5f.filters.StringMatchFilter;
     import org.log5f.formatters.UpperCaseFormatter;
     import org.log5f.layouts.PatternLayout;
 
@@ -32,7 +34,9 @@ package org.log5f
 
         public function LoggerManager()
         {
-            LoggerManager.registerFilter(CommonFilter);
+            LoggerManager.registerFilter(DenyAllFilter);
+            LoggerManager.registerFilter(LevelRangeFilter);
+            LoggerManager.registerFilter(StringMatchFilter);
 
             LoggerManager.registerLayout(PatternLayout);
 

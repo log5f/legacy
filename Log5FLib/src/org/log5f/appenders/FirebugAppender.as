@@ -1,67 +1,48 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2009 http://log5f.wordpress.com
+// This program is made available under the terms of the MIT License.
+////////////////////////////////////////////////////////////////////////////////
+
 package org.log5f.appenders
 {
 	import flash.external.ExternalInterface;
 	
-	import org.log5f.IAppender;
-	import org.log5f.ILayout;
+	import org.log5f.Appender;
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
-
-	public class FirebugAppender implements IAppender
+	
+	/**
+	 * The <code>FirebugAppender</code> appends log events to the 
+	 * Firebug's console.
+	 * 
+	 * @see http://log5f.wordpress.com/appenders/
+	 */
+	public class FirebugAppender extends Appender
 	{
-		// ----------------- STATIC FIELDS ---------------- //
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
 
-		
-
-		// ---------------- PRIVATE FIELDS ---------------- //
-
-		[ArrayElementType("org.log5f.IFilter")]
-		private var filters:Array;
-		
-		private var _name:String;
-		
-		private var _layout:ILayout;
-
-		// ------------------ CONSTRUCTOR ----------------- //
-
+		/**
+		 * Constructor.
+		 */
 		public function FirebugAppender()
 		{
-		}
-
-		// ----------------- PUBLIC FIEDS ----------------- //
-
-		public function get name():String
-		{
-			return this._name;
+			super();
 		}
 		
-		public function set name(value:String):void
-		{
-			this._name = value;
-		}
+		//----------------------------------------------------------------------
+		//
+		//	Overriden methods
+		//
+		//----------------------------------------------------------------------
 		
-		public function get layout():ILayout
-		{
-			return this._layout;
-		}
-		
-		public function set layout(value:ILayout):void
-		{
-			this._layout = value;
-		}
-
-		// --------------- PROTECTED FIELDS --------------- //
-
-		
-
-		// ---------------- PUBLIC METHODS ---------------- //
-
-		public function close():void
-		{
-			this.layout = null;
-		}
-		
-		public function doAppend(event:LogEvent):void
+		/**
+		 * Appends log events to <code>Firebug</code> by ExternalInterface.
+		 */
+		override protected function append(event:LogEvent):void
 		{
 			if (!ExternalInterface.available)
 				return;
@@ -120,23 +101,13 @@ package org.log5f.appenders
 			}
 			
 			ExternalInterface.call(method, this.layout.format(event));
-			
 		}
 		
-		// --------------- PROTECTED METHODS -------------- //
-
-		
-
-		// ---------------- PRIVATE METHODS --------------- //
-
-		
-
-		// ------------------- HANDLERS ------------------- //
-
-		
-
-		// --------------- USER INTERACTION --------------- //
-
-		
+		/**
+		 * @inheritDoc
+		 */
+		override public function close():void
+		{
+		}
 	}
 }

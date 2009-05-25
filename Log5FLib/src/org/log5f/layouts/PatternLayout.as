@@ -2,10 +2,10 @@ package org.log5f.layouts
 {
 	import mx.formatters.DateFormatter;
 	
-	import org.log5f.ILayout;
+	import org.log5f.Layout;
 	import org.log5f.events.LogEvent;
 
-	public class PatternLayout implements ILayout
+	public class PatternLayout extends Layout
 	{
 		//----------------------------------------------------------------------
 		//
@@ -38,37 +38,62 @@ package org.log5f.layouts
 		public static const PATTERN_METHOD:RegExp = /\w+\(.*\)/;
 		public static const PATTERN_LINE_NUMBER:RegExp = /\d+(?=])/;
 		
-		
-		// ---------------- PRIVATE FIELDS ---------------- //
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
 
-		private var _conversionPattern:String;
-
-		// ------------------ CONSTRUCTOR ----------------- //
-
+		/**
+		 * Constructor.
+		 */
 		public function PatternLayout()
 		{
 			super();
 		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Properties
+		//
+		//----------------------------------------------------------------------
+		
+		//-----------------------------------
+		//	conversionPattern
+		//-----------------------------------
+		
+		/**
+		 * @private
+		 * Storage for the conversionPattern property.
+		 */
+		private var _conversionPattern:String;
 
-		// ----------------- PUBLIC FIEDS ----------------- //
-
+		/**
+		 * TODO Comment property
+		 */
 		public function get conversionPattern():String
 		{
-			return this._conversionPattern || DEFAULT_CONVERSION_PATTERN;
+			return this._conversionPattern || DEFAULT_CONVERSION_PATTERN;;
 		}
 
+		/**
+		 * @private
+		 */
 		public function set conversionPattern(value:String):void
 		{
+			if (value === this._conversionPattern)
+				return;
+			
 			this._conversionPattern = value;
 		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Overridden methods
+		//
+		//----------------------------------------------------------------------
 
-		// --------------- PROTECTED FIELDS --------------- //
-
-
-
-		// ---------------- PUBLIC METHODS ---------------- //
-
-		public function format(event:LogEvent):String
+		override public function format(event:LogEvent):String
 		{
 			var result:String = this.conversionPattern;
 
@@ -84,22 +109,6 @@ package org.log5f.layouts
 
 			return result;
 		}
-
-		// --------------- PROTECTED METHODS -------------- //
-
-
-
-		// ---------------- PRIVATE METHODS --------------- //
-
-
-
-		// ------------------- HANDLERS ------------------- //
-
-
-
-		// --------------- USER INTERACTION --------------- //
-
-
 	}
 }
 

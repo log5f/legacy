@@ -101,31 +101,6 @@ package org.log5f
 		}
 
 		//-----------------------------------
-		//	filter
-		//-----------------------------------
-
-		/**
-		 * Storage for the filter property.
-		 */
-		private var _filter:IFilter;
-
-		/**
-		 *
-		 */
-		public function get filter():IFilter
-		{
-			return this._filter;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set filter(value:IFilter):void
-		{
-			this._filter = value;
-		}
-
-		//-----------------------------------
 		//	parent
 		//-----------------------------------
 
@@ -350,7 +325,11 @@ package org.log5f
 
 			for each (var appender:IAppender in this.getAllAppenders())
 			{
-				var pattern:String = appender.layout.conversionPattern;
+				if (!(appender.layout is PatternLayout))
+					continue;
+				
+				var pattern:String = 
+					PatternLayout(appender.layout).conversionPattern;
 
 				PatternLayout.CONVERSION_PATTERN_FILE.lastIndex = 0;
 				PatternLayout.CONVERSION_PATTERN_METHOD.lastIndex = 0;
@@ -413,9 +392,6 @@ package org.log5f
 
 			var event:LogEvent = new LogEvent(this, level, message, stack);
 
-			if (!this.isLoggable(event))
-				return;
-
 			for (var c:Category = this; c != null; c = c.parent)
 			{
 				if (level.isGreaterOrEqual(c.getEffectiveLevel()))
@@ -471,24 +447,6 @@ package org.log5f
 			}
 		}
 
-		/**
-		 * Specifies if log event is loggable for this category.
-		 * 
-		 * @param event The log event.
-		 * 
-		 * @return <code>true</code> if specified log event is loggable for this
-		 * category, <code>false</code> if it is not loggable.
-		 * 
-		 * @see org.log5f.IFilter#isLoggable
-		 */
-		private function isLoggable(event:LogEvent):Boolean
-		{
-			if (this.filter == null)
-				return true;
-
-			return this.filter.isLoggable(event);
-		}
-		
 		/**
 		 * Returns category's name and level in readable form.
 		 * 

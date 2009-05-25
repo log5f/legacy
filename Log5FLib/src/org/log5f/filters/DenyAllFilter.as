@@ -3,51 +3,38 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.appenders
+package org.log5f.filters
 {
-	import org.log5f.Appender;
-	import org.log5f.Layout;
 	import org.log5f.events.LogEvent;
 	
 	/**
-	 * The <code>TraceAppender</code> appends log events to the 
-	 * <code>trace</code> method.
+	 * This filter drops all logging events.
 	 */
-	public class TraceAppender extends Appender
+	public class DenyAllFilter extends Filter
 	{
 		//----------------------------------------------------------------------
 		//
 		//	Constructor
 		//
 		//----------------------------------------------------------------------
-
+		
 		/**
 		 * Constructor.
 		 */
-		public function TraceAppender()
+		public function DenyAllFilter()
 		{
 			super();
 		}
 		
 		//----------------------------------------------------------------------
 		//
-		//	Overriden methods
+		//	Overridden methods
 		//
 		//----------------------------------------------------------------------
 		
-		/**
-		 * Appends log events to <code>trace</code>.
-		 */
-		override protected function append(event:LogEvent):void
+		override public function decide(event:LogEvent):int
 		{
-			trace(this.layout.format(event));
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function close():void
-		{
+			return Filter.DENY;
 		}
 	}
 }

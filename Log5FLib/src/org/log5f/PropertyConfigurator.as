@@ -1,421 +1,401 @@
 package org.log5f
 {
-    import flash.events.Event;
-    import flash.events.EventDispatcher;
-    import flash.utils.getDefinitionByName;
-    import flash.utils.getQualifiedClassName;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
+	
+	import mx.utils.StringUtil;
+	
+	import org.log5f.error.AppenderNotFoundError;
+	import org.log5f.error.ClassNotFoundError;
+	import org.log5f.error.FilterNotFoundError;
+	import org.log5f.error.IllegalArgumentError;
+	import org.log5f.error.InvalidAppenderError;
+	import org.log5f.error.InvalidConfigError;
+	import org.log5f.error.InvalidFilterError;
+	import org.log5f.error.SingletonError;
 
-    import mx.utils.StringUtil;
+	//------------------------------------
+	//	Events
+	//------------------------------------
 
-    import org.log5f.error.AppenderNotFoundError;
-    import org.log5f.error.ClassNotFoundError;
-    import org.log5f.error.FilterNotFoundError;
-    import org.log5f.error.IllegalArgumentError;
-    import org.log5f.error.InvalidAppenderError;
-    import org.log5f.error.InvalidConfigError;
-    import org.log5f.error.InvalidFilterError;
-    import org.log5f.error.SingletonError;
+	[Event(eventName="complete", eventType = "flash.events.Event")]
 
-    //------------------------------------
-    //	Events
-    //------------------------------------
+	//------------------------------------
+	//	Other metadata
+	//------------------------------------
 
-    [Event(eventName="complete", eventType = "flash.events.Event")]
+	[ResourceBoundle("log5f")]
 
-    //------------------------------------
-    //	Other metadata
-    //------------------------------------
+	public class PropertyConfigurator
+	{
+		//----------------------------------------------------------------------
+		//
+		//	Class constants
+		//
+		//----------------------------------------------------------------------
 
-    [ResourceBoundle("log5f")]
-
-    public class PropertyConfigurator
-    {
-        //----------------------------------------------------------------------
-        //
-        //	Class constants
-        //
-        //----------------------------------------------------------------------
-
-        /**
-         *
-         */
-        public static const PARAM_TYPE_CLASS:String = "Class";
-
-        /**
-         *
-         */
-        public static const PARAM_TYPE_NUMBER:String = "Number";
-
-        /**
-         *
-         */
-        public static const PARAM_TYPE_STRING:String = "String";
-
-        //----------------------------------------------------------------------
-        //
-        //	Class variables
-        //
-        //----------------------------------------------------------------------
-
-        /**
-         * @private
-         * Storage for one instance of <code>PropertyConfigurator</code>.
-         */
-        private static var instance:PropertyConfigurator = null;
-
-        /**
-         * @private
-         */
-        private static var properties:XML;
-
-        /**
-         * @private
-         * The internal dispatcher, that adds functionalty of EventDispatcher to
-         * <code>PropertyConfigurator</code>.
-         */
-        private static var dispatcher:EventDispatcher = new EventDispatcher();
-
-        //----------------------------------------------------------------------
-        //
-        //	Class properties
-        //
-        //----------------------------------------------------------------------
-
-        /**
-         * Storeages for configured property.
-         */
-        private static var _configured:Boolean = false;
-
-        /**
-         * A flag that indicates if file "log5f.properties" is loaded and logger
-         * is configured.
-         */
-        public static function get configured():Boolean
-        {
-            return PropertyConfigurator._configured;
-        }
-
-        //----------------------------------------------------------------------
-        //
-        //	Class methods
-        //
-        //----------------------------------------------------------------------
-
-        /**
-         * Creates, if need, and returns one instance of
-         * <code>PropertyConfigurator</code>.
-         */
-        public static function getInstance():PropertyConfigurator
-        {
-            if (instance == null)
-                instance = new PropertyConfigurator();
-
-            return instance;
-        }
-
-        //----------------------------------------------------------------------
-        //
-        //	Constructor
-        //
-        //----------------------------------------------------------------------
-
-        /**
-         * Constructor.
-         */
-        public function PropertyConfigurator()
-        {
-            if (PropertyConfigurator.instance)
-            {
-                throw new SingletonError("PropertyConfigurator");
-            }
-        }
-
-        //----------------------------------------------------------------------
-        //
-        //	Methods
-        //
-        //----------------------------------------------------------------------
-		
-		//-----------------------------------
-        //	Methods: Common
-        //-----------------------------------
-		
-        public static function configure(properties:XML):void
-        {
-            trace("PropertyConfigurator.configure");
-
-            PropertyConfigurator.properties = properties;
-
-            for each (var logger:XML in properties.logger)
-            {
-                PropertyConfigurator.configureLogger(logger);
-            }
-
-            if (properties.root != null)
-                PropertyConfigurator.configureLogger(properties.root[0]);
-
-            PropertyConfigurator._configured = true;
-
-            PropertyConfigurator.dispatchEvent(new Event(Event.COMPLETE));
-        }
-		
-        private static function configureLogger(logger:XML):void
-        {
-            if (logger.@name.toString() == "" && logger.name().toString() != LoggerManager.ROOT_LOGGER_NAME)
-                throw InvalidConfigError(PropertyLoader.FILE);
-
-            var name:String = logger.@name.toString() == "" ? 
-            				  LoggerManager.ROOT_LOGGER_NAME : 
-            				  logger.@name.toString();
-
-            // set level and filter
-
-            var level:Level;
-            var filter:IFilter;
-
-            level = (logger.@level != null && logger.@level.toString() != "") ? Level.toLevel(logger.@level.toString()) : null;
-            filter = (logger.@filter != null && logger.@filter.toString() != "") ? PropertyConfigurator.createFilter(logger.@filter.toString()) : null;
-
-            LoggerManager.getLogger(name).level = level;
-
-            LoggerManager.getLogger(name).filter = filter;
-
-            // add appenders
-
-            var appenders:Array = StringUtil.trimArrayElements(logger.@appenders, ",").split(",");
-
-            for each (var appenderName:String in appenders)
-            {
-                var appender:IAppender = PropertyConfigurator.createAppender(properties.appender.(@name == appenderName)[0]);
-
-                LoggerManager.getLogger(name).addAppender(appender);
-            }
-        }
-		
-		//-----------------------------------
-        //	Methods: EventDispatcher
-        //-----------------------------------
-		
-        public static function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void
-        {
-            PropertyConfigurator.dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
-        }
-
-        public static function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void
-        {
-            PropertyConfigurator.dispatcher.removeEventListener(type, listener, useCapture);
-        }
-
-        public static function dispatchEvent(event:Event):Boolean
-        {
-            return PropertyConfigurator.dispatcher.dispatchEvent(event);
-        }
-
-        public static function hasEventListener(type:String):Boolean
-        {
-            return PropertyConfigurator.dispatcher.hasEventListener(type);
-        }
-
-        public static function willTrigger(type:String):Boolean
-        {
-            return PropertyConfigurator.dispatcher.willTrigger(type);
-        }
-
-        //-----------------------------------
-        //	Methods: Createing actors
-        //-----------------------------------
-
-        /**
-         * Creates and return an appender by specified xml node.
-         *
-         * @param node The node from <code>properties</code> XML that describes
-         * concrete appender.
-         *
-         * @return The created appender.
-         *
-         * @trows InvalidConfigError, AppenderNotFoundError, InvalidAppenderError
-         */
-        private static function createAppender(node:XML):IAppender
-        {
-            var name:String = node.@name.toString();
-
-            var className:String = node.attribute("class").toString();
-
-            if (!name || name == "")
-                throw InvalidConfigError(PropertyLoader.FILE);
-
-            if (!className || className == "")
-                throw InvalidConfigError(PropertyLoader.FILE);
-
-            try
-            {
-                var Appender:Class = PropertyConfigurator.createClass(className);
-                var appender:IAppender = new Appender();
-            }
-            catch (e:ClassNotFoundError)
-            {
-                throw new AppenderNotFoundError(className);
-            }
-            catch (e:VerifyError)
-            {
-                throw new InvalidAppenderError(className);
-            }
-
-            appender.name = name;
-
-            PropertyConfigurator.addParams(appender, node);
-
-            return appender;
-        }
-
-        /**
-         * Creates and return an filter by specified xml node.
-         *
-         * @param node The node from <code>properties</code> XML that describes
-         * concrete filter.
-         *
-         * @return The created filter.
-         *
-         * @trows FilterNotFoundError, InvalidFilterError
-         */
-        private static function createFilter(className:String):IFilter
-        {
-            try
-            {
-                var Filter:Class = PropertyConfigurator.createClass(className);
-                var filter:IFilter = new Filter();
-            }
-            catch (e:ClassNotFoundError)
-            {
-                throw new FilterNotFoundError(className);
-            }
-            catch (e:VerifyError)
-            {
-                throw new InvalidFilterError(className);
-            }
-
-            return filter;
-        }
-		
-		//-----------------------------------
-        //	Methods: Utility
-        //-----------------------------------
-		
-        /**
-         * The utility method that returns Class by it name.
-         *
-         * @param className The name of class that will be returned.
-         *
-         * @return The founded class
-         *
-         * @trows IllegalArgumentError, ClassNotFoundError
-         *
-         * @see getDefinitionByName
-         */
-        private static function createClass(className:String):Class
-        {
-            className = PropertyConfigurator.classNameFormat(className);
-
-            try
-            {
-                var Type:Class = getDefinitionByName(className) as Class;
-            }
-            catch (e:ArgumentError)
-            {
-                throw new IllegalArgumentError(className);
-            }
-            catch (e:ReferenceError)
-            {
-                throw new ClassNotFoundError(className);
-            }
-
-            return Type;
-        }
-
-        /**
-         * The utility method that formats specifies class name.
-         * 
-         * @param className The class name that need format.
-         * 
-         * @return The Formatted class name.
-         */
-        private static function classNameFormat(className:String):String
-        {
-            if (className.indexOf("::") != -1)
-                return className;
-
-            if (className.indexOf(".") == -1)
-                return className;
-
-            var colon:uint = className.lastIndexOf(".");
-
-            return className.substring(0, colon) + "::" + className.substring(colon + 1, className.length);
-        }
-		
 		/**
-		 * 
+		 *
 		 */
-        private static function addParams(target:Object, node:XML):void
-        {
-            if (!target || !node)
-                return;
+		public static const PARAM_TYPE_CLASS:String = "Class";
 
-            for each (var param:XML in node.param)
-            {
-                var type:String = param.@type.toString();
-                var name:String = param.@name.toString();
-                var value:Object = param.@value.toString();
+		/**
+		 *
+		 */
+		public static const PARAM_TYPE_NUMBER:String = "Number";
 
-                if (!name || name == "" || !value)
-                    throw new InvalidConfigError(PropertyLoader.FILE);
+		/**
+		 *
+		 */
+		public static const PARAM_TYPE_STRING:String = "String";
 
-                switch (type)
-                {
-                    case PropertyConfigurator.PARAM_TYPE_CLASS :
-                    {
-                        var Type:Class = 
-                        	PropertyConfigurator.createClass(String(value));
+		/**
+		 *
+		 */
+		public static const PARAM_TYPE_BOOLEAN:String = "Boolean";
 
-                        value = new Type();
+		//----------------------------------------------------------------------
+		//
+		//	Class variables
+		//
+		//----------------------------------------------------------------------
 
-                        break;
-                    }
+		/**
+		 * @private
+		 * Storage for one instance of <code>PropertyConfigurator</code>.
+		 */
+		private static var instance:PropertyConfigurator = null;
 
-                    case PropertyConfigurator.PARAM_TYPE_NUMBER :
-                    {
-                        value = Number(value);
-                    	
-                        break;
-                    }
-                    
-                    case PropertyConfigurator.PARAM_TYPE_STRING :
-                    {
-                        value = value;
-                        break;
-                    }
+		/**
+		 * @private
+		 */
+		private static var properties:XML;
 
-                    default :
-                    {
-                        throw new InvalidConfigError(PropertyLoader.FILE);
-                    	
-                    	break;
-                    }
-                }
+		/**
+		 * @private
+		 * The internal dispatcher, that adds functionalty of EventDispatcher to
+		 * <code>PropertyConfigurator</code>.
+		 */
+		private static var dispatcher:EventDispatcher = new EventDispatcher();
 
-                try
-                {
-                    target[name] = value;
-                }
-                catch (error:TypeError)
-                {
-                    throw new ClassNotFoundError(getQualifiedClassName(value));
-                }
+		//----------------------------------------------------------------------
+		//
+		//	Class properties
+		//
+		//----------------------------------------------------------------------
 
-                PropertyConfigurator.addParams(target[name], param);
-            }
-        }
+		/**
+		 * Storeages for configured property.
+		 */
+		private static var _configured:Boolean = false;
 
-        // ------------------- HANDLERS ------------------- //
+		/**
+		 * A flag that indicates if file "log5f.properties" is loaded and logger
+		 * is configured.
+		 */
+		public static function get configured():Boolean
+		{
+			return PropertyConfigurator._configured;
+		}
 
-    }
+		//----------------------------------------------------------------------
+		//
+		//	Class methods
+		//
+		//----------------------------------------------------------------------
+
+		/**
+		 * Creates, if need, and returns one instance of
+		 * <code>PropertyConfigurator</code>.
+		 */
+		public static function getInstance():PropertyConfigurator
+		{
+			if (instance == null)
+				instance = new PropertyConfigurator();
+
+			return instance;
+		}
+
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
+
+		/**
+		 * Constructor.
+		 */
+		public function PropertyConfigurator()
+		{
+			if (PropertyConfigurator.instance)
+			{
+				throw new SingletonError("PropertyConfigurator");
+			}
+		}
+
+		//----------------------------------------------------------------------
+		//
+		//	Methods
+		//
+		//----------------------------------------------------------------------
+
+		//-----------------------------------
+		//	Methods: Common
+		//-----------------------------------
+
+		public static function configure(properties:XML):void
+		{
+			trace("PropertyConfigurator.configure");
+
+			PropertyConfigurator.properties = properties;
+
+			for each (var logger:XML in properties.logger)
+			{
+				PropertyConfigurator.configureLogger(logger);
+			}
+
+			if (properties.root != null)
+				PropertyConfigurator.configureLogger(properties.root[0]);
+
+			PropertyConfigurator._configured = true;
+
+			PropertyConfigurator.dispatchEvent(new Event(Event.COMPLETE));
+		}
+
+		private static function configureLogger(logger:XML):void
+		{
+			if (logger.@name.toString() == "" && logger.name().toString() != LoggerManager.ROOT_LOGGER_NAME)
+				throw InvalidConfigError(PropertyLoader.FILE);
+
+			var name:String = logger.@name.toString() == "" ? 
+							  LoggerManager.ROOT_LOGGER_NAME : 
+							  logger.@name.toString();
+
+			// add level
+
+			LoggerManager.getLogger(name).level = 
+				(logger.@level != null && logger.@level.toString() != "") ? 
+				Level.toLevel(logger.@level.toString()) : 
+				null;
+
+			// add appenders
+
+			var appenders:Array = StringUtil.trimArrayElements(logger.@appenders, ",").split(",");
+
+			for each (var appenderName:String in appenders)
+			{
+				var appender:IAppender = 
+					PropertyConfigurator.createAppender(properties.appender.(@name == appenderName)[0]);
+
+				LoggerManager.getLogger(name).addAppender(appender);
+			}
+		}
+
+		//-----------------------------------
+		//	Methods: EventDispatcher
+		//-----------------------------------
+
+		public static function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void
+		{
+			PropertyConfigurator.dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		}
+
+		public static function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void
+		{
+			PropertyConfigurator.dispatcher.removeEventListener(type, listener, useCapture);
+		}
+
+		public static function dispatchEvent(event:Event):Boolean
+		{
+			return PropertyConfigurator.dispatcher.dispatchEvent(event);
+		}
+
+		public static function hasEventListener(type:String):Boolean
+		{
+			return PropertyConfigurator.dispatcher.hasEventListener(type);
+		}
+
+		public static function willTrigger(type:String):Boolean
+		{
+			return PropertyConfigurator.dispatcher.willTrigger(type);
+		}
+
+		//-----------------------------------
+		//	Methods: Createing actors
+		//-----------------------------------
+
+		/**
+		 * Creates and return an appender by specified xml node.
+		 *
+		 * @param node The node from <code>properties</code> XML that describes
+		 * concrete appender.
+		 *
+		 * @return The created appender.
+		 *
+		 * @trows InvalidConfigError, AppenderNotFoundError, InvalidAppenderError
+		 */
+		private static function createAppender(node:XML):IAppender
+		{
+			var name:String = node.@name.toString();
+
+			var className:String = node.attribute("class").toString();
+
+			if (!name || name == "")
+				throw InvalidConfigError(PropertyLoader.FILE);
+
+			if (!className || className == "")
+				throw InvalidConfigError(PropertyLoader.FILE);
+
+			try
+			{
+				var Appender:Class = PropertyConfigurator.createClass(className);
+				var appender:IAppender = new Appender();
+			}
+			catch (e:ClassNotFoundError)
+			{
+				throw new AppenderNotFoundError(className);
+			}
+			catch (e:VerifyError)
+			{
+				throw new InvalidAppenderError(className);
+			}
+
+			appender.name = name;
+
+			PropertyConfigurator.addParams(appender, node);
+
+			return appender;
+		}
+
+		//-----------------------------------
+		//	Methods: Utility
+		//-----------------------------------
+
+		/**
+		 * The utility method that returns Class by it name.
+		 *
+		 * @param className The name of class that will be returned.
+		 *
+		 * @return The founded class
+		 *
+		 * @trows IllegalArgumentError, ClassNotFoundError
+		 *
+		 * @see getDefinitionByName
+		 */
+		private static function createClass(className:String):Class
+		{
+			className = PropertyConfigurator.classNameFormat(className);
+
+			try
+			{
+				var Type:Class = getDefinitionByName(className) as Class;
+			}
+			catch (e:ArgumentError)
+			{
+				throw new IllegalArgumentError(className);
+			}
+			catch (e:ReferenceError)
+			{
+				throw new ClassNotFoundError(className);
+			}
+
+			return Type;
+		}
+
+		/**
+		 * The utility method that formats specifies class name.
+		 *
+		 * @param className The class name that need format.
+		 *
+		 * @return The Formatted class name.
+		 */
+		private static function classNameFormat(className:String):String
+		{
+			if (className.indexOf("::") != -1)
+				return className;
+
+			if (className.indexOf(".") == -1)
+				return className;
+
+			var colon:uint = className.lastIndexOf(".");
+
+			return className.substring(0, colon) + "::" + className.substring(colon + 1, className.length);
+		}
+
+		/**
+		 *
+		 */
+		private static function addParams(target:Object, node:XML):void
+		{
+			if (!target || !node)
+				return;
+
+			for each (var param:XML in node.param)
+			{
+				var type:String = param.@type.toString();
+				var name:String = param.@name.toString();
+				var value:Object = param.@value.toString();
+
+				if (!name || name == "" || !value)
+					throw new InvalidConfigError(PropertyLoader.FILE);
+
+				switch (type)
+				{
+					case PropertyConfigurator.PARAM_TYPE_CLASS :
+					{
+						var Type:Class = 
+							PropertyConfigurator.createClass(String(value));
+
+						value = new Type();
+
+						break;
+					}
+
+					case PropertyConfigurator.PARAM_TYPE_NUMBER :
+					{
+						value = Number(value);
+
+						break;
+					}
+
+					case PropertyConfigurator.PARAM_TYPE_STRING :
+					{
+						value = value;
+						
+						break;
+					}
+
+					case PropertyConfigurator.PARAM_TYPE_BOOLEAN :
+					{
+						value = (value == "true" || value == "yes");
+						
+						break;
+					}
+
+					default:
+					{
+						throw new InvalidConfigError(PropertyLoader.FILE);
+
+						break;
+					}
+				}
+
+				try
+				{
+					target[name] = value;
+				}
+				catch (error:TypeError)
+				{
+					throw new ClassNotFoundError(getQualifiedClassName(value));
+				}
+				
+				PropertyConfigurator.addParams(value, param);
+			}
+		}
+
+		// ------------------- HANDLERS ------------------- //
+
+	}
 }

@@ -1,3 +1,8 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2009 http://log5f.wordpress.com
+// This program is made available under the terms of the MIT License.
+////////////////////////////////////////////////////////////////////////////////
+
 package org.log5f.appenders
 {
 	import flash.events.AsyncErrorEvent;
@@ -5,125 +10,158 @@ package org.log5f.appenders
 	import flash.events.StatusEvent;
 	import flash.net.LocalConnection;
 	
-	import org.log5f.IAppender;
-	import org.log5f.ILayout;
+	import org.log5f.Appender;
 	import org.log5f.events.LogEvent;
-	import org.log5f.events.SimpleLogEvent;
 	
-	public class PysarAppender implements IAppender
+	/**
+	 * The <code>PysarAppender</code> appends log events to the
+	 * Pysar's console.
+	 *
+	 * @see http://log5f.wordpress.com/appenders/
+	 */
+	public class PysarAppender extends Appender
 	{
-		// ----------------- STATIC FIELDS ---------------- //
+		//----------------------------------------------------------------------
+		//
+		//	Class constants
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * 
+		 */
+		public static const DEFAULT_CONNECTION_NAME:String = "_PysarDefaultConnection";
+		
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
 
-		public static const DEFAULT_CONNECTION_NAME:String	= "_PysarDefaultConnection";
-		
-		// ---------------- PRIVATE FIELDS ---------------- //
-
-		private var connection:LocalConnection;
-		
-		[ArrayElementType("org.log5f.IFilter")]
-		private var filters:Array;
-		
-		private var _name:String;
-		
-		private var _layout:ILayout;
-		
-		private var _connectionName:String;
-
-		// ------------------ CONSTRUCTOR ----------------- //
-
+		/**
+		 * Constructor.
+		 */
 		public function PysarAppender()
 		{
+			super();
 		}
 
-		// ----------------- PUBLIC FIEDS ----------------- //
+		//----------------------------------------------------------------------
+		//
+		//	Variables
+		//
+		//----------------------------------------------------------------------
 
-		public function get name():String
-		{
-			return this._name;
-		}
-		
-		public function set name(value:String):void
-		{
-			this._name = value;
-		}
-		
-		public function get layout():ILayout
-		{
-			return this._layout;
-		}
-		
-		public function set layout(value:ILayout):void
-		{
-			this._layout = value;
-		}
-		
+		/**
+		 * @private
+		 */
+		private var connection:LocalConnection;
+
+		//----------------------------------------------------------------------
+		//
+		//	Properties
+		//
+		//----------------------------------------------------------------------
+
+		//-----------------------------------
+		//	connectionName
+		//-----------------------------------
+
+		/**
+		 * @private
+		 * Storage for the connectionName property.
+		 */
+		private var _connectionName:String;
+
+		/**
+		 * The name that used for connection.
+		 */
 		public function get connectionName():String
 		{
 			return this._connectionName || DEFAULT_CONNECTION_NAME;
 		}
-		
+
+		/**
+		 * @private
+		 */
 		public function set connectionName(value:String):void
 		{
+			if (value === this._connectionName)
+				return;
+
 			this._connectionName = value;
 		}
 
-		// --------------- PROTECTED FIELDS --------------- //
+		//----------------------------------------------------------------------
+		//
+		//	Overriden methods
+		//
+		//----------------------------------------------------------------------
 
-		
-
-		// ---------------- PUBLIC METHODS ---------------- //
-		
-		public function close():void
+		/**
+		 * Appends log events to <code>Pysar</code> by LocalConnection.
+		 */
+		override protected function append(event:LogEvent):void
 		{
-			this.layout = null;
-		}
-		
-		public function doAppend(event:LogEvent):void
-		{
-			if(this.connection == null)
+			if (!this.connection)
 			{
 				this.connection = new LocalConnection();
-				this.connection.addEventListener(StatusEvent.STATUS, this.connectionStatusHandler);
-				this.connection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, this.connectionAsyncErrorHandler);
-				this.connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.connectionSecurityErrorHandler);
+				
+				this.connection.
+					addEventListener(StatusEvent.STATUS, statusHandler);
+					
+				this.connection.
+					addEventListener(AsyncErrorEvent.ASYNC_ERROR, 
+									 asyncErrorHandler);
+					
+				this.connection.
+					addEventListener(SecurityErrorEvent.SECURITY_ERROR, 
+									 securityErrorHandler);
 			}
 			
-			var e:SimpleLogEvent = new SimpleLogEvent(event.category.category,
-													  event.level.toInt(),
-													  this.connectionName,
-													  this.layout.format(event),
-													  event.packageName,
-													  event.className,
-													  event.methodName);
-			
-			this.connection.send(this.connectionName, "log", e);
+			this.connection.send(this.connectionName, "log", event);
 		}
-
-		// --------------- PROTECTED METHODS -------------- //
-
 		
-
-		// ---------------- PRIVATE METHODS --------------- //
-
+		/**
+		 * Closes and removes the <code>connection</code>.
+		 */
+		override public function close():void
+		{
+			if (this.connection)
+			{
+				this.connection.close();
+				
+				this.connection.
+					removeEventListener(StatusEvent.STATUS, statusHandler);
+					
+				this.connection.
+					removeEventListener(AsyncErrorEvent.ASYNC_ERROR, 
+										asyncErrorHandler);
+					
+				this.connection.
+					removeEventListener(SecurityErrorEvent.SECURITY_ERROR, 
+										securityErrorHandler);
+			}
+				
+			this.connection = null;
+		}
 		
-
-		// ------------------- HANDLERS ------------------- //
-
-		protected function connectionStatusHandler(event:StatusEvent):void
+		//----------------------------------------------------------------------
+		//
+		//	Event handlers
+		//
+		//----------------------------------------------------------------------
+		
+		private function statusHandler(event:StatusEvent):void
 		{
-//			trace("connectionStatusHandler");
 		}
-		protected function connectionAsyncErrorHandler(event:AsyncErrorEvent):void
+		
+		private function asyncErrorHandler(event:AsyncErrorEvent):void
 		{
-//			trace("connectionAsyncErrorHandler");
 		}
-		protected function connectionSecurityErrorHandler(event:SecurityErrorEvent):void
+		
+		private function securityErrorHandler(event:SecurityErrorEvent):void
 		{
-//			trace("connectionSecurityErrorHandler");
 		}
-
-		// --------------- USER INTERACTION --------------- //
-
-
 	}
 }

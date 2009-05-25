@@ -3,51 +3,45 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.appenders
+package org.log5f
 {
-	import org.log5f.Appender;
-	import org.log5f.Layout;
+	import mx.resources.ResourceManager;
+	
 	import org.log5f.events.LogEvent;
 	
 	/**
-	 * The <code>TraceAppender</code> appends log events to the 
-	 * <code>trace</code> method.
+	 * The base class for all layouts.
 	 */
-	public class TraceAppender extends Appender
+	public class Layout
 	{
 		//----------------------------------------------------------------------
 		//
 		//	Constructor
 		//
 		//----------------------------------------------------------------------
-
+		
 		/**
 		 * Constructor.
 		 */
-		public function TraceAppender()
+		public function Layout()
 		{
 			super();
 		}
 		
 		//----------------------------------------------------------------------
 		//
-		//	Overriden methods
+		//	Methods
 		//
 		//----------------------------------------------------------------------
 		
 		/**
-		 * Appends log events to <code>trace</code>.
+		 * Subclasses of <code>Layout</code> should implement this method to 
+		 * perform actual logging.
 		 */
-		override protected function append(event:LogEvent):void
+		public function format(event:LogEvent):String
 		{
-			trace(this.layout.format(event));
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function close():void
-		{
+			throw new Error(ResourceManager.getInstance().
+								getString("log5f", "errorAbstractMethod"));
 		}
 	}
 }
