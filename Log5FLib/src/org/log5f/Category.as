@@ -7,7 +7,6 @@ package org.log5f
 	import flash.system.Capabilities;
 	
 	import org.log5f.events.LogEvent;
-	import org.log5f.layouts.PatternLayout;
 
 	public class Category implements IAppenderAttachable
 	{
@@ -155,7 +154,45 @@ package org.log5f
 		{
 			this._category = value;
 		}
-
+		
+		//-----------------------------------
+		//	useStack
+		//-----------------------------------
+		
+		/**
+		 * @private
+		 * Storage for useStack property.
+		 */
+		private var _useStack:Boolean;
+		
+		/**
+		 * A flag that indicates if stack is used.
+		 */
+		public function get useStack():Boolean
+		{
+			if (this._useStack === true || this._useStack === false)
+				return this._useStack;
+			
+			for each (var appender:IAppender in this.getAllAppenders())
+			{
+				if (appender.layout.isStackNeeded)
+					return true;
+			}
+			
+			if (!this.parent || this.parent == this)
+				return false;
+			
+			return this.parent.useStack;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set useStack(value:Boolean):void
+		{
+			this._useStack = value;
+		}
+		 
 		//----------------------------------------------------------------------
 		//
 		//	Methods
@@ -319,35 +356,9 @@ package org.log5f
 				return;
 			}
 			
-			// define if stack is used
-			
-			var stackIsUsed:Boolean = false;
-
-			for each (var appender:IAppender in this.getAllAppenders())
-			{
-				if (!(appender.layout is PatternLayout))
-					continue;
-				
-				var pattern:String = 
-					PatternLayout(appender.layout).conversionPattern;
-
-				PatternLayout.CONVERSION_PATTERN_FILE.lastIndex = 0;
-				PatternLayout.CONVERSION_PATTERN_METHOD.lastIndex = 0;
-				PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.lastIndex = 0;
-
-				if (PatternLayout.CONVERSION_PATTERN_FILE.test(pattern) || 
-					PatternLayout.CONVERSION_PATTERN_METHOD.test(pattern) || 
-					PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.test(pattern))
-				{
-					stackIsUsed = true;
-
-					break;
-				}
-			}
-			
 			// if stack is not used and roperties file is loaded
 			
-			if (!stackIsUsed && PropertyConfigurator.configured)
+			if (!this.useStack && PropertyConfigurator.configured)
 			{
 				this.log(level, message);
 
@@ -446,7 +457,7 @@ package org.log5f
 				appender.doAppend(event);
 			}
 		}
-
+		
 		/**
 		 * Returns category's name and level in readable form.
 		 * 
@@ -491,7 +502,7 @@ package org.log5f
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-//	Helper classes: DateConverter
+//	Helper classes: LogObject
 //
 ////////////////////////////////////////////////////////////////////////////////
 

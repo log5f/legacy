@@ -54,6 +54,25 @@ package org.log5f.layouts
 		
 		//----------------------------------------------------------------------
 		//
+		//	Overridden properties
+		//
+		//----------------------------------------------------------------------
+		
+		override public function get isStackNeeded():Boolean
+		{
+			PatternLayout.CONVERSION_PATTERN_FILE.lastIndex = 0;
+			PatternLayout.CONVERSION_PATTERN_METHOD.lastIndex = 0;
+			PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.lastIndex = 0;
+			
+			var pattern:String = this.conversionPattern;
+			
+			return PatternLayout.CONVERSION_PATTERN_FILE.test(pattern) || 
+				   PatternLayout.CONVERSION_PATTERN_METHOD.test(pattern) || 
+				   PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.test(pattern);
+		}
+		
+		//----------------------------------------------------------------------
+		//
 		//	Properties
 		//
 		//----------------------------------------------------------------------
