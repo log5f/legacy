@@ -397,7 +397,7 @@ package org.log5f
 
 				return;
 			}
-
+			
 			if (!level.isGreaterOrEqual(this.getEffectiveLevel()))
 				return;
 

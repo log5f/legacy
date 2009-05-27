@@ -147,8 +147,6 @@ package org.log5f
 
 		public static function configure(properties:XML):void
 		{
-			trace("PropertyConfigurator.configure");
-
 			PropertyConfigurator.properties = properties;
 
 			for each (var logger:XML in properties.logger)
