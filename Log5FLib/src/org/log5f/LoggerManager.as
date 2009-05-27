@@ -11,6 +11,7 @@ package org.log5f
     import org.log5f.filters.StringMatchFilter;
     import org.log5f.formatters.UpperCaseFormatter;
     import org.log5f.layouts.PatternLayout;
+    import org.log5f.layouts.SimpleLayout;
 
     public class LoggerManager
     {
@@ -38,6 +39,7 @@ package org.log5f
             LoggerManager.registerFilter(LevelRangeFilter);
             LoggerManager.registerFilter(StringMatchFilter);
 
+            LoggerManager.registerLayout(SimpleLayout);
             LoggerManager.registerLayout(PatternLayout);
 
             LoggerManager.registerAppender(PysarAppender);
