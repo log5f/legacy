@@ -42,7 +42,13 @@ package org.log5f
 
 		[ArrayElementType("LogObject")]
 		private var lazyLogEvents:Array;
-
+		
+		/**
+		 * @private
+		 * A flag that indicates if <code>useStack</code> is set manually.
+		 */
+		private var useStackManual:Boolean = false;
+		
 		//----------------------------------------------------------------------
 		//
 		//	Properties
@@ -170,7 +176,7 @@ package org.log5f
 		 */
 		public function get useStack():Boolean
 		{
-			if (this._useStack === true || this._useStack === false)
+			if (this.useStackManual)
 				return this._useStack;
 			
 			for each (var appender:IAppender in this.getAllAppenders())
@@ -191,6 +197,8 @@ package org.log5f
 		public function set useStack(value:Boolean):void
 		{
 			this._useStack = value;
+			
+			this.useStackManual = true;
 		}
 		 
 		//----------------------------------------------------------------------

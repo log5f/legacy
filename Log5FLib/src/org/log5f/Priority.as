@@ -50,7 +50,7 @@ package org.log5f
 		
 		public function isGreaterOrEqual(priority:Priority):Boolean
 		{
-			return this.level <= priority.level;
+			return this.level >= priority.level;
 		}
 		
 		public function toString():String
