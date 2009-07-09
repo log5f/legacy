@@ -1,6 +1,3 @@
-/**
- * Додати відкаладене завантаження до завантаження файлу з налаштунками.
- */
 package org.log5f
 {
 	import flash.events.Event;
@@ -40,8 +37,7 @@ package org.log5f
 
 		private var appenders:AppenderAttachable;
 
-		[ArrayElementType("LogObject")]
-		private var lazyLogEvents:Array;
+		private var lazyLogEvents:Array /* LogObject */ = null;
 		
 		/**
 		 * @private
@@ -298,52 +294,42 @@ package org.log5f
 
 		/**
 		 * This method logs with <code>DEBUG</code> level.
-		 *
-		 * @param message The string to log.
 		 */
-		public function debug(message:Object):void
+		public function debug(...rest):void
 		{
-			this.log5f_internal::log(Level.DEBUG, message);
+			this.log5f_internal::log(Level.DEBUG, rest);
 		}
 
 		/**
 		 * This method logs with <code>INFO</code> level.
-		 *
-		 * @param message The string to log.
 		 */
-		public function info(message:Object):void
+		public function info(...rest):void
 		{
-			this.log5f_internal::log(Level.INFO, message);
+			this.log5f_internal::log(Level.INFO, rest);
 		}
 
 		/**
 		 * This method logs with <code>WARN</code> level.
-		 *
-		 * @param message The string to log.
 		 */
-		public function warn(message:Object):void
+		public function warn(...rest):void
 		{
-			this.log5f_internal::log(Level.WARN, message);
+			this.log5f_internal::log(Level.WARN, rest);
 		}
 
 		/**
 		 * This method logs with <code>ERROR</code> level.
-		 *
-		 * @param message The string to log.
 		 */
-		public function error(message:Object):void
+		public function error(...rest):void
 		{
-			this.log5f_internal::log(Level.ERROR, message);
+			this.log5f_internal::log(Level.ERROR, rest);
 		}
 
 		/**
 		 * This method logs with <code>FATAL</code> level.
-		 *
-		 * @param message The string to log.
 		 */
-		public function fatal(message:Object):void
+		public function fatal(...rest):void
 		{
-			this.log5f_internal::log(Level.FATAL, message);
+			this.log5f_internal::log(Level.FATAL, rest);
 		}
 		
 		/**

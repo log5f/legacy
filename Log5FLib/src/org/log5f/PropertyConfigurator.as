@@ -19,15 +19,21 @@ package org.log5f
 	//------------------------------------
 	//	Events
 	//------------------------------------
-
-	[Event(eventName="complete", eventType = "flash.events.Event")]
+	
+	/**
+	 * Dispatches when configuration process is complete.
+	 */
+	[Event(eventName="complete", eventType="flash.events.Event")]
 
 	//------------------------------------
 	//	Other metadata
 	//------------------------------------
 
 	[ResourceBoundle("log5f")]
-
+	
+	/**
+	 * Reads configuration from a <i>log5f.properties</i> file.
+	 */
 	public class PropertyConfigurator
 	{
 		//----------------------------------------------------------------------
@@ -37,24 +43,28 @@ package org.log5f
 		//----------------------------------------------------------------------
 
 		/**
-		 *
+		 * Defines a <code>Class</code> constant for attribute <i>type</i> of
+		 * <i>param</i> tag of configuration xml. 
 		 */
-		public static const PARAM_TYPE_CLASS:String = "Class";
+		private static const PARAM_TYPE_CLASS:String	= "Class";
 
 		/**
-		 *
+		 * Defines a <code>Number</code> constant for attribute <i>type</i> of
+		 * <i>param</i> tag of configuration xml. 
 		 */
-		public static const PARAM_TYPE_NUMBER:String = "Number";
+		private static const PARAM_TYPE_NUMBER:String	= "Number";
 
 		/**
-		 *
+		 * Defines a <code>String</code> constant for attribute <i>type</i> of
+		 * <i>param</i> tag of configuration xml. 
 		 */
-		public static const PARAM_TYPE_STRING:String = "String";
+		private static const PARAM_TYPE_STRING:String	= "String";
 
 		/**
-		 *
+		 * Defines a <code>Boolean</code> constant for attribute <i>type</i> of
+		 * <i>param</i> tag of configuration xml. 
 		 */
-		public static const PARAM_TYPE_BOOLEAN:String = "Boolean";
+		private static const PARAM_TYPE_BOOLEAN:String	= "Boolean";
 
 		//----------------------------------------------------------------------
 		//
@@ -144,7 +154,12 @@ package org.log5f
 		//-----------------------------------
 		//	Methods: Common
 		//-----------------------------------
-
+		
+		/**
+		 * Starts configuration of Log5F.
+		 * 
+		 * @param properties The XML from <i>log5f.properties</i> file.
+		 */
 		public static function configure(properties:XML):void
 		{
 			PropertyConfigurator.properties = properties;
@@ -161,7 +176,12 @@ package org.log5f
 
 			PropertyConfigurator.dispatchEvent(new Event(Event.COMPLETE));
 		}
-
+		
+		/**
+		 * Creates and configures logger by xml description.
+		 * 
+		 * @param logger The XML node for configuration of concrete logger.
+		 */
 		private static function configureLogger(logger:XML):void
 		{
 			if (logger.@name.toString() == "" && logger.name().toString() != LoggerManager.ROOT_LOGGER_NAME)
@@ -192,36 +212,57 @@ package org.log5f
 		}
 
 		//-----------------------------------
-		//	Methods: EventDispatcher
+		//	Methods: IEventDispatcher
 		//-----------------------------------
-
-		public static function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void
+		
+		/**
+		 * @copy flash.events.IEventDispatcher#addEventListener
+		 */
+		public static function addEventListener(type:String, 
+												listener:Function, 
+												useCapture:Boolean=false, 
+												priority:int=0, 
+												useWeakReference:Boolean=false):void
 		{
 			PropertyConfigurator.dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
-
-		public static function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void
+		
+		/**
+		 * @copy flash.events.IEventDispatcher#removeEventListener
+		 */
+		public static function removeEventListener(type:String, 
+												   listener:Function, 
+												   useCapture:Boolean=false):void
 		{
 			PropertyConfigurator.dispatcher.removeEventListener(type, listener, useCapture);
 		}
-
+		
+		/**
+		 * @copy flash.events.IEventDispatcher#dispatchEvent
+		 */
 		public static function dispatchEvent(event:Event):Boolean
 		{
 			return PropertyConfigurator.dispatcher.dispatchEvent(event);
 		}
-
+		
+		/**
+		 * @copy flash.events.IEventDispatcher#hasEventListener
+		 */
 		public static function hasEventListener(type:String):Boolean
 		{
 			return PropertyConfigurator.dispatcher.hasEventListener(type);
 		}
-
+		
+		/**
+		 * @copy flash.events.IEventDispatcher#willTrigger
+		 */
 		public static function willTrigger(type:String):Boolean
 		{
 			return PropertyConfigurator.dispatcher.willTrigger(type);
 		}
 
 		//-----------------------------------
-		//	Methods: Createing actors
+		//	Methods: Creating actors
 		//-----------------------------------
 
 		/**
@@ -392,8 +433,5 @@ package org.log5f
 				PropertyConfigurator.addParams(value, param);
 			}
 		}
-
-		// ------------------- HANDLERS ------------------- //
-
 	}
 }

@@ -39,6 +39,8 @@
     <classEntry path="org.log5f.error.DocumentInvalidError"/>
     <classEntry path="org.log5f.appenders.XPanelAppender"/>
     <classEntry path="org.log5f.PropertyConfigurator"/>
+    <classEntry path="org.log5f.appenders.XMLSocketAppender"/>
+    <classEntry path="org.log5f.layouts.Log4JLayout"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

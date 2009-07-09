@@ -86,7 +86,7 @@ package org.log5f
 		 */
 		public static function load():void
 		{
-			if(!PropertyLoader.loaded)
+			if (!PropertyLoader.loaded)
 			{
 				PropertyLoader.loaded = true;
 				
@@ -125,7 +125,7 @@ package org.log5f
 		{
 			var properties:XML = new XML((event.target as URLLoader).data);
 			
-			if(properties is XML)
+			if (properties is XML)
 			{
 				PropertyConfigurator.configure(properties);
 			}
@@ -139,39 +139,25 @@ package org.log5f
 		/**
 		 * The handler of "ioError" event of <code>loader</code>.
 		 * 
-		 * Sets <code>loaded</code> to <code>false</code>, 
-		 * and trows SecurityError error
+		 * Sets <code>loaded</code> to <code>false</code>.
 		 * 
 		 * @param event The Input/Output Error event.
-		 * 
-		 * @trows IOError
 		 */
 		protected static function loaderIOErrorHandler(event:IOErrorEvent):void
 		{
-			trace("PropertyLoader.loaderIOErrorHandler");
-			
 			PropertyLoader.loaded = false;
-			
-			throw new IOError(event.text);
 		}
 		
 		/**
 		 * The handler of "securityError" event of <code>loader</code>.
 		 * 
-		 * Sets <code>loaded</code> to <code>false</code>, 
-		 * and trows SecurityError error
+		 * Sets <code>loaded</code> to <code>false</code>.
 		 * 
 		 * @param event The Security Error event.
-		 * 
-		 * @trows SecurityError
 		 */
 		protected static function loaderSecurityErrorHandler(event:SecurityErrorEvent):void
 		{
-			trace("PropertyLoader.loaderSecurityErrorHandler");
-			
 			PropertyLoader.loaded = false;
-			
-			throw new SecurityError(event.text);
 		}
 	}
 }
