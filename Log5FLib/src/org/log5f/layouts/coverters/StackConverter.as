@@ -22,9 +22,14 @@ package org.log5f.layouts.coverters
 		
 		/**
 		 * The regular expression for parsing call stack.
+		 * 
+		 * This method uses regular expression that based on Jonathan Branams 
+		 * regular expression.
+		 * 
+		 * @see http://github.com/jonathanbranam/360flex08_presocode/ Jonathan Branams Presentation
 		 */
 		public static const PATTERN:RegExp = 
-			/\tat (?:(.+)::)(.+)\/*(.*)\(\)\[(?:(.+)\:(\d+))?\]$/gs;
+			/^\tat (?:(.+)::)*(\w+)\/*(.*)\(\)\[(?:(.+)\:(\d+))?\]$/;
 		
 		//----------------------------------------------------------------------
 		//
@@ -67,29 +72,21 @@ package org.log5f.layouts.coverters
 		/**
 		 * Returns a value of specified part of call stack.
 		 * 
-		 * This method uses regular expression that based on Jonathan Branams 
-		 * regular expression.
-		 * 
 		 * @param event The log event that contains an information about call
 		 * stack.
 		 * 
 		 * @return The specified part from concrete call stack.
 		 * 
 		 * @see org.log5f.events.LogEvent#stak org.log5f.events.LogEvent.stak 
-		 * @see http://github.com/jonathanbranam/360flex08_presocode/ Jonathan Branams Presentation
 		 */
 		public function convert(event:LogEvent):String
 		{
 			if (!event.stack || event.stack == "")
 				return "";
 			
-//			StackConverter.PATTERN.lastIndex = 0;
-			
-			var pattern:RegExp = /^\tat (?:(.+)::)?(.+)\/*(.*)\(\)\[(?:(.+)\:(\d+))?\]$/;
-
 			var stack:Array = event.stack.split("\n");
 			
-			var matches:Object = stack[3].match(pattern);
+			var matches:Object = stack[3].match(StackConverter.PATTERN);
 			
 			return matches[this.part];
 		}
