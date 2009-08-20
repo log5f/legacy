@@ -185,7 +185,7 @@ package org.log5f
 		private static function configureLogger(logger:XML):void
 		{
 			if (logger.@name.toString() == "" && logger.name().toString() != LoggerManager.ROOT_LOGGER_NAME)
-				throw InvalidConfigError(PropertyLoader.FILE);
+				throw new InvalidConfigError(PropertyLoader.FILE);
 
 			var name:String = logger.@name.toString() == "" ? 
 							  LoggerManager.ROOT_LOGGER_NAME : 
@@ -282,10 +282,10 @@ package org.log5f
 			var className:String = node.attribute("class").toString();
 
 			if (!name || name == "")
-				throw InvalidConfigError(PropertyLoader.FILE);
+				throw new InvalidConfigError(PropertyLoader.FILE);
 
 			if (!className || className == "")
-				throw InvalidConfigError(PropertyLoader.FILE);
+				throw new InvalidConfigError(PropertyLoader.FILE);
 
 			try
 			{
