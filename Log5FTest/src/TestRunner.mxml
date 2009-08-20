@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo"
+	xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner"
+	minWidth="1024" minHeight="768" 
+	applicationComplete=" this.applicationCompleteHandler(event); ">
+	
+	<fx:Script>
+		<![CDATA[
+			import org.log5f.LoggerManager;
+			import org.log5f.Logger;
+			import org.log5f.Log5FTest;
+			import mx.events.FlexEvent;
+			import org.flexunit.listeners.UIListener;
+			import org.flexunit.runner.FlexUnitCore;
+			
+			private static const logger:Logger = 
+				LoggerManager.getLogger(TestRunner);
+			
+			private var core:FlexUnitCore = new FlexUnitCore();
+			
+			protected function applicationCompleteHandler(event:FlexEvent):void
+			{
+ 				this.core.addListener(new UIListener(this.testRunner));
+ 				
+ 				logger.debug("My Message");
+ 				
+ 				this.core.run(Log5FTest);
+			}
+
+		]]>
+	</fx:Script>
+	
+	<flexUnitUIRunner:TestRunnerBase id="testRunner" width="100%" height="100%" />
+	
+</s:Application>
