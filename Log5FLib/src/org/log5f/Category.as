@@ -27,6 +27,7 @@ package org.log5f
 		public function Category(name:String)
 		{
 			this.name = name;
+			this.category = name;
 		}
 
 		//----------------------------------------------------------------------

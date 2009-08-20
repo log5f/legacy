@@ -159,6 +159,8 @@ package org.log5f.appenders
 		
 		/**
 		 * @inheritDoc
+		 * 
+		 * Closes the <code>socket</code>.
 		 */
 		override public function close():void
 		{
@@ -170,6 +172,9 @@ package org.log5f.appenders
 			
 			this.socket.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,
 											securityErrorHandler);
+			
+			if (this.socket.connected)
+				this.socket.close();
 		}
 		
 		//----------------------------------------------------------------------
@@ -178,15 +183,20 @@ package org.log5f.appenders
 		//
 		//----------------------------------------------------------------------
 		
+		/**
+		 * Handles an input/output error of XMLSocket.
+		 */
 		private function ioErrorHandler(event:IOErrorEvent):void
 		{
-			
+			this.close();
 		}
 		
+		/**
+		 * Handles an security error of XMLSocket.
+		 */
 		private function securityErrorHandler(event:SecurityErrorEvent):void
 		{
-			
+			this.close();
 		}
-		
 	}
 }

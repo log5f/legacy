@@ -20,8 +20,11 @@ package org.log5f.layouts.coverters
 		
 		/**
 		 * Constructor.
+		 * 
+		 * @param precision The number of right most components of the full 
+		 * class name.
 		 */
-		public function ClassConverter(precision:int)
+		public function ClassConverter(precision:int=0)
 		{
 			super(StackPart.CLASS_NAME);
 			
@@ -50,19 +53,17 @@ package org.log5f.layouts.coverters
 		 */
 		override public function convert(event:LogEvent):String
 		{
+			if (this.precision == 1)
+				return super.convert(event);
+				
 			var className:String = super.convert(event);
 			
-			var end:int = className.length - 1;
+			var packageName:String = 
+				new StackConverter(StackPart.PACKAGE_NAME).convert(event);
 			
-			for (var i:int = this.precision; i > 0; i--)
-			{
-				end = className.lastIndexOf(".", end - 1);
-				
-				if (end == -1)
-					return className;
-			}
+			var fullClassName:String = packageName + "." + className;
 			
-			return className.substring(end + 1, className.length);
+			return fullClassName.split(".").slice(-this.precision).join(".");
 		}
 	}
 }

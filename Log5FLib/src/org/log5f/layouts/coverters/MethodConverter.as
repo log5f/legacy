@@ -5,13 +5,12 @@
 
 package org.log5f.layouts.coverters
 {
-	import org.log5f.IConverter;
 	import org.log5f.events.LogEvent;
 	
 	/**
 	 * Converts log event to a name of method.
 	 */
-	public class MethodConverter implements IConverter
+	public class MethodConverter extends StackConverter
 	{
 		//----------------------------------------------------------------------
 		//
@@ -24,7 +23,7 @@ package org.log5f.layouts.coverters
 		 */
 		public function MethodConverter()
 		{
-			super();
+			super(StackPart.METHOD_NAME);
 		}
 		
 		//----------------------------------------------------------------------
@@ -47,16 +46,9 @@ package org.log5f.layouts.coverters
 		 * @see org.log5f.layouts.coverters.IConverter#convert
 		 * @see http://github.com/jonathanbranam/360flex08_presocode/ Jonathan Branams Presentation
 		 */
-		public function convert(event:LogEvent):String
+		override public function convert(event:LogEvent):String
 		{
-			if (!event.stack || event.stack == "")
-				return "";
-
-			var pattern:RegExp = /\tat (?:(.+)::)?(.+)\/(.+)\(\)\[(?:(.+)\:(\d+))?\]$/;
-			
-			var stack:Array = event.stack.split("\n");
-			
-			return stack[2].match(pattern)[3];
+			return super.convert(event);
 		}
 	}
 }

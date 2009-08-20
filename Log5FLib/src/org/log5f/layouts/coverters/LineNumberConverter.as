@@ -5,13 +5,12 @@
 
 package org.log5f.layouts.coverters
 {
-	import org.log5f.IConverter;
 	import org.log5f.events.LogEvent;
 	
 	/**
 	 * Converts log event to a number of line.
 	 */
-	public class LineNumberConverter implements IConverter
+	public class LineNumberConverter extends StackConverter
 	{
 		//----------------------------------------------------------------------
 		//
@@ -24,7 +23,7 @@ package org.log5f.layouts.coverters
 		 */
 		public function LineNumberConverter()
 		{
-			super();
+			super(StackPart.LINE_NUMBER);
 		}
 		
 		//----------------------------------------------------------------------
@@ -47,16 +46,9 @@ package org.log5f.layouts.coverters
 		 * @see org.log5f.layouts.coverters.IConverter#convert
 		 * @see http://github.com/jonathanbranam/360flex08_presocode/ Jonathan Branams Presentation
 		 */
-		public function convert(event:LogEvent):String
+		override public function convert(event:LogEvent):String
 		{
-			if (!event.stack || event.stack == "")
-				return "";
-
-			var pattern:RegExp = /\tat (?:(.+)::)?(.+)\/(.+)\(\)\[(?:(.+)\:(\d+))?\]$/;
-			
-			var stack:Array = event.stack.split("\n");
-			
-			return stack[2].match(pattern)[5];
+			return super.convert(event);
 		}
 	}
 }

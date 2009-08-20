@@ -21,11 +21,26 @@ package org.log5f.layouts.coverters
 		
 		/**
 		 * Constructor.
+		 * 
+		 * @param precision The number of characters for priority.
 		 */
-		public function LevelConverter()
+		public function LevelConverter(precision:int=0)
 		{
 			super();
+			
+			this.precision = precision;
 		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Variables
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private var precision:int = 0;
 		
 		//----------------------------------------------------------------------
 		//
@@ -45,7 +60,21 @@ package org.log5f.layouts.coverters
 		 */
 		public function convert(event:LogEvent):String
 		{
-			return event.level.toString();
+			var levelName:String = event.level.toString();
+			
+			if (this.precision == 0)
+				this.precision = levelName.length;
+			
+			if (this.precision <= levelName.length)
+				return levelName.substr(0, this.precision);
+			
+			var n:int = this.precision - levelName.length;
+			for (var i:int = 0; i < n; i++)
+			{
+				levelName += " ";
+			}
+			
+			return levelName;
 		}
 	}
 }

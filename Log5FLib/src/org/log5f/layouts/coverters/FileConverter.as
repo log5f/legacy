@@ -46,7 +46,7 @@ package org.log5f.layouts.coverters
 		 */
 		override public function convert(event:LogEvent):String
 		{
-			return "";
+			return super.convert(event);
 		}
 	}
 }

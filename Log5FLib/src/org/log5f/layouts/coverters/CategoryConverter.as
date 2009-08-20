@@ -21,11 +21,27 @@ package org.log5f.layouts.coverters
 		
 		/**
 		 * Constructor.
+		 * 
+		 * @param precision The number of right most components of the category
+		 * name.
 		 */
-		public function CategoryConverter()
+		public function CategoryConverter(precision:int=0)
 		{
 			super();
+			
+			this.precision = precision;
 		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Variables
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private var precision:int = 0;
 		
 		//----------------------------------------------------------------------
 		//
@@ -45,7 +61,9 @@ package org.log5f.layouts.coverters
 		 */
 		public function convert(event:LogEvent):String
 		{
-			return event.category.category;
+			var categoryName:String = event.category.category;
+			
+			return categoryName.split(".").slice(-this.precision).join(".");
 		}
 	}
 }

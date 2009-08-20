@@ -9,6 +9,8 @@ package org.log5f.layouts
 	
 	import org.log5f.Layout;
 	import org.log5f.events.LogEvent;
+	import org.log5f.layouts.coverters.ClassConverter;
+	import org.log5f.layouts.coverters.DateConverter;
 
 	public class PatternLayout extends Layout
 	{
@@ -18,30 +20,25 @@ package org.log5f.layouts
 		//
 		//----------------------------------------------------------------------
 
-		public static const DEFAULT_CONVERSION_PATTERN:String = "%m%n";
+		public static const DEFAULT_PATTERN:String = "%m%n";
 		
 		//-----------------------------------
 		//	Conversion patterns
 		//-----------------------------------
 		
-		public static const CONVERSION_PATTERN_DATE:RegExp			= /%d{.*?}/;
-		public static const CONVERSION_PATTERN_FILE:RegExp			= /%F/g;
-		public static const CONVERSION_PATTERN_LEVEL:RegExp			= /%\d+p/;
-		public static const CONVERSION_PATTERN_CLASS:RegExp			= /%C/g;
-		public static const CONVERSION_PATTERN_METHOD:RegExp		= /%M/g;
-		public static const CONVERSION_PATTERN_MESSAGE:RegExp		= /%m/g;
-		public static const CONVERSION_PATTERN_CATEGORY:RegExp		= /%c{\d*}/;
-		public static const CONVERSION_PATTERN_NEW_LINE:RegExp		= /%n/g;
-		public static const CONVERSION_PATTERN_LINE_NUMBER:RegExp	= /%L/g;
+		public static const PATTERN_DATE:RegExp			= /(?<=%d{).*?(?=})/;
+		public static const PATTERN_FILE:RegExp			= /%F/g;
+		public static const PATTERN_LEVEL:RegExp		= /(?<=%)\d+(?=p)/g;
+		public static const PATTERN_CLASS:RegExp		= /(?<=%C{)\d*(?=})/g;
+		public static const PATTERN_METHOD:RegExp		= /%M/g;
+		public static const PATTERN_MESSAGE:RegExp		= /%m/g;
+		public static const PATTERN_CATEGORY:RegExp		= /(?<=%c{)\d*(?=})/g;
+		public static const PATTERN_NEW_LINE:RegExp		= /%n/g;
+		public static const PATTERN_LINE_NUMBER:RegExp	= /%L/g;
 		
 		//-----------------------------------
 		//	Helper patterns
 		//-----------------------------------
-		
-		public static const PATTERN_CALLS:RegExp = / .+/g;
-		public static const PATTERN_FILE:RegExp = /\w:\\.+as/;
-		public static const PATTERN_METHOD:RegExp = /\w+\(.*\)/;
-		public static const PATTERN_LINE_NUMBER:RegExp = /\d+(?=])/;
 		
 		//----------------------------------------------------------------------
 		//
@@ -65,15 +62,15 @@ package org.log5f.layouts
 		
 		override public function get isStackNeeded():Boolean
 		{
-			PatternLayout.CONVERSION_PATTERN_FILE.lastIndex = 0;
-			PatternLayout.CONVERSION_PATTERN_METHOD.lastIndex = 0;
-			PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.lastIndex = 0;
+			PatternLayout.PATTERN_FILE.lastIndex = 0;
+			PatternLayout.PATTERN_METHOD.lastIndex = 0;
+			PatternLayout.PATTERN_LINE_NUMBER.lastIndex = 0;
 			
 			var pattern:String = this.conversionPattern;
 			
-			return PatternLayout.CONVERSION_PATTERN_FILE.test(pattern) || 
-				   PatternLayout.CONVERSION_PATTERN_METHOD.test(pattern) || 
-				   PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.test(pattern);
+			return PatternLayout.PATTERN_FILE.test(pattern) || 
+				   PatternLayout.PATTERN_METHOD.test(pattern) || 
+				   PatternLayout.PATTERN_LINE_NUMBER.test(pattern);
 		}
 		
 		//----------------------------------------------------------------------
@@ -97,7 +94,7 @@ package org.log5f.layouts
 		 */
 		public function get conversionPattern():String
 		{
-			return this._conversionPattern || DEFAULT_CONVERSION_PATTERN;;
+			return this._conversionPattern || DEFAULT_PATTERN;;
 		}
 
 		/**
@@ -120,9 +117,86 @@ package org.log5f.layouts
 		override public function format(event:LogEvent):String
 		{
 			var result:String = this.conversionPattern;
-
-			result = DateConverter.format(result, new Date());
-			result = ClassConverter.format(result, event.category);
+			
+//			// reset patterns
+//			
+//			PATTERN_DATE.lastIndex = 0;
+//			PATTERN_FILE.lastIndex = 0;
+//			PATTERN_LEVEL.lastIndex = 0;
+//			PATTERN_CLASS.lastIndex = 0;
+//			PATTERN_METHOD.lastIndex = 0;
+//			PATTERN_MESSAGE.lastIndex = 0;
+//			PATTERN_CATEGORY.lastIndex = 0;
+//			PATTERN_NEW_LINE.lastIndex = 0;
+//			PATTERN_LINE_NUMBER.lastIndex = 0;
+//			
+//			// current value after converting
+//			
+//			var value:String;
+//			
+//			// current converter
+//			
+//			var converter:IConverter;
+//			
+//			// date
+//			
+//			if (PATTERN_DATE.test(result))
+//			{
+//				converter = new DateConverter();
+//			
+//				for each (var format:String in result.match(PATTERN_DATE))
+//				{
+//					value = converter.convert(event, format);
+//					
+//					result = result.replace("%d{" + format + "}", value);
+//				}
+//			}
+//			
+//			// level (priority)
+//			
+//			if (PATTERN_LEVEL.test(result))
+//			{
+//				converter = new LevelConverter();
+//				
+//				value = converter.convert(event);
+//				
+//				for each (var p:String in result.match(PATTERN_DATE))
+//				{
+//					result = result.replace("%p{" + p + "}", value.substr(parseInt(p)));
+//				}
+//			}
+//			
+//			// category
+//			
+//			if (PATTERN_CATEGORY.test(result))
+//			{
+//				converter = new CategoryConverter();
+//				
+//				value = converter.convert(event);
+//				
+//				for each (var c:String in result.match(PATTERN_DATE))
+//				{
+//					result = result.replace("%c{" + c + "}", value.substr(parseInt(c)));
+//				}
+//			}
+//			
+//			// message
+//			
+//			if (PATTERN_MESSAGE.test(result))
+//			{
+//				result = result.replace(PATTERN_MESSAGE, 
+//										new MessageConverter().convert(event));
+//			}
+			
+			for each (var d:String in result.match(PATTERN_CLASS))
+			{
+				result = result.replace("%C{" + d + "}", 
+										new ClassConverter(parseInt(d)).convert(event));
+			}
+			
+			
+			result = DateConverter2.format(result, new Date());
+			result = ClassConverter2.format(result, event.category);
 			result = FileConverter.format(result, event.stack);
 			result = MethodConverter.format(result, event.stack);
 			result = LineNumberConverter.format(result, event.stack);
@@ -148,7 +222,7 @@ import org.log5f.Level;
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-class DateConverter
+class DateConverter2
 {
 	public static const ABSOLUTE:String = "ABSOLUTE";
 
@@ -167,7 +241,7 @@ class DateConverter
 		{
 			switch (matches[i])
 			{
-				case DateConverter.ABSOLUTE :
+				case DateConverter2.ABSOLUTE :
 				{
 					formatter.formatString = "YYYY/MM/DD J:NN:SS";
 					break;
@@ -269,7 +343,7 @@ class CategoryConverter
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-class ClassConverter
+class ClassConverter2
 {
 	public static function format(source:String, data:Object):String
 	{
@@ -311,19 +385,19 @@ class MethodConverter
 {
 	public static function format(source:String, data:Object):String
 	{
-		PatternLayout.CONVERSION_PATTERN_METHOD.lastIndex = 0;
+		PatternLayout.PATTERN_METHOD.lastIndex = 0;
 		
-		if (!PatternLayout.CONVERSION_PATTERN_METHOD.test(source) || !data)
+		if (!PatternLayout.PATTERN_METHOD.test(source) || !data)
 			return source;
 		
-		var calls:Array = String(data).match(PatternLayout.PATTERN_CALLS);
+		var calls:Array = String(data).match(/ .+/g);
 		
 		if (!calls && calls.length < 3)
 			return source;
 		
-		var method:String = calls[2].match(PatternLayout.PATTERN_METHOD)[0];
+		var method:String = calls[2].match(/\w+\(.*\)/)[0];
 		
-		return source.replace(PatternLayout.CONVERSION_PATTERN_METHOD, method);
+		return source.replace(PatternLayout.PATTERN_METHOD, method);
 	}
 }
 
@@ -337,19 +411,19 @@ class LineNumberConverter
 {
 	public static function format(source:String, data:Object):String
 	{
-		PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.lastIndex = 0;
+		PatternLayout.PATTERN_LINE_NUMBER.lastIndex = 0;
 		
-		if (!PatternLayout.CONVERSION_PATTERN_LINE_NUMBER.test(source) || !data)
+		if (!PatternLayout.PATTERN_LINE_NUMBER.test(source) || !data)
 			return source;
 		
-		var calls:Array = String(data).match(PatternLayout.PATTERN_CALLS);
+		var calls:Array = String(data).match(/ .+/g);
 		
 		if (!calls && calls.length < 3)
 			return source;
 		
-		var line:String = calls[2].match(PatternLayout.PATTERN_LINE_NUMBER)[0];
+		var line:String = calls[2].match(/\d+(?=])/)[0];
 		
-		return source.replace(PatternLayout.CONVERSION_PATTERN_LINE_NUMBER, line);
+		return source.replace(PatternLayout.PATTERN_LINE_NUMBER, line);
 	}
 }
 
@@ -363,19 +437,19 @@ class FileConverter
 {
 	public static function format(source:String, data:Object):String
 	{
-		PatternLayout.CONVERSION_PATTERN_FILE.lastIndex = 0;
+		PatternLayout.PATTERN_FILE.lastIndex = 0;
 		
-		if (!PatternLayout.CONVERSION_PATTERN_FILE.test(source) || !data)
+		if (!PatternLayout.PATTERN_FILE.test(source) || !data)
 			return source;
 		
-		var calls:Array = String(data).match(PatternLayout.PATTERN_CALLS);
+		var calls:Array = String(data).match(/ .+/g);
 		
 		if (!calls && calls.length < 3)
 			return source;
 		
-		var file:String = calls[2].match(PatternLayout.PATTERN_FILE)[0];
+		var file:String = calls[2].match(/\w:\\.+as/)[0];
 		
-		return source.replace(PatternLayout.CONVERSION_PATTERN_FILE, file);
+		return source.replace(PatternLayout.PATTERN_FILE, file);
 	}
 }
 
@@ -389,10 +463,10 @@ class MessageConverter
 {
 	public static function format(source:String, data:Object):String
 	{
-		PatternLayout.CONVERSION_PATTERN_MESSAGE.lastIndex = 0;
+		PatternLayout.PATTERN_MESSAGE.lastIndex = 0;
 		
-		return PatternLayout.CONVERSION_PATTERN_MESSAGE.test(source) ? 
-			   source.replace(PatternLayout.CONVERSION_PATTERN_MESSAGE, data) : 
+		return PatternLayout.PATTERN_MESSAGE.test(source) ? 
+			   source.replace(PatternLayout.PATTERN_MESSAGE, data) : 
 			   source;
 	}
 }
@@ -407,10 +481,10 @@ class NewLineConverter
 {
 	public static function format(source:String, data:Object):String
 	{
-		PatternLayout.CONVERSION_PATTERN_NEW_LINE.lastIndex = 0;
+		PatternLayout.PATTERN_NEW_LINE.lastIndex = 0;
 		
-		return PatternLayout.CONVERSION_PATTERN_NEW_LINE.test(source) ? 
-			   source.replace(PatternLayout.CONVERSION_PATTERN_NEW_LINE, data) : 
+		return PatternLayout.PATTERN_NEW_LINE.test(source) ? 
+			   source.replace(PatternLayout.PATTERN_NEW_LINE, data) : 
 			   source;
 	}
 }

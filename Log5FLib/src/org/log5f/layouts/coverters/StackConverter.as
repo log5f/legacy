@@ -23,8 +23,9 @@ package org.log5f.layouts.coverters
 		/**
 		 * The regular expression for parsing call stack.
 		 * 
-		 * This method uses regular expression that based on Jonathan Branams 
-		 * regular expression.
+		 * This pattern based on Jonathan Branams regular expression, but it is
+		 * modified for correct working with constructors and classes without
+		 * package.
 		 * 
 		 * @see http://github.com/jonathanbranam/360flex08_presocode/ Jonathan Branams Presentation
 		 */
