@@ -5,9 +5,12 @@
 
 package org.log5f.appenders
 {
+	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.XMLSocket;
+	import flash.utils.clearInterval;
+	import flash.utils.setInterval;
 	
 	import org.log5f.Appender;
 	import org.log5f.events.LogEvent;
@@ -67,7 +70,17 @@ package org.log5f.appenders
 		 * The socket that used for sending lg events.
 		 */
 		private var socket:XMLSocket;
-
+		
+		/**
+		 * Stores all log events between sending.
+		 */
+		private var buffer:String = "";
+		
+		/**
+		 * Stores id of interval that used for sending data.
+		 */
+		private var intervalID:Number = NaN;
+		
 		//----------------------------------------------------------------------
 		//
 		//	Properties
@@ -132,6 +145,34 @@ package org.log5f.appenders
 			this._port = value;
 		}
 		
+		//-----------------------------------
+		//	interval
+		//-----------------------------------
+		
+		/**
+		 * @private
+		 * Storage for the interval property.
+		 */
+		private var _interval:int = 0;
+
+		/**
+		 * The number in milliseconds between sending log event to server.
+		 * 
+		 * <b>Note</b>: If 0 interval don't uses.
+		 */
+		public function get interval():int
+		{
+			return this._interval;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set interval(value:int):void
+		{
+			this._interval = value;
+		}
+		
 		//----------------------------------------------------------------------
 		//
 		//	Overriden methods
@@ -146,15 +187,27 @@ package org.log5f.appenders
 			if (!this.socket)
 			{
 				this.socket = new XMLSocket(this.host, this.port);
+
+				this.socket.addEventListener(Event.CLOSE, closeHandler);
+				
+				this.socket.addEventListener(Event.CONNECT, connectHandler);
 				
 				this.socket.addEventListener(IOErrorEvent.IO_ERROR, 
 											 ioErrorHandler);
 				
 				this.socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
 											 securityErrorHandler);
+				
+				this.buffer = this.layout.format(event);
 			}
-			
-			trace(this.layout.format(event));
+			else if (this.interval == 0)
+			{
+				this.socket.send(this.layout.format(event));
+			}
+			else
+			{
+				this.buffer += this.layout.format(event);
+			}
 		}
 		
 		/**
@@ -167,6 +220,10 @@ package org.log5f.appenders
 			if (!this.socket)
 				return;
 			
+			this.socket.removeEventListener(Event.CLOSE, closeHandler);
+				
+			this.socket.removeEventListener(Event.CONNECT, connectHandler);
+				
 			this.socket.removeEventListener(IOErrorEvent.IO_ERROR, 
 											ioErrorHandler);
 			
@@ -175,6 +232,22 @@ package org.log5f.appenders
 			
 			if (this.socket.connected)
 				this.socket.close();
+			
+			if (!isNaN(this.intervalID))
+				clearInterval(this.intervalID);
+		}
+		
+		/**
+		 * Sends data from buffer to a opened socket.
+		 */
+		private function send():void
+		{
+			if (this.buffer == "")
+				return;
+			
+			this.socket.send(this.buffer);
+			
+			this.buffer = "";
 		}
 		
 		//----------------------------------------------------------------------
@@ -184,7 +257,28 @@ package org.log5f.appenders
 		//----------------------------------------------------------------------
 		
 		/**
-		 * Handles an input/output error of XMLSocket.
+		 * Handles an <i>connect</i> event of XMLSocket.
+		 */
+		private function connectHandler(event:Event):void
+		{
+			if (this.interval > 0)
+				setInterval(this.send, this.interval);
+			
+			this.send();
+		}
+		
+		/**
+		 * Handles an <i>close</i> event of XMLSocket.
+		 * 
+		 * Closes socket connection.
+		 */
+		private function closeHandler(event:Event):void
+		{
+			this.close();
+		}
+		
+		/**
+		 * Handles an <i>input/output error</i> event of XMLSocket.
 		 */
 		private function ioErrorHandler(event:IOErrorEvent):void
 		{
@@ -192,7 +286,7 @@ package org.log5f.appenders
 		}
 		
 		/**
-		 * Handles an security error of XMLSocket.
+		 * Handles an <i>security error</i> event of XMLSocket.
 		 */
 		private function securityErrorHandler(event:SecurityErrorEvent):void
 		{

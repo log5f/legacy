@@ -10,11 +10,13 @@ package org.log5f
     import org.log5f.appenders.FirebugAppender;
     import org.log5f.appenders.PysarAppender;
     import org.log5f.appenders.TraceAppender;
+    import org.log5f.appenders.XMLSocketAppender;
     import org.log5f.appenders.XPanelAppender;
     import org.log5f.filters.DenyAllFilter;
     import org.log5f.filters.LevelRangeFilter;
     import org.log5f.filters.StringMatchFilter;
     import org.log5f.formatters.UpperCaseFormatter;
+    import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
 
@@ -44,6 +46,7 @@ package org.log5f
             LoggerManager.registerFilter(LevelRangeFilter);
             LoggerManager.registerFilter(StringMatchFilter);
 
+            LoggerManager.registerLayout(Log4JLayout);
             LoggerManager.registerLayout(SimpleLayout);
             LoggerManager.registerLayout(PatternLayout);
 
@@ -51,6 +54,7 @@ package org.log5f
             LoggerManager.registerAppender(TraceAppender);
             LoggerManager.registerAppender(XPanelAppender);
             LoggerManager.registerAppender(FirebugAppender);
+            LoggerManager.registerAppender(XMLSocketAppender);
 
             LoggerManager.registerFormatter(UpperCaseFormatter)
         }

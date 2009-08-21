@@ -53,6 +53,9 @@ package org.log5f.layouts.coverters
 		 */
 		override public function convert(event:LogEvent):String
 		{
+			if (!event.stack || event.stack == "")
+				return "";
+			
 			if (this.precision == 1)
 				return super.convert(event);
 				

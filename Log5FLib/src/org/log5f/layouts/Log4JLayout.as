@@ -9,6 +9,10 @@ package org.log5f.layouts
 	
 	import org.log5f.Layout;
 	import org.log5f.events.LogEvent;
+	import org.log5f.layouts.coverters.ClassConverter;
+	import org.log5f.layouts.coverters.FileConverter;
+	import org.log5f.layouts.coverters.LineNumberConverter;
+	import org.log5f.layouts.coverters.MethodConverter;
 	
 	public class Log4JLayout extends Layout
 	{
@@ -55,9 +59,15 @@ package org.log5f.layouts
 			var level:String = event.level.toString();
 			var thread:String = "";
 			var message:String = event.message.toString();
+			var className:String = new ClassConverter().convert(event);
+			var methodName:String = new MethodConverter().convert(event);
+			var fileName:String = new FileConverter().convert(event);
+			var lineNumber:String = new LineNumberConverter().convert(event);
 			
 			return StringUtil.substitute(Log4JLayout.template, 
-										 [category, time, level, thread, message]);
+										 [category, time, level, thread, 
+										 message, className, methodName, 
+										 fileName, lineNumber]);
 		}
 	}
 }
