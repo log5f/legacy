@@ -1,5 +1,6 @@
 package org.log5f
 {
+	import org.log5f.layouts.PatternLayoutTest;
 	import org.log5f.layouts.converter.CategoryConverterTest;
 	import org.log5f.layouts.converter.ClassConverterTest;
 	import org.log5f.layouts.converter.DateConverterTest;
@@ -14,6 +15,8 @@ package org.log5f
 	[RunWith("org.flexunit.runners.Suite")]
 	public class Log5FTest
 	{
+		public var PatternLayout:PatternLayoutTest;
+		
 		public var StackConverter:StackConverterTest;
 		public var ClassConverter:ClassConverterTest;
 		public var CategoryConverter:CategoryConverterTest;
