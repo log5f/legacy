@@ -53,7 +53,10 @@
     <classEntry path="org.log5f.layouts.coverters.StackConverter"/>
     <classEntry path="org.log5f.layouts.coverters.StackPart"/>
     <classEntry path="org.log5f.log5f_internal"/>
+    <classEntry path="org.log5f.Log5F"/>
   </includeClasses>
   <includeResources/>
-  <namespaceManifests/>
+  <namespaceManifests>
+    <namespaceManifestEntry manifest="E:/Libs/Frameworks/Log5F/Log5F/manifest.xml" namespace="http://log5f.org"/>
+  </namespaceManifests>
 </flexLibProperties>

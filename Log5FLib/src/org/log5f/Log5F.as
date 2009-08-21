@@ -6,13 +6,13 @@
 package org.log5f
 {
 	/**
+	 * Log5F is Logging Framework for ActionScript 3.0 applications. It created
+	 * under MIT license.
 	 * 
+	 * @see http://log5f.wordpress.com Log5F Blog
+	 * @see http://www.opensource.net/licenses/mit-license.html MIT License
 	 */
-	public class Logger extends Category
+	public class Log5F
 	{
-		public function Logger(name:String)
-		{
-			super(name);
-		}
 	}
 }

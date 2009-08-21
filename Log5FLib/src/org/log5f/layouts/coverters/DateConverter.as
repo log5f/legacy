@@ -1,3 +1,8 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2009 http://log5f.wordpress.com
+// This program is made available under the terms of the MIT License.
+////////////////////////////////////////////////////////////////////////////////
+
 package org.log5f.layouts.coverters
 {
 	import mx.formatters.DateFormatter;
@@ -5,11 +10,47 @@ package org.log5f.layouts.coverters
 	import org.log5f.IConverter;
 	import org.log5f.events.LogEvent;
 	
+	/**
+	 * Converter for date.
+	 */
 	public class DateConverter implements IConverter
 	{
-		public function DateConverter()
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param format The mask pattern that used for formatting date.
+		 * 
+		 * @see mx.formatters.DateFormatter#formatString
+		 */
+		public function DateConverter(format:String)
 		{
+			super();
+			
+			this.format = format;
 		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Variables
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private var format:String;
+		
+		//----------------------------------------------------------------------
+		//
+		//	Methods
+		//
+		//----------------------------------------------------------------------
 		
 		/**
 		 * Returns the formatted data.
@@ -27,9 +68,7 @@ package org.log5f.layouts.coverters
 		{
 			var formatter:DateFormatter = new DateFormatter();
 			
-			var format:String = "ABSOLUTE";
-			
-			switch (format)
+			switch (this.format)
 			{
 				case "ABSOLUTE" :
 				{
