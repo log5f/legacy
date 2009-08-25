@@ -11,6 +11,7 @@ package org.log5f.appenders
 	import flash.net.XMLSocket;
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
+	import flash.utils.setTimeout;
 	
 	import org.log5f.Appender;
 	import org.log5f.events.LogEvent;
@@ -39,10 +40,10 @@ package org.log5f.appenders
 		/**
 		 * The default port for XMLSocket.
 		 */
-		public static const DEFAULT_PORT:Number = 4445;
+		public static const DEFAULT_PORT:Number = 4448;
 		
 		/**
-		 * 
+		 * The default interval of sending log event by XMLSocket.
 		 */
 		public static const DEFAULT_INTERVAL:int = 200;
 		
@@ -162,7 +163,7 @@ package org.log5f.appenders
 		 */
 		public function get interval():int
 		{
-			return this._interval;
+			return this._interval || XMLSocketAppender.DEFAULT_INTERVAL;
 		}
 
 		/**
@@ -170,6 +171,9 @@ package org.log5f.appenders
 		 */
 		public function set interval(value:int):void
 		{
+			if (value === this._interval)
+				return;
+			
 			this._interval = value;
 		}
 		
@@ -197,17 +201,9 @@ package org.log5f.appenders
 				
 				this.socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
 											 securityErrorHandler);
-				
-				this.buffer = this.layout.format(event);
 			}
-			else if (this.interval == 0)
-			{
-				this.socket.send(this.layout.format(event));
-			}
-			else
-			{
-				this.buffer += this.layout.format(event);
-			}
+			
+			this.buffer += this.layout.format(event);
 		}
 		
 		/**
@@ -217,6 +213,9 @@ package org.log5f.appenders
 		 */
 		override public function close():void
 		{
+			if (!isNaN(this.intervalID))
+				clearInterval(this.intervalID);
+				
 			if (!this.socket)
 				return;
 			
@@ -233,8 +232,7 @@ package org.log5f.appenders
 			if (this.socket.connected)
 				this.socket.close();
 			
-			if (!isNaN(this.intervalID))
-				clearInterval(this.intervalID);
+			this.socket = null;
 		}
 		
 		/**
@@ -244,7 +242,7 @@ package org.log5f.appenders
 		{
 			if (this.buffer == "")
 				return;
-			
+
 			this.socket.send(this.buffer);
 			
 			this.buffer = "";
@@ -262,9 +260,9 @@ package org.log5f.appenders
 		private function connectHandler(event:Event):void
 		{
 			if (this.interval > 0)
-				setInterval(this.send, this.interval);
-			
-			this.send();
+				this.intervalID = setInterval(this.send, this.interval);
+			else
+				this.send();
 		}
 		
 		/**
