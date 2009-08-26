@@ -55,6 +55,7 @@
     <classEntry path="org.log5f.log5f_internal"/>
     <classEntry path="org.log5f.Log5F"/>
     <classEntry path="org.log5f.appenders.LocalConnectionAppender"/>
+    <classEntry path="org.log5f.appenders.ArthropodAppender"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

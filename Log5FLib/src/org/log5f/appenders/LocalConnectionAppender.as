@@ -64,7 +64,7 @@ package org.log5f.appenders
 		/**
 		 * Using for sending log events to a some Flash based logger.
 		 */
-		private var connection:LocalConnection;
+		protected var connection:LocalConnection;
 		
 		//----------------------------------------------------------------------
 		//
@@ -190,22 +190,26 @@ package org.log5f.appenders
 		/**
 		 * Handles an <i>status</i> event of LocalConnection.
 		 */
-		private function statusHandler(event:StatusEvent):void
+		protected function statusHandler(event:StatusEvent):void
 		{
 		}
 		
 		/**
 		 * Handles an <i>asyncError</i> event of LocalConnection.
+		 * 
+		 * Closes local connection.
 		 */
-		private function asyncErrorHandler(event:AsyncErrorEvent):void
+		protected function asyncErrorHandler(event:AsyncErrorEvent):void
 		{
 			this.close();
 		}
 		
 		/**
 		 * Handles an <i>securityError</i> event of LocalConnection.
+		 * 
+		 * Closes local connection.
 		 */
-		private function securityErrorHandler(event:SecurityErrorEvent):void
+		protected function securityErrorHandler(event:SecurityErrorEvent):void
 		{
 			this.close();
 		}
