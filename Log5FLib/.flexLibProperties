@@ -54,6 +54,7 @@
     <classEntry path="org.log5f.layouts.coverters.StackPart"/>
     <classEntry path="org.log5f.log5f_internal"/>
     <classEntry path="org.log5f.Log5F"/>
+    <classEntry path="org.log5f.appenders.LocalConnectionAppender"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>
