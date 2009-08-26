@@ -1,5 +1,6 @@
 package org.log5f
 {
+	import org.log5f.appenders.LocalConnectionAppenderTest;
 	import org.log5f.layouts.Log4JLayoutTest;
 	import org.log5f.layouts.PatternLayoutTest;
 	import org.log5f.layouts.SimpleLayoutTest;
@@ -17,6 +18,8 @@ package org.log5f
 	[RunWith("org.flexunit.runners.Suite")]
 	public class Log5FTest
 	{
+		public var LocalConnectionAppender:LocalConnectionAppenderTest;
+		
 		public var Log4JLayout:Log4JLayoutTest;
 		public var PatternLayout:PatternLayoutTest;
 		public var SimpleLayout:SimpleLayoutTest;
