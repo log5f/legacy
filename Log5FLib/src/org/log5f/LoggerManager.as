@@ -7,7 +7,9 @@ package org.log5f
 {
     import flash.utils.describeType;
     
+    import org.log5f.appenders.ArthropodAppender;
     import org.log5f.appenders.FirebugAppender;
+    import org.log5f.appenders.LocalConnectionAppender;
     import org.log5f.appenders.PysarAppender;
     import org.log5f.appenders.TraceAppender;
     import org.log5f.appenders.XMLSocketAppender;
@@ -19,64 +21,62 @@ package org.log5f
     import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
-
+	
+	/**
+	 * Use the <code>LoggerManager</code> class to retreive <code>Logger</code> 
+	 * instances.
+	 * 
+	 * @see org.log5f.Logger Logger
+	 */
     public class LoggerManager
     {
-        // ----------------- STATIC FIELDS ---------------- //
-
+		//----------------------------------------------------------------------
+		//
+		//	Class constants
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * The name of root logger.
+		 */
         public static const ROOT_LOGGER_NAME:String = "root";
 
-        // ---------------- PRIVATE FIELDS ---------------- //
+        //----------------------------------------------------------------------
+        //
+        //	Class variables
+        //
+        //----------------------------------------------------------------------
+		
+		/**
+		 * Stores all loggers which creating in the process of working of 
+		 * application.
+		 */
+		private static var loggers:Object;
 
-        private static var loggers:Object;
-
-        private static var filters:Array;
-
-        private static var layouts:Array;
-
-        private static var appenders:Array;
-
-        private static var formatters:Array;
-
-        // ------------------ CONSTRUCTOR ----------------- //
-
-        public function LoggerManager()
-        {
-            LoggerManager.registerFilter(DenyAllFilter);
-            LoggerManager.registerFilter(LevelRangeFilter);
-            LoggerManager.registerFilter(StringMatchFilter);
-
-            LoggerManager.registerLayout(Log4JLayout);
-            LoggerManager.registerLayout(SimpleLayout);
-            LoggerManager.registerLayout(PatternLayout);
-
-            LoggerManager.registerAppender(PysarAppender);
-            LoggerManager.registerAppender(TraceAppender);
-            LoggerManager.registerAppender(XPanelAppender);
-            LoggerManager.registerAppender(FirebugAppender);
-            LoggerManager.registerAppender(XMLSocketAppender);
-
-            LoggerManager.registerFormatter(UpperCaseFormatter)
-        }
-
-        // ----------------- PUBLIC FIEDS ----------------- //
-
-
-
-        // --------------- PROTECTED FIELDS --------------- //
-
-
-
-        // ---------------- STATIC METHODS ---------------- //
-
+		//----------------------------------------------------------------------
+		//
+		//	Class methods
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * Retrives root logger.
+		 * 
+		 * @return Root logger.
+		 */
         public static function getRootLogger():Logger
         {
             return getLogger(ROOT_LOGGER_NAME);
         }
 
-        /**
-         * @param key
-         */
+		/**
+		 * Retrieves the appropriate <code>Logger</code> instance.
+		 * 
+		 * @param key Specifies category of creating logger. This parameter can 
+		 * be a string or class or an instance.
+		 * 
+		 * @return Appropriate logger.
+		 */
         public static function getLogger(key:*):Logger
         {
             var name:String;
@@ -94,7 +94,16 @@ package org.log5f
 
             return log5f_internal::getLogger(name);
         }
-
+		
+		/**
+		 * Retrives or creates appropriate <code>Logger</code> instance.
+		 * 
+		 * @param name The name of category of Logger.
+		 * 
+		 * @return Appropriate logger.
+		 * 
+		 * @see org.log5f.Logger#category
+		 */
         log5f_internal static function getLogger(name:String):Logger
         {
             PropertyLoader.load();
@@ -112,50 +121,26 @@ package org.log5f
 
             return loggers[name];
         }
-
-        public static function registerFilter(filter:Class):void
-        {
-            if (filter == null)
-                return;
-
-            if (filters == null)
-                filters = [];
-
-            filters.push(filter);
-        }
-
-        public static function registerLayout(layout:Class):void
-        {
-            if (layout == null)
-                return;
-
-            if (layouts == null)
-                layouts = [];
-
-            layouts.push(layout);
-        }
-
-        public static function registerAppender(appender:Class):void
-        {
-            if (appender == null)
-                return;
-
-            if (appenders == null)
-                appenders = [];
-
-            appenders.push(appender);
-        }
-
-        public static function registerFormatter(formatter:Class):void
-        {
-            if (formatter == null)
-                return;
-
-            if (formatters == null)
-                formatters = [];
-
-            formatters.push(formatter);
-        }
+		
+		/**
+		 * This method does nothing, it used for force compile specified class.
+		 * 
+		 * You can create custom appenders, filters, formatters and layouts, but 
+		 * they are not using in project, usually. Therefore flash compiler 
+		 * doesn't compile they into result swf. For resolving this issue you
+		 * can use this method.
+		 * 
+		 * <pre>
+		 * LoggerManager.forceCompile(MyAppender);
+		 * </pre>
+		 * 
+		 * @param someClass A some class that is not used explicitly in project, 
+		 * but can be instantiated during run time.
+		 */
+		public static function forceCompile(someClass:Class):void
+		{
+			
+		}
 		
 		/**
 		 * Inserts specified logger into hierarchy.
@@ -173,9 +158,6 @@ package org.log5f
         		
         		if (child.name.indexOf(logger.name) != 0)
         			continue;
-        		
-//        		if (child.name.lastIndexOf(".") == logger.name.length)
-//        			child.parent = logger;
         		
         		if (child.parent == LoggerManager.getRootLogger() || 
         			child.parent.name.length > logger.name.length)
@@ -206,64 +188,72 @@ package org.log5f
         	
         	if (!logger.parent && logger != LoggerManager.getRootLogger())
         		logger.parent = LoggerManager.getRootLogger();
-//        	
-//            var child:Logger;
-//
-//            for each (var l:Logger in loggers)
-//            {
-//                if (l == logger)
-//                    continue;
-//
-//                if (l.name.indexOf(logger.name) == 0 && (child == null || l.name.length < child.name.length))
-//                    child = l;
-//            }
-//
-//            if (child != null)
-//                child.parent = logger;
-//
-//            if (logger == LoggerManager.getRootLogger())
-//                return;
-//
-//            //TODO: rename
-//            var temp:Array = logger.name.split(".");
-//            temp.pop();
-//
-//            while (temp.length > 0)
-//            {
-//                var name:String = temp.join(".");
-//
-//                if (loggers[name] != undefined)
-//                {
-//                    logger.parent = loggers[name];
-//                    break;
-//                }
-//                else
-//                {
-//                    temp.pop();
-//                }
-//            }
-//
-//            if (logger.parent == null)
-//                logger.parent = LoggerManager.getRootLogger();
+        }
+		
+		[Deprecated("Use forceCompile method if there is a need.")]
+        public static function registerFilter(filter:Class):void
+        {
+            
+        }
+		
+		[Deprecated("Use forceCompile method if there is a need.")]
+        public static function registerLayout(layout:Class):void
+        {
+           
+        }
+		
+		[Deprecated("Use forceCompile method if there is a need.")]
+        public static function registerAppender(appender:Class):void
+        {
+            
+        }
+		
+		[Deprecated("Use forceCompile method if there is a need.")]
+        public static function registerFormatter(formatter:Class):void
+        {
+            
         }
 
-        // ---------------- PUBLIC METHODS ---------------- //
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * Constructor.
+		 */
+		public function LoggerManager()
+		{
+			super();
+		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Variables
+		//
+		//----------------------------------------------------------------------
+		
+		//-----------------------------------
+		//	Variables: Forced Compile
+		//-----------------------------------
+		
+		private var filterDenyAll:DenyAllFilter;
+		private var filterLevelRange:LevelRangeFilter;
+		private var filterStringMatch:StringMatchFilter;
 
+		private var layoutLog4J:Log4JLayout;
+		private var layoutSimple:SimpleLayout;
+		private var layoutPattern:PatternLayout;
 
+		private var appenderPysar:PysarAppender;
+		private var appenderTrace:TraceAppender;
+		private var appenderXPanel:XPanelAppender;
+		private var appenderFirebug:FirebugAppender;
+		private var appenderXMLSocket:XMLSocketAppender;
+		private var appenderArthropod:ArthropodAppender;
+		private var appenderLocalConnection:LocalConnectionAppender;
 
-        // --------------- PROTECTED METHODS -------------- //
-
-
-
-        // ---------------- PRIVATE METHODS --------------- //
-
-
-
-        // ------------------- HANDLERS ------------------- //
-
-
-
-        // --------------- USER INTERACTION --------------- //
-
+		private var formetterUpperCase:UpperCaseFormatter;
     }
 }
