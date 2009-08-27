@@ -88,7 +88,7 @@ package org.log5f.appenders
 		 */
 		public function get connectionName():String
 		{
-			return this._connectionName;
+			return this._connectionName || DEFAULT_CONNECTION_NAME;
 		}
 
 		/**
@@ -117,7 +117,7 @@ package org.log5f.appenders
 		 */
 		public function get methodName():String
 		{
-			return this._methodName;
+			return this._methodName || DEFAULT_METHOD_NAME;
 		}
 
 		/**
