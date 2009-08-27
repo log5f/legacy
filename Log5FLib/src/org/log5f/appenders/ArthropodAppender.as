@@ -90,7 +90,7 @@ package org.log5f.appenders
 		 */
 		public function get password():String
 		{
-			return this._password;
+			return this._password || DEFAULT_PASSWORD;
 		}
 
 		/**
