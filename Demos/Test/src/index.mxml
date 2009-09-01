@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application minWidth="800" minHeight="600" layout="absolute"
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	preloader="org.log5f.demos.view.controls.Preloader"
 	xmlns:view="org.log5f.demos.test.view.*">
 	
 	<mx:Script>
@@ -10,6 +11,15 @@
 			
 			private static const logger:Logger = 
 				LoggerManager.getLogger(index);
+			
+			[Embed(source="bob-marley1.mp3")]
+            public var sndCls1:Class;
+
+			[Embed(source="bob-marley2.mp3")]
+            public var sndCls2:Class;
+
+			[Embed(source="bob-marley3.mp3")]
+            public var sndCls3:Class;
 		]]>
 	</mx:Script>
 	
