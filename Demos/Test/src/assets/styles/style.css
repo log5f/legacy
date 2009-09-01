@@ -1,0 +1,29 @@
+Application
+{
+	background-gradient-colors: #69AEE7, #4180B6;
+}
+
+.log5FlogoBox
+{
+	left: 10;
+	top: 10;
+	
+	vertical-gap: 0;
+}
+
+.log5FLogoLabel
+{
+	color: #FFFFFF;
+	
+	font-size: 38;
+	
+	font-family: "Trebuchet MS", "Lucida Grande", "Verdana, Arial, Sans-Serif";
+	font-weight: bold;
+}
+
+.log5FDescription
+{
+	color: #FFFFFF;
+	
+	font-size: 13;
+}
