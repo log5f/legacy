@@ -7,6 +7,7 @@ package org.log5f.layouts
 {
 	import flash.display.LoaderInfo;
 	
+	import mx.resources.ResourceManager;
 	import mx.utils.StringUtil;
 	
 	import org.log5f.Layout;
@@ -73,8 +74,17 @@ package org.log5f.layouts
 		 */
 		private function getApplicationURL():String
 		{
-			if (!this.info)
+			if (this.info)
+				return this.info.url;
+			
+			try
+			{
 				this.info = LoaderInfo.getLoaderInfoByDefinition({});
+			}
+			catch (error:SecurityError)
+			{
+				return "{LoaderInfo is inaccessible.}";
+			}
 			
 			return this.info ? this.info.url : null;
 		}
