@@ -6,14 +6,14 @@ package org.log5f.error
 	//	Other metadata
 	//-------------------------------------
 	
-	[ResourceBoundle("log5f")]
+	[ResourceBundle("log")]
 	
 	public class InvalidFilterError extends Error
 	{
 		public function InvalidFilterError(className:String)
 		{
 			super(ResourceManager.getInstance().
-				getString("log5f", "errorInvalidFilter", [className]));
+				getString("log", "errorInvalidFilter", [className]), 2202);
 		}
 	}
 }

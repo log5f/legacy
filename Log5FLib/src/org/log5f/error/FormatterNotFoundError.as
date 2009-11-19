@@ -6,14 +6,14 @@ package org.log5f.error
 	//	Other metadata
 	//-------------------------------------
 	
-	[ResourceBoundle("log5f")]
+	[ResourceBundle("log")]
 	
 	public class FormatterNotFoundError extends Error
 	{
 		public function FormatterNotFoundError(className:String)
 		{
 			super(ResourceManager.getInstance().
-				getString("log5f", "errorFormatterNotFound", [className]));
+				getString("log", "errorFormatterNotFound", [className]), 2104);
 		}
 		
 	}

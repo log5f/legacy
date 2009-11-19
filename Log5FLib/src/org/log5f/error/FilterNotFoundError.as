@@ -6,14 +6,14 @@ package org.log5f.error
 	//	Other metadata
 	//-------------------------------------
 	
-	[ResourceBoundle("log5f")]
+	[ResourceBundle("log")]
 	
 	public class FilterNotFoundError extends Error
 	{
 		public function FilterNotFoundError(className:String)
 		{
 			super(ResourceManager.getInstance().
-				getString("log5f", "errorFilterNotFound", [className]));
+				getString("log", "errorFilterNotFound", [className]), 2103);
 		}
 		
 	}
