@@ -6,14 +6,19 @@ package org.log5f.error
 	//	Other metadata
 	//-------------------------------------
 	
-	[ResourceBoundle("log5f")]
+	[ResourceBundle("log")]
 	
 	public class FileNotFoundError extends Error
 	{
 		public function FileNotFoundError(file:String)
 		{
 			super(ResourceManager.getInstance().
-				getString("log5f", "errorFileNotFound", [file]));
+				getString("log", "errorFileNotFound", [file]), 2001);
+		}
+		
+		public function toString():String
+		{
+			return this.name + " #" + this.errorID + ": " + this.message;
 		}
 	}
 }

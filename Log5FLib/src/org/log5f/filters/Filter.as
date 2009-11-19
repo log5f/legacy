@@ -135,8 +135,8 @@ package org.log5f.filters
 		 **/
 		public function decide(event:LogEvent):int
 		{
-			throw new Error(ResourceManager.getInstance().
-								getString("log5f", "errorAbstractMethod"));
+            throw new Error(ResourceManager.getInstance().
+								getString("log", "errorAbstractMethod"));
 		}
 	}
 }

@@ -6,15 +6,19 @@ package org.log5f.error
 	//	Other metadata
 	//-------------------------------------
 	
-	[ResourceBoundle("log5f")]
+	[ResourceBundle("log")]
 	
 	public class ClassNotFoundError extends Error
 	{
 		public function ClassNotFoundError(className:String)
 		{
 			super(ResourceManager.getInstance().
-				getString("log5f", "errorClassNotFound", [className]));
+				getString("log", "errorClassNotFound", [className]), 2101);
 		}
 		
+		public function toString():String
+		{
+			return this.name + " #" + this.errorID + ": " + this.message;
+		}
 	}
 }

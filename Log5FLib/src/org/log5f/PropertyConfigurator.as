@@ -14,11 +14,9 @@ package org.log5f
 	
 	import org.log5f.error.AppenderNotFoundError;
 	import org.log5f.error.ClassNotFoundError;
-	import org.log5f.error.FilterNotFoundError;
 	import org.log5f.error.IllegalArgumentError;
 	import org.log5f.error.InvalidAppenderError;
 	import org.log5f.error.InvalidConfigError;
-	import org.log5f.error.InvalidFilterError;
 	import org.log5f.error.SingletonError;
 
 	//------------------------------------
@@ -34,7 +32,7 @@ package org.log5f
 	//	Other metadata
 	//------------------------------------
 
-	[ResourceBoundle("log5f")]
+	[ResourceBundle("log")]
 	
 	/**
 	 * Reads configuration from a <i>log5f.properties</i> file.
@@ -100,7 +98,11 @@ package org.log5f
 		//	Class properties
 		//
 		//----------------------------------------------------------------------
-
+		
+		//-----------------------------------
+		//	configured
+		//-----------------------------------
+		
 		/**
 		 * Storeages for configured property.
 		 */
@@ -114,7 +116,24 @@ package org.log5f
 		{
 			return PropertyConfigurator._configured;
 		}
-
+		
+		//-----------------------------------
+		//	traceErrors
+		//-----------------------------------
+		
+		/**
+		 * Storeages for configured property.
+		 */
+		private static var _traceErrors:Boolean = true;
+		
+		/**
+		 * A flag that indicates need to trace error messages.
+		 */
+		public static function get traceErrors():Boolean
+		{
+			return PropertyConfigurator._traceErrors;
+		}
+		
 		//----------------------------------------------------------------------
 		//
 		//	Class methods
@@ -178,8 +197,13 @@ package org.log5f
 				PropertyConfigurator.configureLogger(properties.root[0]);
 
 			PropertyConfigurator._configured = true;
-
+			
+			PropertyConfigurator._traceErrors = 
+				!(properties.@traceErrors == "false");
+			
 			PropertyConfigurator.dispatchEvent(new Event(Event.COMPLETE));
+			
+			throw new InvalidConfigError(PropertyLoader.FILE);
 		}
 		
 		/**
@@ -189,8 +213,11 @@ package org.log5f
 		 */
 		private static function configureLogger(logger:XML):void
 		{
-			if (logger.@name.toString() == "" && logger.name().toString() != LoggerManager.ROOT_LOGGER_NAME)
+			if (logger.@name.toString() == "" && 
+				logger.name().toString() != LoggerManager.ROOT_LOGGER_NAME)
+			{
 				throw new InvalidConfigError(PropertyLoader.FILE);
+			}
 
 			var name:String = logger.@name.toString() == "" ? 
 							  LoggerManager.ROOT_LOGGER_NAME : 
@@ -205,12 +232,15 @@ package org.log5f
 
 			// add appenders
 
-			var appenders:Array = StringUtil.trimArrayElements(logger.@appenders, ",").split(",");
+			var appenders:Array = 
+				StringUtil.trimArrayElements(logger.@appenders, ",").split(",");
 
 			for each (var appenderName:String in appenders)
 			{
+				var node:XML = properties.appender.(@name == appenderName)[0];
+				
 				var appender:IAppender = 
-					PropertyConfigurator.createAppender(properties.appender.(@name == appenderName)[0]);
+					PropertyConfigurator.createAppender(node);
 
 				LoggerManager.getLogger(name).addAppender(appender);
 			}
@@ -229,7 +259,8 @@ package org.log5f
 												priority:int=0, 
 												useWeakReference:Boolean=false):void
 		{
-			PropertyConfigurator.dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
+			PropertyConfigurator.dispatcher.
+				addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
 		
 		/**
@@ -239,7 +270,8 @@ package org.log5f
 												   listener:Function, 
 												   useCapture:Boolean=false):void
 		{
-			PropertyConfigurator.dispatcher.removeEventListener(type, listener, useCapture);
+			PropertyConfigurator.dispatcher.
+				removeEventListener(type, listener, useCapture);
 		}
 		
 		/**
@@ -324,8 +356,6 @@ package org.log5f
 		 *
 		 * @return The founded class
 		 *
-		 * @trows IllegalArgumentError, ClassNotFoundError
-		 *
 		 * @see getDefinitionByName
 		 */
 		private static function createClass(className:String):Class
@@ -335,10 +365,6 @@ package org.log5f
 			try
 			{
 				var Type:Class = getDefinitionByName(className) as Class;
-			}
-			catch (e:ArgumentError)
-			{
-				throw new IllegalArgumentError(className);
 			}
 			catch (e:ReferenceError)
 			{
@@ -365,11 +391,12 @@ package org.log5f
 
 			var colon:uint = className.lastIndexOf(".");
 
-			return className.substring(0, colon) + "::" + className.substring(colon + 1, className.length);
+			return className.substring(0, colon) + "::" + 
+				className.substring(colon + 1, className.length);
 		}
 
 		/**
-		 *
+		 * @trows IllegalArgumentError, ClassNotFoundError
 		 */
 		private static function addParams(target:Object, node:XML):void
 		{
@@ -391,8 +418,15 @@ package org.log5f
 					{
 						var Type:Class = 
 							PropertyConfigurator.createClass(String(value));
-
-						value = new Type();
+						
+						try
+						{
+							value = new Type();
+						}
+						catch (e:ArgumentError)
+						{
+							throw new IllegalArgumentError(String(value));
+						}
 
 						break;
 					}

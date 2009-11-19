@@ -6,14 +6,19 @@ package org.log5f.error
 	//	Other metadata
 	//-------------------------------------
 	
-	[ResourceBoundle("log5f")]
+	[ResourceBundle("log")]
 	
 	public class CallAbstractMethodError extends Error
 	{
 		public function CallAbstractMethodError()
 		{
 			super(ResourceManager.getInstance().
-				getString("log5f", "errorCallAbstractmethod"));
+				getString("log", "errorCallAbstractmethod"), 1002);
+		}
+		
+		public function toString():String
+		{
+			return this.name + " #" + this.errorID + ": " + this.message;
 		}
 	}
 }

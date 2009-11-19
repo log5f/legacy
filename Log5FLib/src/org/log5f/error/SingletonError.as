@@ -6,15 +6,19 @@ package org.log5f.error
 	//	Other metadata
 	//-------------------------------------
 	
-	[ResourceBoundle("log5f")]
+	[ResourceBundle("log")]
 	
 	public class SingletonError extends Error
 	{
-		public function SingletonError(name:String, id:int=0)
+		public function SingletonError(name:String)
 		{
 			super(ResourceManager.getInstance().
-				getString("log5f", "errorSingleton", [name]), id);
+				getString("log", "errorSingleton", [name]), 1001);
 		}
 		
+		public function toString():String
+		{
+			return this.name + " #" + this.errorID + ": " + this.message;
+		}
 	}
 }

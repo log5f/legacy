@@ -5,58 +5,58 @@
 
 package org.log5f
 {
-	import mx.resources.ResourceManager;
-	
-	import org.log5f.events.LogEvent;
-	
-	/**
-	 * The base class for all layouts.
-	 */
-	public class Layout
-	{
-		//----------------------------------------------------------------------
-		//
-		//	Constructor
-		//
-		//----------------------------------------------------------------------
-		
-		/**
-		 * Constructor.
-		 */
-		public function Layout()
-		{
-			super();
-		}
-		
-		//----------------------------------------------------------------------
-		//
-		//	Properties
-		//
-		//----------------------------------------------------------------------
-		
-		/**
-		 * @return <code>true</code> if call stack is needed or <code>false</code>
-		 * otherwise.
-		 */
-		public function get isStackNeeded():Boolean
-		{
-			return false;
-		}
-		
-		//----------------------------------------------------------------------
-		//
-		//	Methods
-		//
-		//----------------------------------------------------------------------
-		
-		/**
-		 * Subclasses of <code>Layout</code> should implement this method to 
-		 * perform actual logging.
-		 */
-		public function format(event:LogEvent):String
-		{
-			throw new Error(ResourceManager.getInstance().
-								getString("log5f", "errorAbstractMethod"));
-		}
-	}
+    import mx.resources.ResourceManager;
+
+    import org.log5f.events.LogEvent;
+
+    /**
+     * The base class for all layouts.
+     */
+    public class Layout
+    {
+        //----------------------------------------------------------------------
+        //
+        //	Constructor
+        //
+        //----------------------------------------------------------------------
+
+        /**
+         * Constructor.
+         */
+        public function Layout()
+        {
+            super();
+        }
+
+        //----------------------------------------------------------------------
+        //
+        //	Properties
+        //
+        //----------------------------------------------------------------------
+
+        /**
+         * @return <code>true</code> if call stack is needed or <code>false</code>
+         * otherwise.
+         */
+        public function get isStackNeeded():Boolean
+        {
+            return false;
+        }
+
+        //----------------------------------------------------------------------
+        //
+        //	Methods
+        //
+        //----------------------------------------------------------------------
+
+        /**
+         * Subclasses of <code>Layout</code> should implement this method to
+         * perform actual logging.
+         */
+        public function format(event:LogEvent):String
+        {
+            throw new Error(ResourceManager.getInstance().
+                            getString("log", "errorAbstractMethod"));
+        }
+    }
 }

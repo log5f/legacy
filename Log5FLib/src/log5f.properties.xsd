@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by max (EMBRACE) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:complexType name="appender">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -23,6 +24,11 @@
 					<xs:element name="logger" type="category"/>
 				</xs:sequence>
 			</xs:sequence>
+			<xs:attribute name="traceErorrs" type="xs:boolean" use="optional">
+				<xs:annotation>
+					<xs:documentation>A flag that indicates need to trace error messages.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="param">

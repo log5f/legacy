@@ -6,15 +6,19 @@ package org.log5f.error
 	//	Other metadata
 	//-------------------------------------
 	
-	[ResourceBoundle("log5f")]
+	[ResourceBundle("log")]
 	
 	public class InvalidAppenderError extends Error
 	{
 		public function InvalidAppenderError(className:String)
 		{
 			super(ResourceManager.getInstance().
-				getString("log5f", "errorInvalidAppender", [className]));
+				getString("log", "errorInvalidAppender", [className]), 2201);
 		}
 		
+		public function toString():String
+		{
+			return this.name + " #" + this.errorID + ": " + this.message;
+		}
 	}
 }

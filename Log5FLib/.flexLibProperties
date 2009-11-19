@@ -23,14 +23,10 @@
     <classEntry path="org.log5f.error.AppenderNotFoundError"/>
     <classEntry path="org.log5f.error.CallAbstractMethodError"/>
     <classEntry path="org.log5f.error.ClassNotFoundError"/>
-    <classEntry path="org.log5f.error.DocumentInvalidError"/>
     <classEntry path="org.log5f.error.FileNotFoundError"/>
-    <classEntry path="org.log5f.error.FilterNotFoundError"/>
-    <classEntry path="org.log5f.error.FormatterNotFoundError"/>
     <classEntry path="org.log5f.error.IllegalArgumentError"/>
     <classEntry path="org.log5f.error.InvalidAppenderError"/>
     <classEntry path="org.log5f.error.InvalidConfigError"/>
-    <classEntry path="org.log5f.error.InvalidFilterError"/>
     <classEntry path="org.log5f.error.SingletonError"/>
     <classEntry path="org.log5f.events.LogEvent"/>
     <classEntry path="org.log5f.events.SimpleLogEvent"/>
@@ -59,6 +55,6 @@
   </includeClasses>
   <includeResources/>
   <namespaceManifests>
-    <namespaceManifestEntry manifest="E:/Libs/Frameworks/Log5F/Log5F/manifest.xml" namespace="http://log5f.org"/>
+    <namespaceManifestEntry manifest="manifest.xml" namespace="http://log5f.org"/>
   </namespaceManifests>
 </flexLibProperties>
