@@ -35,7 +35,7 @@ package org.log5f.layouts
 		
 		public static const PATTERN_DATE:RegExp			= /(?<=%d{).*?(?=})/g;
 		public static const PATTERN_FILE:RegExp			= /%F/g;
-		public static const PATTERN_LEVEL:RegExp		= /(?<=%)\d+(?=p)/g;
+		public static const PATTERN_LEVEL:RegExp		= /(?<=%)\d*(?=p)/g;
 		public static const PATTERN_CLASS:RegExp		= /(?<=%C{)\d*(?=})/g;
 		public static const PATTERN_METHOD:RegExp		= /%M/g;
 		public static const PATTERN_MESSAGE:RegExp		= /%m/g;
@@ -147,7 +147,7 @@ package org.log5f.layouts
 			{
 				converter = new LevelConverter(matches[i]);
 				
-				result = result.replace(/%\d+p/, converter.convert(event));
+				result = result.replace(/%\d*p/, converter.convert(event));
 			}
 			
 			matches = result.match(PATTERN_MESSAGE);
