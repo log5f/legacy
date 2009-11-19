@@ -9,9 +9,6 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import flash.utils.getTimer;
-			import org.log5f.LoggerManager;
-			import org.log5f.Logger;
 			import org.log5f.Log5FTest;
 			import mx.events.FlexEvent;
 			import org.flexunit.listeners.UIListener;
@@ -24,29 +21,6 @@
  				this.core.addListener(new UIListener(this.testRunner));
  				
  				this.core.run(Log5FTest);
- 				
- 				var t:int;
- 				var n:int = 0;
- 				var str:String = "	at TestRunner/applicationCompleteHandler()[C:\Applications\Workspace\Log5FTest\src\TestRunner.mxml:28]";
- 				var pattern:RegExp = /^\tat (?:(.+)::)*(\w+)\/*(.*)\(\)\[(?:(.+)\:(\d+))?\]$/;
- 				
- 				t = getTimer();
- 				
- 				for (var i:int = 0; i < n; i++)
- 				{
- 					if (pattern.exec(str).length != 6)
- 						trace("1", "wrong");
- 				}
-				trace("1", getTimer() - t);
-				
-				t = getTimer();
-				
- 				for (var j:int = 0; j < n; j++)
- 				{
- 					if (str.match(pattern).length != 6)
- 						trace("2", "wrong");
- 				}
-				trace("2", getTimer() - t);
 			}
 
 		]]>
