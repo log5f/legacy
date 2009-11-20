@@ -138,7 +138,7 @@ package org.log5f
             catch (error:Error)
             {
                 if (PropertyConfigurator.traceErrors)
-                    trace("Log5F:", error);
+                    trace("Log5F:", error.getStackTrace());
             }
         }
 

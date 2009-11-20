@@ -202,8 +202,6 @@ package org.log5f
 				!(properties.@traceErrors == "false");
 			
 			PropertyConfigurator.dispatchEvent(new Event(Event.COMPLETE));
-			
-			throw new InvalidConfigError(PropertyLoader.FILE);
 		}
 		
 		/**
