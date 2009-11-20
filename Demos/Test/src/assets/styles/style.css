@@ -3,7 +3,7 @@ Application
 	background-gradient-colors: #69AEE7, #4180B6;
 }
 
-.log5FlogoBox
+.log5FLogoBox
 {
 	left: 10;
 	top: 10;
@@ -26,4 +26,11 @@ Application
 	color: #FFFFFF;
 	
 	font-size: 13;
+}
+
+.log5FPropertiesText
+{
+	font-family: "courier";
+	
+	font-size: 12;
 }

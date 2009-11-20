@@ -4,7 +4,7 @@ package org.log5f.demos.view.controls
 	import flash.events.ProgressEvent;
 	import flash.geom.Rectangle;
 	
-	import mx.graphics.RoundedRectangle;
+	import mx.geom.RoundedRectangle;
 	import mx.preloaders.DownloadProgressBar;
 	
 	public class Preloader extends DownloadProgressBar

@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application minWidth="800" minHeight="600" layout="absolute"
-	xmlns:mx="http://www.adobe.com/2006/mxml" 
-	preloader="org.log5f.demos.view.controls.Preloader"
-	xmlns:view="org.log5f.demos.test.view.*">
-	
-	<mx:Script>
-		<![CDATA[
-			import org.log5f.LoggerManager;
-			import org.log5f.Logger;
-			
-			private static const logger:Logger = 
-				LoggerManager.getLogger(index);
-			
-			[Embed(source="bob-marley1.mp3")]
-            public var sndCls1:Class;
+<mx:Application 
+    minWidth="800" minHeight="600" layout="absolute"
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    preloader="org.log5f.demos.view.controls.Preloader"
+    xmlns:view="org.log5f.demos.test.view.*"
+    applicationComplete="applicationCompleteHandler(event)">
 
-			[Embed(source="bob-marley2.mp3")]
-            public var sndCls2:Class;
+    <mx:Script>
+        <![CDATA[
+            import mx.events.FlexEvent;
+            import org.log5f.demos.test.SomeTestClass;
 
-			[Embed(source="bob-marley3.mp3")]
-            public var sndCls3:Class;
-		]]>
-	</mx:Script>
-	
-	<mx:Style source="assets/styles/style.css" />
-	
-	<mx:String id="config" source="log5f.properties" />
-	
-	<mx:VBox styleName="log5FlogoBox" width="200">
-		<mx:Label styleName="log5FLogoLabel" text="The Log5F" />
-		<mx:Label styleName="log5FDescription" text="LOG5F's TEST APPLICATION" />
-	</mx:VBox>
-	
-	<mx:TextArea editable="false" left="220" top="10" right="10" bottom="10" text="{ this.config }" />
-	
-	<mx:VBox width="200" left="10" verticalCenter="0">
-		<view:DebugButton width="100%" height="40" label="Debug" click=" logger.debug('Sample Debug Message'); " />
-		<view:InfoButton width="100%" height="40" label="Info" click=" logger.info('Sample Info Message'); " />
-		<view:WarningButton width="100%" height="40" label="Warning" click=" logger.warn('Sample Warning Message'); " />
-		<view:ErrorButton width="100%" height="40" label="Error" click=" logger.error('Sample Error Message'); " />
-		<view:FatalButton width="100%" height="40" label="Fatal" click=" logger.fatal('Sample Fatal Message'); " />
-	</mx:VBox>
-	
-	
+            protected function applicationCompleteHandler(event:FlexEvent):void
+            {
+                this.service.send();
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:Style source="assets/styles/style.css"/>
+
+    <mx:HTTPService id="service"
+        url="log5f.properties"
+        resultFormat="e4x"/>
+
+    <mx:VBox width="200" styleName="log5FLogoBox">
+        <mx:Label styleName="log5FLogoLabel" text="The Log5F"/>
+        <mx:Label styleName="log5FDescription" text="LOG5F's TEST APPLICATION"/>
+    </mx:VBox>
+
+	<mx:Panel left="220" right="10" top="10" bottom="10" layout="absolute" horizontalScrollPolicy="on">
+	    <mx:TextArea styleName="log5FPropertiesText" width="2000" height="100%" 
+	        text="{this.service.lastResult}"
+	        editable="false"/>
+	</mx:Panel>
+
+    <mx:VBox 
+        width="200"
+        left="10"
+        verticalCenter="0">
+        <mx:Button 
+            width="100%" height="40"
+            label="Debug"
+            click=" new SomeTestClass().testDebug(); "/>
+        <mx:Button 
+            width="100%" height="40"
+            label="Info"
+            click=" new SomeTestClass().testInformation(); "/>
+        <mx:Button 
+            width="100%" height="40"
+            label="Warning"
+            click=" new SomeTestClass().testWarning(); "/>
+        <mx:Button 
+            width="100%" height="40"
+            label="Error"
+            click=" new SomeTestClass().testError(); "/>
+        <mx:Button 
+            width="100%" height="40"
+            label="Fatal"
+            click=" new SomeTestClass().testFatalError(); "/>
+    </mx:VBox>
+
 </mx:Application>
