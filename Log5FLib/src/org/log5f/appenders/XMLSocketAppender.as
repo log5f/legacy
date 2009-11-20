@@ -11,7 +11,8 @@ package org.log5f.appenders
 	import flash.net.XMLSocket;
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
-	import flash.utils.setTimeout;
+	
+	import mx.core.EventPriority;
 	
 	import org.log5f.Appender;
 	import org.log5f.events.LogEvent;
@@ -190,17 +191,21 @@ package org.log5f.appenders
 		{
 			if (!this.socket)
 			{
-				this.socket = new XMLSocket(this.host, this.port);
+				this.socket = new XMLSocket();
 
-				this.socket.addEventListener(Event.CLOSE, closeHandler);
-				
 				this.socket.addEventListener(Event.CONNECT, connectHandler);
 				
+				this.socket.addEventListener(Event.CLOSE, closeHandler);
+				
 				this.socket.addEventListener(IOErrorEvent.IO_ERROR, 
-											 ioErrorHandler);
+											 ioErrorHandler, false,
+											 EventPriority.DEFAULT, true);
 				
 				this.socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
-											 securityErrorHandler);
+											 securityErrorHandler, false,
+											 EventPriority.DEFAULT, true);
+				
+				this.socket.connect(this.host, this.port);
 			}
 			
 			this.buffer += this.layout.format(event);
@@ -219,18 +224,12 @@ package org.log5f.appenders
 			if (!this.socket)
 				return;
 			
-			this.socket.removeEventListener(Event.CLOSE, closeHandler);
-				
-			this.socket.removeEventListener(Event.CONNECT, connectHandler);
-				
-			this.socket.removeEventListener(IOErrorEvent.IO_ERROR, 
-											ioErrorHandler);
-			
-			this.socket.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,
-											securityErrorHandler);
-			
 			if (this.socket.connected)
 				this.socket.close();
+				
+			this.socket.removeEventListener(Event.CONNECT, connectHandler);
+			
+			this.socket.removeEventListener(Event.CLOSE, closeHandler);
 			
 			this.socket = null;
 		}
