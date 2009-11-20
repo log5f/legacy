@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of Log5F_Demo_Test</title>
+	<nodes>
+		<node label="html-template">
+			<node label="history">
+			</node>
+			<node label="AC_OETags.js" url="source/html-template/AC_OETags.js.txt"/>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+		</node>
+		<node label="libs">
+		</node>
+		<node label="src">
+			<node label="assets">
+				<node label="images">
+					<node icon="imageIcon" label="logo.png" url="source/assets/images/logo.png.html"/>
+				</node>
+				<node label="styles">
+					<node icon="cssIcon" label="style.css" url="source/assets/styles/style.css.html"/>
+				</node>
+			</node>
+			<node icon="packageIcon" label="org.log5f.demos.test" expanded="true">
+				<node icon="actionScriptIcon" label="SomeTestClass.as" url="source/org/log5f/demos/test/SomeTestClass.as.html"/>
+			</node>
+			<node label="org.log5f.demos.test.view">
+			</node>
+			<node icon="packageIcon" label="org.log5f.demos.view.controls" expanded="true">
+				<node icon="actionScriptIcon" label="Preloader.as" url="source/org/log5f/demos/view/controls/Preloader.as.html"/>
+			</node>
+			<node icon="mxmlAppIcon" selected="true" label="index.mxml" url="source/index.mxml.html"/>
+			<node label="log5f.properties" url="source/log5f.properties"/>
+		</node>
+	</nodes>
+</index>
