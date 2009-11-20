@@ -30,7 +30,7 @@ package org.log5f.layouts.coverters
 		 * @see http://github.com/jonathanbranam/360flex08_presocode/ Jonathan Branams Presentation
 		 */
 		public static const PATTERN:RegExp = 
-			/^\tat (?:(.+)::)*(\w+)\/*(.*)\(\)\[(?:(.+)\:(\d+))?\]$/;
+			/^\tat (?:(.+)::)*(\w+)\/*(.*)\(\)\[*(?:(.+)\:(\d+))?\]*$/;
 		
 		//----------------------------------------------------------------------
 		//
@@ -89,7 +89,18 @@ package org.log5f.layouts.coverters
 			
 			var matches:Object = stack[3].match(StackConverter.PATTERN);
 			
-			return matches[this.part];
+			var result:String;
+			
+			try
+			{
+				result = matches[this.part];
+			}
+			catch (error:Error)
+			{
+				result = this.part.toString();
+			}
+			
+			return result;
 		}
 	}
 }
