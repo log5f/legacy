@@ -20,22 +20,22 @@ package org.log5f.demos.test
 
 		public function testInformation():void
 		{
-			logger.debug("Some Information Message");
+			logger.info("Some Information Message");
 		}
 
 		public function testWarning():void
 		{
-			logger.debug("Some Warning Message");
+			logger.warn("Some Warning Message");
 		}
 
 		public function testError():void
 		{
-			logger.debug("Some Error Message");
+			logger.error("Some Error Message");
 		}
 
 		public function testFatalError():void
 		{
-			logger.debug("Some Fatal Error Message");
+			logger.fatal("Some Fatal Error Message");
 		}
 	}
 }
