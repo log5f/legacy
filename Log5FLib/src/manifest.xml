@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <componentPackage>
-	<component class="org.log5f.Log5F" />
+	<component id="Log5F" class="org.log5f.Log5F" />
 </componentPackage>
