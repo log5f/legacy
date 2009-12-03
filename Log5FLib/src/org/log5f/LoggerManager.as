@@ -193,25 +193,25 @@ package org.log5f
 		[Deprecated("Use forceCompile method if there is a need.")]
         public static function registerFilter(filter:Class):void
         {
-            
+            LoggerManager.forceCompile(filter);
         }
 		
 		[Deprecated("Use forceCompile method if there is a need.")]
         public static function registerLayout(layout:Class):void
         {
-           
+			LoggerManager.forceCompile(layout);
         }
 		
 		[Deprecated("Use forceCompile method if there is a need.")]
         public static function registerAppender(appender:Class):void
         {
-            
+			LoggerManager.forceCompile(appender);
         }
 		
 		[Deprecated("Use forceCompile method if there is a need.")]
         public static function registerFormatter(formatter:Class):void
         {
-            
+			LoggerManager.forceCompile(formatter);
         }
 
 		//----------------------------------------------------------------------
@@ -226,34 +226,24 @@ package org.log5f
 		public function LoggerManager()
 		{
 			super();
+			
+			LoggerManager.forceCompile(DenyAllFilter);
+			LoggerManager.forceCompile(LevelRangeFilter);
+			LoggerManager.forceCompile(StringMatchFilter);
+			
+			LoggerManager.forceCompile(Log4JLayout);
+			LoggerManager.forceCompile(SimpleLayout);
+			LoggerManager.forceCompile(PatternLayout);
+			
+			LoggerManager.forceCompile(PysarAppender);
+			LoggerManager.forceCompile(TraceAppender);
+			LoggerManager.forceCompile(XPanelAppender);
+			LoggerManager.forceCompile(FirebugAppender);
+			LoggerManager.forceCompile(XMLSocketAppender);
+			LoggerManager.forceCompile(ArthropodAppender);
+			LoggerManager.forceCompile(LocalConnectionAppender);
+			
+			LoggerManager.forceCompile(UpperCaseFormatter);
 		}
-		
-		//----------------------------------------------------------------------
-		//
-		//	Variables
-		//
-		//----------------------------------------------------------------------
-		
-		//-----------------------------------
-		//	Variables: Forced Compile
-		//-----------------------------------
-		
-		private var filterDenyAll:DenyAllFilter;
-		private var filterLevelRange:LevelRangeFilter;
-		private var filterStringMatch:StringMatchFilter;
-
-		private var layoutLog4J:Log4JLayout;
-		private var layoutSimple:SimpleLayout;
-		private var layoutPattern:PatternLayout;
-
-		private var appenderPysar:PysarAppender;
-		private var appenderTrace:TraceAppender;
-		private var appenderXPanel:XPanelAppender;
-		private var appenderFirebug:FirebugAppender;
-		private var appenderXMLSocket:XMLSocketAppender;
-		private var appenderArthropod:ArthropodAppender;
-		private var appenderLocalConnection:LocalConnectionAppender;
-
-		private var formetterUpperCase:UpperCaseFormatter;
     }
 }
