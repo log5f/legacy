@@ -5,53 +5,56 @@
 
 package org.log5f
 {
-	import flash.utils.ByteArray;
+	
 	
 	public class Level extends Priority
 	{
-		// ----------------- STATIC FIELDS ---------------- //
+		//----------------------------------------------------------------------
+		//
+		//	Class constants
+		//
+		//----------------------------------------------------------------------
 
-		public static const OFF:Level	= new Level(Priority.OFF,	"OFF");
-		public static const FATAL:Level	= new Level(Priority.FATAL,	"FATAL");
-		public static const ERROR:Level	= new Level(Priority.ERROR,	"ERROR");
-		public static const WARN:Level	= new Level(Priority.WARN,	"WARN");
-		public static const INFO:Level	= new Level(Priority.INFO,	"INFO");
-		public static const DEBUG:Level	= new Level(Priority.DEBUG,	"DEBUG");
-		public static const ALL:Level	= new Level(Priority.ALL,	"ALL");
+		public static const OFF:Level	= new Level(Priority.OFF,	Priority.OFF_LABEL);
+		public static const FATAL:Level	= new Level(Priority.FATAL,	Priority.FATAL_LABEL);
+		public static const ERROR:Level	= new Level(Priority.ERROR,	Priority.ERROR_LABEL);
+		public static const WARN:Level	= new Level(Priority.WARN,	Priority.WARN_LABEL);
+		public static const INFO:Level	= new Level(Priority.INFO,	Priority.INFO_LABEL);
+		public static const DEBUG:Level	= new Level(Priority.DEBUG,	Priority.DEBUG_LABEL);
+		public static const ALL:Level	= new Level(Priority.ALL,	Priority.ALL_LABEL);
 
 		public static var DEFAULT:Level = DEBUG;
 		
-		// ---------------- PRIVATE FIELDS ---------------- //
-
+		//----------------------------------------------------------------------
+		//
+		//	Class methods
+		//
+		//----------------------------------------------------------------------
 		
-		
-		// ------------------ CONSTRUCTOR ----------------- //
-
-		public function Level(level:uint, value:String)
-		{
-			super(level, value);
-		}
-
-		// ----------------- PUBLIC FIEDS ----------------- //
-
-		
-
-		// --------------- PROTECTED FIELDS --------------- //
-
-		
-
-		// ---------------- STATIC METHODS ---------------- //
-		
+		/**
+		 * Converts string or integer to <code>Level</code>.
+		 * 
+		 * @param value Integer or String that represents some priority level.
+		 * 
+		 * @return Specified or default level. 
+		 */
 		public static function toLevel(value:Object):Level
 		{
 			if(value is String)
 				return stringToLevel(value as String);
 			else if(value is uint)
 				return uintToLevel(value as uint);
-				
+			
 			return DEFAULT;
 		}
 		
+		/**
+		 * Converts string to <code>Level</code>.
+		 * 
+		 * @param value String that represents some priority level.
+		 * 
+		 * @return Specified or default level. 
+		 */
 		private static function stringToLevel(value:String):Level
 		{
 			switch(value)
@@ -67,7 +70,14 @@ package org.log5f
 				default			: return DEFAULT;
 			}
 		}
-
+		
+		/**
+		 * Converts integer to <code>Level</code>.
+		 * 
+		 * @param value Integer that represents some priority level.
+		 * 
+		 * @return Specified or default level. 
+		 */
 		private static function uintToLevel(value:uint):Level
 		{
 			switch(value)
@@ -79,44 +89,26 @@ package org.log5f
 				case 40000			: return Level.ERROR;
 				case 50000			: return Level.FATAL;
 				case uint.MAX_VALUE : return Level.OFF;
-				
+					
 				default : return DEFAULT;
 			}
 		}
 		
-		// ---------------- PUBLIC METHODS ---------------- //
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
 		
 		/**
-		 * Deserialize
-		 * TODO:
+		 * Constructor.
+		 * 
+		 * @param level An integer that represents priority level.
+		 * @param value A string that represents a name of priority level.
 		 */
-		public function readObject(bytes:ByteArray):void
+		public function Level(level:uint, value:String)
 		{
-			
+			super(level, value);
 		}
-		
-		/**
-		 * Serialize
-		 * TODO:
-		 */
-		public function writeObject(bytes:ByteArray):void
-		{
-			
-		}
-		
-		// --------------- PROTECTED METHODS -------------- //
-
-		
-
-		// ---------------- PRIVATE METHODS --------------- //
-
-		
-
-		// ------------------- HANDLERS ------------------- //
-
-		
-
-		// --------------- USER INTERACTION --------------- //
-
 	}
 }
