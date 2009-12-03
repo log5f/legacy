@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<project name="Log5F" default="build" basedir=".">
+	
+	<!--===============================-->
+	<!-- FlexAntTasks (Flex Applications Unit Testing) -->
+	<!--===============================-->
+
+	<taskdef resource="com/adobe/ac/ant/tasks/tasks.properties" classpath="ant-libs/FlexAntTasks.jar" />
+
+	<!--===============================-->
+	<!-- FlexTasks (Compiling Flex Applications) -->
+	<!--===============================-->
+
+	<taskdef resource="flexTasks.tasks" classpath="ant-libs/flexTasks.jar" />
+	
+	<!--=====================================================================-->
+	<!--	Propertiers	-->
+	<!--=====================================================================-->
+
+	<!--===============================-->
+	<!-- Build -->
+	<!--===============================-->
+
+	<property file="build.properties" />
+	
+	<!--===============================-->
+	<!-- Flex -->
+	<!--===============================-->
+
+	<property name="FLEX_HOME" location="${flex.sdk}" />
+	<property name="APP_ROOT" location="${basedir}" />
+	<property name="LOCALE" value="en_US" />
+	
+	<!--===============================-->
+	<!-- JARs -->
+	<!--===============================-->
+	
+	<property name="asdoc.jar" location="${flex.sdk}/lib/asdoc.jar" />
+	<property name="asdoc.jar" location="${flex.sdk}/lib/asdoc.jar" />
+	
+	<!--===============================-->
+	<!-- Application -->
+	<!--===============================-->
+
+	<property name="app.debug" value="true" />
+
+	<property name="app.dir" location="${basedir}" />
+	<property name="app.src" location="${app.dir}/src/" />
+	<property name="app.bin" location="${app.dir}/bin/" />
+	<property name="app.libs" location="${app.dir}/libs/" />
+	<property name="app.temp" location="${basedir}/temp/" />
+	<property name="app.assets" location="${app.src}/assets/" />
+	<property name="app.input.mxml" location="${app.src}/index.mxml" />
+	<property name="app.output.swf" location="${app.bin}/index.swf" />
+	
+	<!--===============================-->
+	<!-- Metadata -->
+	<!--===============================-->
+
+	<property name="meta.creator" value="max.rozdobudko@gmail.com" />
+	<property name="meta.contributor" value="Log5F" />
+	<property name="meta.language" value="EN" />
+	<property name="meta.description" value="Log5F ActionScript 3.0 Logging Framework" />
+
+	<!--===============================-->
+	<!-- ASDoc -->
+	<!--===============================-->
+
+	<property name="asdoc.src" location="${app.src}/" />
+	<property name="asdoc.output" location="${app.dir}/asdocs" />
+	<property name="asdoc.main.title" value="${meta.contributor}" />
+	<property name="asdoc.window.title" value="${meta.description}" />
+	<property name="asdoc.window.footer" value="See more on http://log5f.wordpress.com" />
+	
+	<!--=====================================================================-->
+	<!--	Targets															 -->
+	<!--=====================================================================-->
+
+	<!--===============================-->
+	<!-- Build -->
+	<!--===============================-->
+	
+    <target name="build" depends="" description="Build Log5F">
+    </target>
+
+    <target name="compile" description="Compile Library">
+        <compc>
+        </compc>
+    </target>
+
+    <target name="rsl" depends="compile" description="Make RSL">
+        <sequential>
+        	
+        </sequential>
+    </target>
+
+	
+</project>
