@@ -36,7 +36,8 @@
 	<!--===============================-->
 	
 	<property name="asdoc.jar" location="${flex.sdk}/lib/asdoc.jar" />
-	<property name="asdoc.jar" location="${flex.sdk}/lib/asdoc.jar" />
+	<property name="digest.jar" location="${flex.sdk}/lib/digest.jar" />
+	<property name="optimizer.jar" location="${flex.sdk}/lib/optimizer.jar" />
 	
 	<!--===============================-->
 	<!-- Application -->
@@ -47,6 +48,7 @@
 	<property name="app.dir" location="${basedir}" />
 	<property name="app.src" location="${app.dir}/src/" />
 	<property name="app.bin" location="${app.dir}/bin/" />
+	<property name="app.bin.rsl" location="${app.dir}/bin/rsl/" />
 	<property name="app.libs" location="${app.dir}/libs/" />
 	<property name="app.temp" location="${basedir}/temp/" />
 	<property name="app.assets" location="${app.src}/assets/" />
@@ -80,17 +82,41 @@
 	<!-- Build -->
 	<!--===============================-->
 	
-    <target name="build" depends="" description="Build Log5F">
+    <target name="build" depends="build.rsl" description="Build Log5F">
     </target>
 
-    <target name="compile" description="Compile Library">
-        <compc>
-        </compc>
-    </target>
+	<target name="build.compile" description="Compile Library">
+		<compc output="${app.bin}/Log5F.swc" locale="${LOCALE}">
+			<namespace uri="http://log5f.org" manifest="${app.src}/manifest.xml" />
+			<source-path path-element="${app.src}" />
+			<source-path path-element="${basedir}/locale/${LOCALE}" />
+			<include-libraries file="${app.libs}" /> 
+			<include-sources dir="${app.src}">
+				<include name="**/*.as" />
+				<include name="**/*.mxml" />
+			</include-sources>
+		</compc>
+	</target>
 
-    <target name="rsl" depends="compile" description="Make RSL">
+    <target name="build.rsl" depends="build.compile" description="Make RSL">
         <sequential>
-        	
+			<unzip src="${app.bin}/Log5F.swc" dest="${app.bin.rsl}">
+				<patternset>
+					<include name="library.swf" />
+				</patternset>
+			</unzip>
+        	<java jar="${optimizer.jar}" fork="true" failonerror="true">
+        		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
+        		<arg line="-input ${app.bin.rsl}/library.swf" />
+        		<arg line="-output ${app.bin.rsl}/Log5F.swf" />
+        		<arg line="-keep-as3-metadata='Bindable,Managed,ChangeEvent,NonCommittingChangeEvent,Transient'" />
+    		</java>
+        	<delete file="${app.bin.rsl}/library.swf" />
+        	<java jar="${digest.jar}" fork="true" failonerror="true">
+        		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
+        		<arg line="--digest.rsl-file  ${app.bin.rsl}/Log5F.swf" />
+        		<arg line="--digest.swc-path  ${app.bin}/Log5F.swc" />
+			</java>
         </sequential>
     </target>
 
