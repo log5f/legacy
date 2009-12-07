@@ -102,13 +102,19 @@
 	<target name="build.compile" depends="build.version" description="Compile Library">
 		<compc output="${app.bin}/Log5F.swc" locale="${LOCALE}">
 			<namespace uri="http://log5f.org" manifest="${app.src}/manifest.xml" />
+			<include-namespaces>http://log5f.org</include-namespaces>
 			<source-path path-element="${app.src}" />
 			<source-path path-element="${basedir}/locale/${LOCALE}" />
 			<include-libraries file="${app.libs}" /> 
 			<include-sources dir="${app.src}">
 				<include name="**/*.as" />
 				<include name="**/*.mxml" />
+				<exclude name="**/Log5F.as" />
 			</include-sources>
+			<strict>true</strict>
+			<optimize>true</optimize>
+			<warnings>true</warnings>
+			<compute-digest>true</compute-digest>
 		</compc>
 	</target>
 
