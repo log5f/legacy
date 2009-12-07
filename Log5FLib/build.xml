@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <project name="Log5F" default="build" basedir=".">
 	
+	<!--=====================================================================-->
+	<!-- Libraries	-->
+	<!--=====================================================================-->
+
 	<!--===============================-->
 	<!-- FlexAntTasks (Flex Applications Unit Testing) -->
 	<!--===============================-->
@@ -13,8 +17,23 @@
 
 	<taskdef resource="flexTasks.tasks" classpath="ant-libs/flexTasks.jar" />
 	
+	<!--===============================-->
+	<!-- SVNAnt (http://subclipse.tigris.org/svnant/svn.html) -->
+	<!--===============================-->
+
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml">
+		<classpath>
+			<fileset dir="ant-libs">
+				<include name="svnjavahl.jar" />
+				<include name="svnClientAdapter.jar" />
+				<include name="svnkit.jar" />
+				<include name="svnant.jar" />
+			</fileset>
+		</classpath>
+	</typedef>
+	
 	<!--=====================================================================-->
-	<!--	Propertiers	-->
+	<!-- Propertiers -->
 	<!--=====================================================================-->
 
 	<!--===============================-->
@@ -175,5 +194,19 @@
     	<property file="${version.file}" />
     </target>
 
+	<!--===============================-->
+	<!-- Project -->
+	<!--===============================-->
 	
+    <target name="project.export" depends="build" description="Archive Project">
+        <svn svnkit="false" javahl="false">
+        	<export srcPath="${basedir}" destPath="${basedir}/temp" />
+    	</svn>
+    	<zip destfile="${basedir}/Log5F-${version.number}.${major.number}.${minor.number}.zip" basedir="${basedir}/temp">
+    		<exclude name="${basedir}/**.zip" />
+    	</zip>
+    	<delete dir="${basedir}/%SystemDrive%" />
+    	<delete dir="${basedir}/temp" />
+    </target>
+
 </project>
