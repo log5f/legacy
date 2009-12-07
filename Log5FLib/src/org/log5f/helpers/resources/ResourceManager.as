@@ -1,7 +1,18 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2009 http://log5f.wordpress.com
+// This program is made available under the terms of the MIT License.
+////////////////////////////////////////////////////////////////////////////////
+
 package org.log5f.helpers.resources
 {
 	import mx.resources.ResourceBundle;
 	import mx.utils.StringUtil;
+	
+	//-------------------------------------
+	//	Other metadata
+	//-------------------------------------
+	
+	[ExcludeClass]
 
 	public class ResourceManager
 	{

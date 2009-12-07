@@ -6,7 +6,13 @@
 package org.log5f.helpers.formatters
 {
     import mx.formatters.StringFormatter;
-
+	
+	//-------------------------------------
+	//	Other metadata
+	//-------------------------------------
+	
+	[ExcludeClass]
+	
     /**
      */
     public class DateFormatter
