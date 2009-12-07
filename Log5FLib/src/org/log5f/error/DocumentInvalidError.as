@@ -1,19 +1,13 @@
 package org.log5f.error
 {
-	import mx.resources.ResourceManager;
-	
-	//-------------------------------------
-	//	Other metadata
-	//-------------------------------------
-	
-	[ResourceBundle("log")]
+	import org.log5f.helpers.resources.ResourceManager;
 	
 	public class DocumentInvalidError extends Error
 	{
 		public function DocumentInvalidError()
 		{
-			super(ResourceManager.getInstance().
-				getString("log", "errorPropertiesFileIsNotXML"), 2002);
+			super(ResourceManager.instance.
+				getString("errorPropertiesFileIsNotXML"), 2002);
 		}
 		
 		public function toString():String

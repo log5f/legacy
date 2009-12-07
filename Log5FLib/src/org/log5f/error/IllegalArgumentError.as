@@ -1,19 +1,13 @@
 package org.log5f.error
 {
-	import mx.resources.ResourceManager;
-	
-	//-------------------------------------
-	//	Other metadata
-	//-------------------------------------
-	
-	[ResourceBundle("log")]
+	import org.log5f.helpers.resources.ResourceManager;
 	
 	public class IllegalArgumentError extends Error
 	{
 		public function IllegalArgumentError(className:String)
 		{
-			super(ResourceManager.getInstance().
-				getString("log", "errorIllegalArgument", [className]), 2004);
+			super(ResourceManager.instance.
+				getString("errorIllegalArgument", [className]), 2004);
 		}
 		
 		public function toString():String

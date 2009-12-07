@@ -11,7 +11,7 @@ package org.log5f
     import flash.net.URLLoader;
     import flash.net.URLRequest;
     
-    import mx.resources.ResourceManager;
+    import org.log5f.helpers.resources.ResourceManager;
     
     import org.log5f.error.AppenderNotFoundError;
     import org.log5f.error.CallAbstractMethodError;

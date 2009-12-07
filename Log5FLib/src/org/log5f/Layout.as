@@ -5,7 +5,7 @@
 
 package org.log5f
 {
-    import mx.resources.ResourceManager;
+    import org.log5f.helpers.resources.ResourceManager;
 
     import org.log5f.events.LogEvent;
 
@@ -55,8 +55,8 @@ package org.log5f
          */
         public function format(event:LogEvent):String
         {
-            throw new Error(ResourceManager.getInstance().
-                            getString("log", "errorAbstractMethod"));
+            throw new Error(ResourceManager.instance.
+                            getString("errorAbstractMethod"));
         }
     }
 }

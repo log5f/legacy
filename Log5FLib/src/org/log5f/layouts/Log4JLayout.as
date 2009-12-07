@@ -7,7 +7,7 @@ package org.log5f.layouts
 {
 	import flash.display.LoaderInfo;
 	
-	import mx.resources.ResourceManager;
+	import org.log5f.helpers.resources.ResourceManager;
 	import mx.utils.StringUtil;
 	
 	import org.log5f.Layout;

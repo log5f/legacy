@@ -5,8 +5,6 @@
 
 package org.log5f.layouts
 {
-	import mx.formatters.DateFormatter;
-	
 	import org.log5f.IConverter;
 	import org.log5f.Layout;
 	import org.log5f.events.LogEvent;

@@ -5,10 +5,9 @@
 
 package org.log5f.layouts.coverters
 {
-	import mx.formatters.DateFormatter;
-	
 	import org.log5f.IConverter;
 	import org.log5f.events.LogEvent;
+	import org.log5f.helpers.formatters.DateFormatter;
 	
 	/**
 	 * Converter for date.

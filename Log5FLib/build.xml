@@ -74,6 +74,14 @@
 	<property name="asdoc.window.title" value="${meta.description}" />
 	<property name="asdoc.window.footer" value="See more on http://log5f.wordpress.com" />
 	
+	<!--===============================-->
+	<!-- Version -->
+	<!--===============================-->
+
+	<property name="version.file" location="version.number" />
+
+	<property file="${version.file}" />
+	
 	<!--=====================================================================-->
 	<!--	Targets															 -->
 	<!--=====================================================================-->
@@ -83,9 +91,15 @@
 	<!--===============================-->
 	
     <target name="build" depends="build.rsl" description="Build Log5F">
+    	
     </target>
-
-	<target name="build.compile" description="Compile Library">
+	
+	<target name="build.version" description="Update Version">
+	 	<buildnumber file="build.number"/>
+    	<replaceregexp file="${app.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*.*.*"' replace='public static const VERSION:String = "${version.number}.${major.number}.${minor.number}.${build.number}"' byline="true" />
+    </target>
+	
+	<target name="build.compile" depends="build.version" description="Compile Library">
 		<compc output="${app.bin}/Log5F.swc" locale="${LOCALE}">
 			<namespace uri="http://log5f.org" manifest="${app.src}/manifest.xml" />
 			<source-path path-element="${app.src}" />
@@ -118,6 +132,41 @@
         		<arg line="--digest.swc-path  ${app.bin}/Log5F.swc" />
 			</java>
         </sequential>
+    </target>
+
+	<!--===============================-->
+	<!-- Version -->
+	<!--===============================-->
+	
+	<target name="increment.version" depends="internal.increment.version" description="Up Version" />
+
+	<target name="increment.major" depends="internal.increment.major" description="Up Major" />
+
+	<target name="increment.minor" depends="internal.increment.minor" description="Up Minor" />
+	
+	<target name="internal.increment.version">
+		<propertyfile file="${version.file}">
+			<entry key="version.number" type="int" operation="+" value="1" />
+			<entry key="major.number" value="0" />
+			<entry key="minor.number" value="0" />
+		</propertyfile>
+	</target>
+
+	<target name="internal.increment.major">
+		<propertyfile file="${version.file}">
+			<entry key="major.number" type="int" operation="+" value="1" />
+			<entry key="minor.number" value="0" />
+		</propertyfile>
+	</target>
+
+	<target name="internal.increment.minor">
+		<propertyfile file="${version.file}">
+			<entry key="minor.number" type="int" operation="+" value="1" />
+		</propertyfile>
+	</target>
+	
+    <target name="internal.update.version">
+    	<property file="${version.file}" />
     </target>
 
 	

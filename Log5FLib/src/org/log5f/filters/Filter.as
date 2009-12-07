@@ -5,7 +5,7 @@
 
 package org.log5f.filters
 {
-	import mx.resources.ResourceManager;
+	import org.log5f.helpers.resources.ResourceManager;
 	
 	import org.log5f.events.LogEvent;
 	
@@ -135,8 +135,8 @@ package org.log5f.filters
 		 **/
 		public function decide(event:LogEvent):int
 		{
-            throw new Error(ResourceManager.getInstance().
-								getString("log", "errorAbstractMethod"));
+            throw new Error(ResourceManager.instance.
+				getString("errorAbstractMethod"));
 		}
 	}
 }

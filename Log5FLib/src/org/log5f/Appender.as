@@ -5,7 +5,7 @@
 
 package org.log5f
 {
-    import mx.resources.ResourceManager;
+    import org.log5f.helpers.resources.ResourceManager;
 
     import org.log5f.events.LogEvent;
     import org.log5f.filters.Filter;
@@ -167,8 +167,8 @@ package org.log5f
          */
         protected function append(event:LogEvent):void
         {
-            throw new Error(ResourceManager.getInstance().
-                            getString("log", "errorAbstractMethod"));
+            throw new Error(ResourceManager.instance.
+                            getString("errorAbstractMethod"));
         }
 
         /**

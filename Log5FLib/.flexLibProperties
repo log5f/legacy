@@ -34,6 +34,8 @@
     <classEntry path="org.log5f.layouts.coverters.StackConverter"/>
     <classEntry path="org.log5f.layouts.coverters.StackPart"/>
     <classEntry path="org.log5f.log5f_internal"/>
+    <classEntry path="org.log5f.helpers.formatters.DateFormatter"/>
+    <classEntry path="org.log5f.helpers.resources.ResourceManager"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

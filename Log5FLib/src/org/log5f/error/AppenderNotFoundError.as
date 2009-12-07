@@ -1,19 +1,13 @@
 package org.log5f.error
 {
-	import mx.resources.ResourceManager;
-	
-	//-------------------------------------
-	//	Other metadata
-	//-------------------------------------
-	
-	[ResourceBundle("log")]
+	import org.log5f.helpers.resources.ResourceManager;
 	
 	public class AppenderNotFoundError extends Error
 	{
 		public function AppenderNotFoundError(className:String)
 		{
-			super(ResourceManager.getInstance().
-				getString("log", "errorAppenderNotFound", [className]), 2102);
+			super(ResourceManager.instance.
+				getString("errorAppenderNotFound", [className]), 2102);
 		}
 		
 		public function toString():String
