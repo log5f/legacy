@@ -3,7 +3,7 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.layouts.coverters
+package org.log5f.layouts.converters
 {
 	import org.log5f.IConverter;
 	import org.log5f.events.LogEvent;
@@ -44,7 +44,7 @@ package org.log5f.layouts.coverters
 		 * @param part The part of call stack that should be founded. Use 
 		 * <code>StackPart</code> constants for this parameter.
 		 * 
-		 * @see org.log5f.layouts.coverters.StackPart
+		 * @see org.log5f.layouts.converters.StackPart
 		 */
 		public function StackConverter(part:int)
 		{

@@ -3,7 +3,7 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.layouts.coverters
+package org.log5f.layouts.converters
 {
 	import org.log5f.events.LogEvent;
 	
@@ -42,7 +42,7 @@ package org.log5f.layouts.coverters
 		 * 
 		 * @return The name of file from call stack.
 		 * 
-		 * @see org.log5f.layouts.coverters.StackBasedConverter#parseStack()
+		 * @see org.log5f.layouts.converters.StackBasedConverter#parseStack()
 		 */
 		override public function convert(event:LogEvent):String
 		{

@@ -3,7 +3,7 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.layouts.coverters
+package org.log5f.layouts.converters
 {
 	import org.log5f.events.LogEvent;
 

@@ -3,14 +3,15 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.layouts.coverters
+package org.log5f.layouts.converters
 {
+	import org.log5f.IConverter;
 	import org.log5f.events.LogEvent;
 	
 	/**
-	 * Converts log event to a name of method.
+	 * Converts log event to a message.
 	 */
-	public class MethodConverter extends StackConverter
+	public class MessageConverter implements IConverter
 	{
 		//----------------------------------------------------------------------
 		//
@@ -21,34 +22,31 @@ package org.log5f.layouts.coverters
 		/**
 		 * Constructor.
 		 */
-		public function MethodConverter()
+		public function MessageConverter()
 		{
-			super(StackPart.METHOD_NAME);
+			super();
 		}
 		
 		//----------------------------------------------------------------------
 		//
-		//	Methods: IConverter	
+		//	Methods: IConverter
 		//
 		//----------------------------------------------------------------------
 		
 		/**
-		 * Returns the name of method where log method is called. 
-		 * 
-		 * This information given from the call stack. 
-		 * This method based on Jonathan Branams regular expression.
+		 * Returns the message of log event.
 		 * 
 		 * @param event The log event that will converted to an specified value.
+		 * @param params Must be empty.
 		 * 
-		 * @return The name of method from call stack.
+		 * @return The message of log event.
 		 * 
 		 * @see org.log5f.events.LogEvent
-		 * @see org.log5f.layouts.coverters.IConverter#convert
-		 * @see http://github.com/jonathanbranam/360flex08_presocode/ Jonathan Branams Presentation
+		 * @see org.log5f.layouts.converters.IConverter#convert
 		 */
-		override public function convert(event:LogEvent):String
+		public function convert(event:LogEvent):String
 		{
-			return super.convert(event);
+			return event.message.toString();
 		}
 	}
 }

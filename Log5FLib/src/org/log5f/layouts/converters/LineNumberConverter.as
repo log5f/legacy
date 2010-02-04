@@ -3,7 +3,7 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.layouts.coverters
+package org.log5f.layouts.converters
 {
 	import org.log5f.events.LogEvent;
 	
@@ -43,7 +43,7 @@ package org.log5f.layouts.coverters
 		 * @return The line number from call stack.
 		 * 
 		 * @see org.log5f.events.LogEvent
-		 * @see org.log5f.layouts.coverters.IConverter#convert
+		 * @see org.log5f.layouts.converters.IConverter#convert
 		 * @see http://github.com/jonathanbranam/360flex08_presocode/ Jonathan Branams Presentation
 		 */
 		override public function convert(event:LogEvent):String

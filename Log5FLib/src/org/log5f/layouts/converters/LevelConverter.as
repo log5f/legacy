@@ -3,7 +3,7 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.layouts.coverters
+package org.log5f.layouts.converters
 {
 	import org.log5f.IConverter;
 	import org.log5f.events.LogEvent;
@@ -56,7 +56,7 @@ package org.log5f.layouts.coverters
 		 * @return The name of level.
 		 * 
 		 * @see org.log5f.events.LogEvent
-		 * @see org.log5f.layouts.coverters.IConverter#convert
+		 * @see org.log5f.layouts.converters.IConverter#convert
 		 */
 		public function convert(event:LogEvent):String
 		{

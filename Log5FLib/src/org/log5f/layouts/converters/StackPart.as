@@ -3,13 +3,13 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.layouts.coverters
+package org.log5f.layouts.converters
 {
 	/**
 	 * The <code>StackPart</code> class provides values for part in the 
 	 * <code>StackConverter</code> class.
 	 * 
-	 * @see org.log5f.layouts.coverters.StackConverter
+	 * @see org.log5f.layouts.converters.StackConverter
 	 */
 	public class StackPart
 	{

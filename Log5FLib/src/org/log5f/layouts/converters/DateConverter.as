@@ -3,15 +3,16 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.layouts.coverters
+package org.log5f.layouts.converters
 {
 	import org.log5f.IConverter;
 	import org.log5f.events.LogEvent;
+	import org.log5f.helpers.formatters.DateFormatter;
 	
 	/**
-	 * Converts log event to a category name.
+	 * Converter for date.
 	 */
-	public class CategoryConverter implements IConverter
+	public class DateConverter implements IConverter
 	{
 		//----------------------------------------------------------------------
 		//
@@ -22,14 +23,15 @@ package org.log5f.layouts.coverters
 		/**
 		 * Constructor.
 		 * 
-		 * @param precision The number of right most components of the category
-		 * name.
+		 * @param format The mask pattern that used for formatting date.
+		 * 
+		 * @see mx.formatters.DateFormatter#formatString
 		 */
-		public function CategoryConverter(precision:int=0)
+		public function DateConverter(format:String)
 		{
 			super();
 			
-			this.precision = precision;
+			this.format = format;
 		}
 		
 		//----------------------------------------------------------------------
@@ -41,29 +43,48 @@ package org.log5f.layouts.coverters
 		/**
 		 * @private
 		 */
-		private var precision:int = 0;
+		private var format:String;
 		
 		//----------------------------------------------------------------------
 		//
-		//	Methods: IConverter
+		//	Methods
 		//
 		//----------------------------------------------------------------------
 		
 		/**
-		 * Returns the category name of log event.
+		 * Returns the formatted data.
 		 * 
 		 * @param event The log event that will converted to an specified value.
+		 * @param params The first parameter after <code>event</code> must be
+		 * string of date format.
 		 * 
-		 * @return The name of category.
+		 * @return The name of level.
 		 * 
 		 * @see org.log5f.events.LogEvent
-		 * @see org.log5f.layouts.coverters.IConverter#convert
+		 * @see org.log5f.layouts.converters.IConverter#convert
 		 */
 		public function convert(event:LogEvent):String
 		{
-			var categoryName:String = event.category.category;
+			var formatter:DateFormatter = new DateFormatter();
 			
-			return categoryName.split(".").slice(-this.precision).join(".");
+			switch (this.format)
+			{
+				case "ABSOLUTE" :
+				{
+					formatter.formatString = "YYYY/MM/DD J:NN:SS";
+					
+					break;
+				}
+				
+				default :
+				{
+					formatter.formatString = format;
+					
+					break;
+				}
+			}
+			
+			return formatter.format(new Date());
 		}
 	}
 }

@@ -12,10 +12,10 @@ package org.log5f.layouts
 	
 	import org.log5f.Layout;
 	import org.log5f.events.LogEvent;
-	import org.log5f.layouts.coverters.ClassConverter;
-	import org.log5f.layouts.coverters.FileConverter;
-	import org.log5f.layouts.coverters.LineNumberConverter;
-	import org.log5f.layouts.coverters.MethodConverter;
+	import org.log5f.layouts.converters.ClassConverter;
+	import org.log5f.layouts.converters.FileConverter;
+	import org.log5f.layouts.converters.LineNumberConverter;
+	import org.log5f.layouts.converters.MethodConverter;
 	
 	public class Log4JLayout extends Layout
 	{
