@@ -5,13 +5,12 @@
 
 package org.log5f
 {
+    import flash.display.Loader;
     import flash.events.Event;
     import flash.events.IOErrorEvent;
     import flash.events.SecurityErrorEvent;
     import flash.net.URLLoader;
     import flash.net.URLRequest;
-    
-    import org.log5f.helpers.resources.ResourceManager;
     
     import org.log5f.error.AppenderNotFoundError;
     import org.log5f.error.CallAbstractMethodError;
@@ -22,7 +21,11 @@ package org.log5f
     import org.log5f.error.InvalidAppenderError;
     import org.log5f.error.InvalidConfigError;
     import org.log5f.error.SingletonError;
+    import org.log5f.helpers.resources.ResourceManager;
 
+	/**
+	 * Loads configuration file.
+	 */
     public class PropertyLoader
     {
         //----------------------------------------------------------------------

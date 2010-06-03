@@ -1,8 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2009 http://log5f.wordpress.com
+// This program is made available under the terms of the MIT License.
+////////////////////////////////////////////////////////////////////////////////
+
 package org.log5f
 {
 	import flash.events.Event;
 	import flash.system.Capabilities;
 	
+	import org.log5f.core.configuration.Configurator;
 	import org.log5f.events.LogEvent;
 
 	public class Category implements IAppenderAttachable
@@ -342,6 +348,17 @@ package org.log5f
 		 */
 		log5f_internal function log(level:Level, message:Object):void
 		{
+			// if Log5F isn't configured - defer log entry
+			
+			if (!Configurator.isConfigured)
+			{
+				LoggerManager.log5f_internal::addDeferredLog(this, level, message);
+				
+				Configurator.configure();
+				
+				return;
+			}
+			
 			// if relese flash player stack not available
 			
 			if (!Capabilities.isDebugger)
@@ -383,16 +400,6 @@ package org.log5f
 		 */
 		protected function log(level:Level, message:Object, stack:String=null):void
 		{
-			if (!PropertyConfigurator.configured)
-			{
-				PropertyConfigurator.addEventListener(Event.COMPLETE, 
-													  this.propertiesCompleteHandler);
-
-				this.lazyLog(level, message, stack);
-
-				return;
-			}
-			
 			if (!level.isGreaterOrEqual(this.getEffectiveLevel()))
 				return;
 

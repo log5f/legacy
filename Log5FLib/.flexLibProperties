@@ -14,7 +14,6 @@
     <classEntry path="org.log5f.error.InvalidConfigError"/>
     <classEntry path="org.log5f.error.SingletonError"/>
     <classEntry path="org.log5f.events.LogEvent"/>
-    <classEntry path="org.log5f.events.SimpleLogEvent"/>
     <classEntry path="org.log5f.filters.DenyAllFilter"/>
     <classEntry path="org.log5f.filters.Filter"/>
     <classEntry path="org.log5f.filters.LevelRangeFilter"/>
@@ -30,6 +29,14 @@
     <classEntry path="org.log5f.log5f_internal"/>
     <classEntry path="org.log5f.helpers.formatters.DateFormatter"/>
     <classEntry path="org.log5f.helpers.resources.ResourceManager"/>
+    <classEntry path="org.log5f.utils.FlashvarsUtils"/>
+    <classEntry path="org.log5f.core.configuration.IConfigurator"/>
+    <classEntry path="org.log5f.core.configuration.Configurator"/>
+    <classEntry path="org.log5f.core.configuration.ConfigurationLoader"/>
+    <classEntry path="org.log5f.core.configuration.XMLConfiguratorImpl"/>
+    <classEntry path="org.log5f.core.configuration.ParamType"/>
+    <classEntry path="org.log5f.core.LogEntry"/>
+    <classEntry path="org.log5f.helpers.deferred.DeferredLogs"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

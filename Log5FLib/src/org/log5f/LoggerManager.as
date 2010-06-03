@@ -18,6 +18,7 @@ package org.log5f
     import org.log5f.filters.LevelRangeFilter;
     import org.log5f.filters.StringMatchFilter;
     import org.log5f.formatters.UpperCaseFormatter;
+    import org.log5f.helpers.deferred.DeferredLogs;
     import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
@@ -53,6 +54,11 @@ package org.log5f
 		 */
 		private static var loggers:Object;
 
+		/**
+		 * @private
+		 */
+		private static var deferredLogs:DeferredLogs = null;
+		
 		//----------------------------------------------------------------------
 		//
 		//	Class methods
@@ -106,8 +112,6 @@ package org.log5f
 		 */
         log5f_internal static function getLogger(name:String):Logger
         {
-            PropertyLoader.load();
-
             if (loggers == null)
                 loggers = {};
 
@@ -121,6 +125,45 @@ package org.log5f
 
             return loggers[name];
         }
+		
+		/**
+		 * Defers log entry, the deferred log entries will be sent after 
+		 * completing of configuration process.
+		 * 
+		 * @param category The category of a defferd log entry.
+		 * @param level The level of a defferd log entry.
+		 * @param message The message of a defferd log entry.
+		 */
+		log5f_internal static function addDeferredLog(category:Category, level:Level, message:Object):void
+		{
+			if (deferredLogs == null)
+				deferredLogs = new DeferredLogs();
+			
+			deferredLogs.addLog(category, level, message);
+		}
+		
+		/**
+		 * Removes all deferred log entries, used if configuration process is 
+		 * fail.
+		 */
+		log5f_internal static function removeDeferredLogs():void
+		{
+			if (deferredLogs == null)
+				return;
+			
+			deferredLogs.removeLogs();
+		}
+		
+		/**
+		 * Processes deferred log entries.
+		 */
+		log5f_internal static function processDeferredLogs():void
+		{
+			if (deferredLogs == null)
+				return;
+			
+			deferredLogs.processLogs();
+		}
 		
 		/**
 		 * This method does nothing, it used for force compile specified class.
