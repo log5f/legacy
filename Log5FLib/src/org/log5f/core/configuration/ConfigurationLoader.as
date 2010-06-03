@@ -10,6 +10,7 @@ package org.log5f.core.configuration
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	
 	import mx.core.Singleton;
@@ -27,7 +28,7 @@ package org.log5f.core.configuration
 	import org.log5f.helpers.resources.ResourceManager;
 	import org.log5f.utils.FlashvarsUtils;
 	
-	[ExcliudeClass]
+	[ExcludeClass]
 	
 	/**
 	 * Loads configuration file.
@@ -46,9 +47,13 @@ package org.log5f.core.configuration
 		public static const FILE:String = "log5f.properties";
 		
 		/**
-		 * The name of the XML-based configuration file.
+		 * Defines the queue of configuration files. 
 		 */
-		public static const XML_FILE:String = "log5f.xml";
+		private static const FILES:Array = 
+			[
+				"log5f.xml",
+				"log5f.properties",
+			]
 		
 		//----------------------------------------------------------------------
 		//
@@ -128,6 +133,36 @@ package org.log5f.core.configuration
 			return _isLoaded;
 		}
 		
+		//-----------------------------------
+		//	status
+		//-----------------------------------
+		
+		/**
+		 * @private
+		 * Storage for <code>status</code> property.
+		 */
+		private static var _status:String = ConfigurationLoaderStatus.READY;
+		
+		/**
+		 * Indicates the current status of loader. 
+		 * <p>Can takes one from next values:</p>
+		 * 
+		 * <ul>
+		 * 	<li><i>ready</i> - to indicate that loader is ready to start load config file;</li> 
+		 * 	<li><i>loading</i> - to indicate that config file is loading now;</li> 
+		 * 	<li><i>success</i> - to indicate that config loaded successful;</li>
+		 * 	<li><i>failure</i> - to indicate that config doesn't exist;</li>
+		 * </ul>
+		 * 
+		 * @default ready
+		 * 
+		 * @see ConfigurationLoaderStatus
+		 */
+		public static function get status():String
+		{
+			return _status;
+		}
+		
 		//----------------------------------------------------------------------
 		//
 		//	Class methods
@@ -139,17 +174,34 @@ package org.log5f.core.configuration
 		 */
 		public static function load():void
 		{
-			if (!isLoaded && !isLoading)
+			if (status == ConfigurationLoaderStatus.READY)
 			{
-				var loader:URLLoader = new URLLoader();
-				loader.addEventListener(Event.COMPLETE, loaderCompleteHandler);
-				loader.addEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
-				loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
-				
-				_url = FlashvarsUtils.getParameters()["log5f"] || FILE;
-				
-				loader.load(new URLRequest(_url));
+				if (FILES.length > 0)
+				{
+					loadInternal(FILES.shift());
+					
+					_status = ConfigurationLoaderStatus.LOADING;
+				}
+				else
+				{
+					_status = ConfigurationLoaderStatus.FAILURE;
+				}
 			}
+		}
+		
+		/**
+		 * @private
+		 */
+		private static function loadInternal(url:String):void
+		{
+			_url = url;
+			
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, loaderCompleteHandler);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
+			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
+			
+			loader.load(new URLRequest(url));
 		}
 		
 		//----------------------------------------------------------------------
@@ -173,18 +225,12 @@ package org.log5f.core.configuration
 			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
 			event.target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
 			
-			_data = URLLoader(event.target).data;
+			_status = ConfigurationLoaderStatus.SUCCESS;
 			
-			_isLoaded = true;
+			_data = new XML(URLLoader(event.target).data);
 			
-			if (data is XML)
-			{
-				Singleton.registerClass("org.log5f.core.IConfigurator", 
-					XMLConfiguratorImpl);
-			}
-			else if (data is String)
-			{
-			}
+			Singleton.registerClass("org.log5f.core.IConfigurator", 
+				XMLConfiguratorImpl);
 			
 			Configurator.configure();
 		}
@@ -192,28 +238,46 @@ package org.log5f.core.configuration
 		/**
 		 * The handler of "ioError" event of <code>loader</code>.
 		 *
-		 * Sets <code>loaded</code> to <code>false</code>.
+		 * Sets <code>status</code> to <code>failure</code> if not many files to
+		 * load, or <code>redy</code> - otherwise.
 		 *
 		 * @param event The Input/Output Error event.
 		 */
 		protected static function loaderIOErrorHandler(event:IOErrorEvent):void
 		{
-			isLoading = false;
+			event.target.removeEventListener(Event.COMPLETE, loaderCompleteHandler);
+			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
+			event.target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
 			
-			if (Configurator.traceErrors)
-				trace("Log5F:", event.text);
+			if (FILES.length == 0)
+			{
+				_status = ConfigurationLoaderStatus.FAILURE;
+				
+				if (Configurator.traceErrors)
+					trace("Log5F:", event.text);
+			}
+			else
+			{
+				_status = ConfigurationLoaderStatus.READY;
+				
+				load();
+			}
 		}
 		
 		/**
-		 * The handler of "securityError" event of <code>loader</code>.
+		 * The handler of <i>securityError</i> event of <code>loader</code>.
 		 *
-		 * Sets <code>loaded</code> to <code>false</code>.
+		 * Sets <code>status</code> to <code>failure</code>.
 		 *
 		 * @param event The Security Error event.
 		 */
 		protected static function loaderSecurityErrorHandler(event:SecurityErrorEvent):void
 		{
-			isLoading = false;
+			event.target.removeEventListener(Event.COMPLETE, loaderCompleteHandler);
+			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
+			event.target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
+			
+			_status = ConfigurationLoaderStatus.FAILURE;
 			
 			if (Configurator.traceErrors)
 				trace("Log5F:", event.text);

@@ -35,10 +35,14 @@ package org.log5f.core.configuration
 		 */
 		private static function get impl():IConfigurator
 		{
-			if (_impl)
+			if (!_impl)
 			{
-				_impl = Singleton.getInstance("org.log5f.core.IConfigurator") as 
-					IConfigurator;
+				try
+				{
+					_impl = Singleton.getInstance("org.log5f.core.IConfigurator") as 
+						IConfigurator;
+				}
+				catch (error:Error){}
 			}
 			
 			return _impl;
@@ -79,23 +83,33 @@ package org.log5f.core.configuration
 		 */
 		public static function configure():void
 		{
-			if (ConfigurationLoader.isLoaded)
+			switch (ConfigurationLoader.status)
 			{
-				try
+				case ConfigurationLoaderStatus.READY :
+				{
+					ConfigurationLoader.load();
+					
+					break;
+				}
+
+				case ConfigurationLoaderStatus.LOADING :
+				{
+					break;
+				}
+
+				case ConfigurationLoaderStatus.SUCCESS :
 				{
 					impl.configure(ConfigurationLoader.data);
 					
 					LoggerManager.log5f_internal::processDeferredLogs();
+					
+					break;
 				}
-				catch (error:Error)
+
+				case ConfigurationLoaderStatus.FAILURE :
 				{
-					if (traceErrors)
-						trace("Log5F:", error.getStackTrace());
+					break;
 				}
-			}
-			else
-			{
-				ConfigurationLoader.load();
 			}
 		}
 		

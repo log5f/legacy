@@ -37,6 +37,7 @@
     <classEntry path="org.log5f.core.configuration.ParamType"/>
     <classEntry path="org.log5f.core.LogEntry"/>
     <classEntry path="org.log5f.helpers.deferred.DeferredLogs"/>
+    <classEntry path="org.log5f.core.configuration.ConfigurationLoaderStatus"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

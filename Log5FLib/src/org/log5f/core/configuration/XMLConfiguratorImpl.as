@@ -12,16 +12,16 @@ package org.log5f.core.configuration
 	
 	import mx.utils.StringUtil;
 	
+	import org.log5f.Appender;
+	import org.log5f.IAppender;
+	import org.log5f.Level;
+	import org.log5f.LoggerManager;
 	import org.log5f.error.AppenderNotFoundError;
 	import org.log5f.error.ClassNotFoundError;
 	import org.log5f.error.IllegalArgumentError;
 	import org.log5f.error.InvalidAppenderError;
 	import org.log5f.error.InvalidConfigError;
 	import org.log5f.error.SingletonError;
-	import org.log5f.Appender;
-	import org.log5f.IAppender;
-	import org.log5f.Level;
-	import org.log5f.LoggerManager;
 	
 	[ExcludeClass]
 	
@@ -30,6 +30,34 @@ package org.log5f.core.configuration
 	 */
 	public class XMLConfiguratorImpl extends EventDispatcher implements IConfigurator
 	{
+		//--------------------------------------------------------------------------
+		//
+		//  Class variables
+		//
+		//--------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private static var instance:IConfigurator;
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Class methods
+		//
+		//--------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		public static function getInstance():IConfigurator
+		{
+			if (!instance)
+				instance = new XMLConfiguratorImpl();
+			
+			return instance;
+		}
+		
 		//----------------------------------------------------------------------
 		//
 		//	Constructor
@@ -75,7 +103,7 @@ package org.log5f.core.configuration
 		 */
 		public function get isConfigured():Boolean
 		{
-			return false;
+			return _isConfigured;
 		}
 		
 		//-----------------------------------
@@ -114,17 +142,35 @@ package org.log5f.core.configuration
 			
 			for each (var logger:XML in properties.logger)
 			{
-				this.configureLogger(logger);
+				try
+				{
+					this.configureLogger(logger);
+				}
+				catch (error:Error)
+				{
+					if (this.traceErrors)
+						trace("Log5F:", error.getStackTrace());
+				}
 			}
 			
 			if (properties.root.length() > 0)
-				this.configureLogger(properties.root[0]);
-			
-			this._isConfigured = true;
+			{
+				try
+				{
+					this.configureLogger(properties.root[0]);
+				}
+				catch (error:Error)
+				{
+					if (this.traceErrors)
+						trace("Log5F:", error.getStackTrace());
+				}
+			}
 			
 			this._traceErrors = !(properties.@traceErrors == "false");
 			
 			this.dispatchEvent(new Event(Event.COMPLETE));
+			
+			this._isConfigured = true;
 		}
 
 		//-----------------------------------
