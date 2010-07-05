@@ -3,7 +3,7 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.core.configuration
+package org.log5f.core.configurators.xml
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -22,13 +22,15 @@ package org.log5f.core.configuration
 	import org.log5f.error.InvalidAppenderError;
 	import org.log5f.error.InvalidConfigError;
 	import org.log5f.error.SingletonError;
+	import org.log5f.core.ConfigurationLoader;
+	import org.log5f.core.configurators.IConfigurator;
 	
 	[ExcludeClass]
 	
 	/**
 	 * The implementation of IConfigurator that configures Log5F from XML.
 	 */
-	public class XMLConfiguratorImpl extends EventDispatcher implements IConfigurator
+	public class XMLConfigurator extends EventDispatcher implements IConfigurator
 	{
 		//--------------------------------------------------------------------------
 		//
@@ -53,7 +55,7 @@ package org.log5f.core.configuration
 		public static function getInstance():IConfigurator
 		{
 			if (!instance)
-				instance = new XMLConfiguratorImpl();
+				instance = new XMLConfigurator();
 			
 			return instance;
 		}
@@ -67,7 +69,7 @@ package org.log5f.core.configuration
 		/**
 		 * Constructor.
 		 */
-		public function XMLConfiguratorImpl()
+		public function XMLConfigurator()
 		{
 			super();
 		}

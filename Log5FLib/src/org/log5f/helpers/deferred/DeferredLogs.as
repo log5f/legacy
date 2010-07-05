@@ -78,12 +78,12 @@ package org.log5f.helpers.deferred
 		 * @param level The level of a defferd log entry.
 		 * @param message The message of a defferd log entry.
 		 */
-		public function addLog(category:Category,level:Level, message:Object):void
+		public function addLog(category:Category, level:Level, message:Object, stack:String=null):void
 		{
 			if (!this.logs)
 				this.logs = [];
 			
-			this.logs.push(new DeferredLog(category, level, message));
+			this.logs.push(new DeferredLog(category, level, message, stack));
 		}
 
 		/**
@@ -108,7 +108,7 @@ package org.log5f.helpers.deferred
 			
 			for (var log:DeferredLog = this.logs.shift(); log; log = this.logs.shift())
 			{
-				log.category.log5f_internal::log(log.level, log.message);
+				log.category.log5f_internal::log(log.level, log.message, log.stack);
 			}
 		}
 		
@@ -129,11 +129,12 @@ import org.log5f.Level;
  */
 internal class DeferredLog
 {
-	public function DeferredLog(category:Category, level:Level, message:Object)
+	public function DeferredLog(category:Category, level:Level, message:Object, stack:String=null)
 	{
 		this.category = category;
 		this.level = level;
 		this.message = message;
+		this.stack = stack;
 	}
 
 	public var category:Category;
@@ -141,4 +142,6 @@ internal class DeferredLog
 	public var level:Level;
 	
 	public var message:Object;
+
+	public var stack:String;
 }

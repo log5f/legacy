@@ -134,12 +134,12 @@ package org.log5f
 		 * @param level The level of a defferd log entry.
 		 * @param message The message of a defferd log entry.
 		 */
-		log5f_internal static function addDeferredLog(category:Category, level:Level, message:Object):void
+		log5f_internal static function addDeferredLog(category:Category, level:Level, message:Object, stack:String=null):void
 		{
 			if (deferredLogs == null)
 				deferredLogs = new DeferredLogs();
 			
-			deferredLogs.addLog(category, level, message);
+			deferredLogs.addLog(category, level, message, stack);
 		}
 		
 		/**

@@ -3,7 +3,7 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.core.configuration
+package org.log5f.core
 {
 	import flash.display.Loader;
 	import flash.events.Event;
@@ -15,7 +15,7 @@ package org.log5f.core.configuration
 	
 	import mx.core.Singleton;
 	
-	import org.log5f.core.configuration.XMLConfiguratorImpl;
+	import org.log5f.core.configurators.xml.XMLConfigurator;
 	import org.log5f.error.AppenderNotFoundError;
 	import org.log5f.error.CallAbstractMethodError;
 	import org.log5f.error.ClassNotFoundError;
@@ -27,6 +27,8 @@ package org.log5f.core.configuration
 	import org.log5f.error.SingletonError;
 	import org.log5f.helpers.resources.ResourceManager;
 	import org.log5f.utils.FlashvarsUtils;
+	import org.log5f.Log5FConfigurator;
+	import org.log5f.core.configuration.Configurator;
 	
 	[ExcludeClass]
 	
@@ -53,28 +55,13 @@ package org.log5f.core.configuration
 			[
 				"log5f.xml",
 				"log5f.properties",
-			]
+			];
 		
 		//----------------------------------------------------------------------
 		//
 		//	Class variables
 		//
 		//----------------------------------------------------------------------
-		
-		/**
-		 * The request of configuration file that used by <code>loader</code>.
-		 */
-		private static var request:URLRequest = new URLRequest();
-		
-		/**
-		 * The loader that loads configuration file.
-		 */
-		private static var loader:URLLoader = new URLLoader();
-		
-		/**
-		 * The flag that indicates if configuration file is loading.
-		 */
-		private static var isLoading:Boolean = false;
 		
 		//----------------------------------------------------------------------
 		//
@@ -117,23 +104,6 @@ package org.log5f.core.configuration
 		}
 		
 		//-----------------------------------
-		//	isLoaded
-		//-----------------------------------
-		
-		/**
-		 * @private
-		 */
-		private static var _isLoaded:Boolean = false;
-		
-		/**
-		 * Flag that indicates if configuration file is loaded.
-		 */
-		public static function get isLoaded():Boolean
-		{
-			return _isLoaded;
-		}
-		
-		//-----------------------------------
 		//	status
 		//-----------------------------------
 		
@@ -172,19 +142,18 @@ package org.log5f.core.configuration
 		/**
 		 * Loads configuration file, if it is not loaded.
 		 */
-		public static function load():void
+		public static function load(url:String=null):void
 		{
+			if (url)
+			{
+				FILES.push(url);
+			}
+			
 			if (status == ConfigurationLoaderStatus.READY)
 			{
-				if (FILES.length > 0)
+				if (FILES && FILES.length > 0)
 				{
-					loadInternal(FILES.shift());
-					
-					_status = ConfigurationLoaderStatus.LOADING;
-				}
-				else
-				{
-					_status = ConfigurationLoaderStatus.FAILURE;
+					loadReal(FILES.shift());
 				}
 			}
 		}
@@ -192,7 +161,7 @@ package org.log5f.core.configuration
 		/**
 		 * @private
 		 */
-		private static function loadInternal(url:String):void
+		private static function loadReal(url:String):void
 		{
 			_url = url;
 			
@@ -202,6 +171,8 @@ package org.log5f.core.configuration
 			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
 			
 			loader.load(new URLRequest(url));
+			
+			_status = ConfigurationLoaderStatus.LOADING;
 		}
 		
 		//----------------------------------------------------------------------
@@ -219,20 +190,15 @@ package org.log5f.core.configuration
 		 */
 		protected static function loaderCompleteHandler(event:Event):void
 		{
-			isLoading = false;
-			
 			event.target.removeEventListener(Event.COMPLETE, loaderCompleteHandler);
 			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
 			event.target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
 			
-			_status = ConfigurationLoaderStatus.SUCCESS;
+			_status = ConfigurationLoaderStatus.READY;
 			
 			_data = new XML(URLLoader(event.target).data);
 			
-			Singleton.registerClass("org.log5f.core.IConfigurator", 
-				XMLConfiguratorImpl);
-			
-			Configurator.configure();
+			Log5FConfigurator.configure(data);
 		}
 		
 		/**
@@ -249,17 +215,15 @@ package org.log5f.core.configuration
 			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
 			event.target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
 			
-			if (FILES.length == 0)
+			_status = ConfigurationLoaderStatus.READY;
+			
+			if (!FILES || FILES.length == 0)
 			{
-				_status = ConfigurationLoaderStatus.FAILURE;
-				
 				if (Configurator.traceErrors)
 					trace("Log5F:", event.text);
 			}
 			else
 			{
-				_status = ConfigurationLoaderStatus.READY;
-				
 				load();
 			}
 		}
@@ -277,7 +241,7 @@ package org.log5f.core.configuration
 			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
 			event.target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
 			
-			_status = ConfigurationLoaderStatus.FAILURE;
+			_status = ConfigurationLoaderStatus.READY;
 			
 			if (Configurator.traceErrors)
 				trace("Log5F:", event.text);

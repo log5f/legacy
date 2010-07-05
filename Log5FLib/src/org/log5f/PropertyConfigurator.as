@@ -34,7 +34,13 @@ package org.log5f
 
 	[ResourceBundle("log")]
 	
+	[Deprecated(replacement="Log5FConfigurator", since="1.0")]
+	
 	/**
+	 * Configures <code>Log5F</code> for the concrete project.
+	 * 
+	 * 
+	 * 
 	 * Reads configuration from a <i>log5f.properties</i> file.
 	 */
 	public class PropertyConfigurator

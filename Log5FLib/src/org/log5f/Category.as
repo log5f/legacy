@@ -44,8 +44,6 @@ package org.log5f
 
 		private var appenders:AppenderAttachable;
 
-		private var lazyLogEvents:Array /* LogObject */ = null;
-		
 		/**
 		 * @private
 		 * A flag that indicates if <code>useStack</code> is set manually.
@@ -304,7 +302,7 @@ package org.log5f
 		 */
 		public function debug(...rest):void
 		{
-			this.log5f_internal::log(Level.DEBUG, rest);
+			this.log(Level.DEBUG, rest);
 		}
 
 		/**
@@ -312,7 +310,7 @@ package org.log5f
 		 */
 		public function info(...rest):void
 		{
-			this.log5f_internal::log(Level.INFO, rest);
+			this.log(Level.INFO, rest);
 		}
 
 		/**
@@ -320,7 +318,7 @@ package org.log5f
 		 */
 		public function warn(...rest):void
 		{
-			this.log5f_internal::log(Level.WARN, rest);
+			this.log(Level.WARN, rest);
 		}
 
 		/**
@@ -328,7 +326,7 @@ package org.log5f
 		 */
 		public function error(...rest):void
 		{
-			this.log5f_internal::log(Level.ERROR, rest);
+			this.log(Level.ERROR, rest);
 		}
 
 		/**
@@ -340,56 +338,6 @@ package org.log5f
 		}
 		
 		/**
-		 * Gets call stack if need and call <code>log</code> method.
-		 * 
-		 * @param level The specified level
-		 *
-		 * @param message The message to logging.
-		 */
-		log5f_internal function log(level:Level, message:Object):void
-		{
-			// if Log5F isn't configured - defer log entry
-			
-			if (!Configurator.isConfigured)
-			{
-				LoggerManager.log5f_internal::addDeferredLog(this, level, message);
-				
-				Configurator.configure();
-				
-				return;
-			}
-			
-			// if relese flash player stack not available
-			
-			if (!Capabilities.isDebugger)
-			{
-				this.log(level, message);
-				
-				return;
-			}
-			
-			// if stack is not used and roperties file is loaded
-			
-			if (!this.useStack && PropertyConfigurator.configured)
-			{
-				this.log(level, message);
-
-				return;
-			}
-			
-			// if stack is used
-			
-			try
-			{
-				throw new Error();
-			}
-			catch (error:Error)
-			{
-				this.log(level, message, error.getStackTrace());
-			}
-		}
-		
-		/**
 		 * This method call appenders for logging message.
 		 *
 		 * @param level The specified level
@@ -398,37 +346,70 @@ package org.log5f
 		 *
 		 * @param stack The string representation of the call stack.
 		 */
-		protected function log(level:Level, message:Object, stack:String=null):void
+		log5f_internal function log(level:Level, message:Object, stack:String=null):void
 		{
+			// if Log5F isn't configured - defer log entry
+			
+			if (!Log5FConfigurator.ready)
+			{
+				LoggerManager.log5f_internal::addDeferredLog(this, level, message, stack);
+				
+				Log5FConfigurator.configure();
+				
+				return;
+			}
+			
 			if (!level.isGreaterOrEqual(this.getEffectiveLevel()))
 				return;
-
+			
 			var event:LogEvent = new LogEvent(this, level, message, stack);
-
+			
 			for (var c:Category = this; c != null; c = c.parent)
 			{
 				if (level.isGreaterOrEqual(c.getEffectiveLevel()))
 					c.callAppenders(event);
 			}
 		}
-
+		
 		/**
-		 * This method used if properties file is not loaded yet.
-		 *
+		 * Gets call stack if need and call <code>log</code> method.
+		 * 
 		 * @param level The specified level
 		 *
 		 * @param message The message to logging.
-		 *
-		 * @param stack The string representation of the call stack.
 		 */
-		protected function lazyLog(level:Level, message:Object, stack:String=null):void
+		protected function log(level:Level, message:Object):void
 		{
-			if (this.lazyLogEvents == null)
-				this.lazyLogEvents = [];
-
-			this.lazyLogEvents.push(new LogObject(level, message, stack));
+			// stack is not available - release version of the Flash Player
+			
+			if (!Capabilities.isDebugger)
+			{
+				this.log5f_internal::log(level, message);
+				
+				return;
+			}
+			
+			// stack is not used 
+			
+			if (!this.useStack && Log5FConfigurator.ready)
+			{
+				this.log5f_internal::log(level, message);
+				
+				return;
+			}
+			
+			// stack is used
+			
+			try
+			{
+				throw new Error();
+			}
+			catch (error:Error)
+			{
+				this.log5f_internal::log(level, message, error.getStackTrace());
+			}
 		}
-		
+
 		/**
 		 * Calculates and returns effective log level.
 		 * 
@@ -471,62 +452,5 @@ package org.log5f
 				   '" level="' + this.level.toString() + '"]';
 		}
 		
-		//----------------------------------------------------------------------
-		//
-		//	Event handlers
-		//
-		//----------------------------------------------------------------------
-
-		/**
-		 * The handler of "propertiesComplete" event of
-		 * <code>PropertyConfigurator</code>.
-		 *
-		 * @param event The "propertiesComplete" event.
-		 */
-		protected function propertiesCompleteHandler(event:Event):void
-		{
-			PropertyConfigurator.removeEventListener(Event.COMPLETE, 
-													 this.propertiesCompleteHandler);
-
-			if (!this.lazyLogEvents || this.lazyLogEvents.length == 0)
-				return;
-			
-			var logs:Array = this.lazyLogEvents;
-			
-			for (var data:LogObject = logs.shift(); data; data = logs.shift())
-			{
-				this.log(data.level, data.message, data.stack);
-			}
-		}
-
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//
-//	Helper classes: LogObject
-//
-////////////////////////////////////////////////////////////////////////////////
-
-import org.log5f.Level;
-
-/**
- * This is helper class that used for lazy log functionality.
- */
-class LogObject
-{
-	public var level:Level;
-
-	public var message:Object;
-
-	public var stack:String;
-
-	function LogObject(level:Level=null, message:Object=null, stack:String=null)
-	{
-		super();
-
-		this.level = level;
-		this.message = message;
-		this.stack = stack;
 	}
 }

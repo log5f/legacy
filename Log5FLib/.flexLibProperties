@@ -29,15 +29,8 @@
     <classEntry path="org.log5f.log5f_internal"/>
     <classEntry path="org.log5f.helpers.formatters.DateFormatter"/>
     <classEntry path="org.log5f.helpers.resources.ResourceManager"/>
-    <classEntry path="org.log5f.utils.FlashvarsUtils"/>
-    <classEntry path="org.log5f.core.configuration.IConfigurator"/>
-    <classEntry path="org.log5f.core.configuration.Configurator"/>
-    <classEntry path="org.log5f.core.configuration.ConfigurationLoader"/>
-    <classEntry path="org.log5f.core.configuration.XMLConfiguratorImpl"/>
-    <classEntry path="org.log5f.core.configuration.ParamType"/>
-    <classEntry path="org.log5f.core.LogEntry"/>
-    <classEntry path="org.log5f.helpers.deferred.DeferredLogs"/>
-    <classEntry path="org.log5f.core.configuration.ConfigurationLoaderStatus"/>
+    <classEntry path="org.log5f.core.configurators.ConfiguratorFactory"/>
+    <classEntry path="org.log5f.Log5FConfigurator"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

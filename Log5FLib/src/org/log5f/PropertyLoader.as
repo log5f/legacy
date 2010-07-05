@@ -23,6 +23,8 @@ package org.log5f
     import org.log5f.error.SingletonError;
     import org.log5f.helpers.resources.ResourceManager;
 
+	[Deprecated(replacement="Log5FConfigurator",since="1.0")]
+	
 	/**
 	 * Loads configuration file.
 	 */
