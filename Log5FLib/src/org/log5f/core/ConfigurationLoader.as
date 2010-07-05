@@ -28,7 +28,6 @@ package org.log5f.core
 	import org.log5f.helpers.resources.ResourceManager;
 	import org.log5f.utils.FlashvarsUtils;
 	import org.log5f.Log5FConfigurator;
-	import org.log5f.core.configuration.Configurator;
 	
 	[ExcludeClass]
 	
@@ -219,7 +218,7 @@ package org.log5f.core
 			
 			if (!FILES || FILES.length == 0)
 			{
-				if (Configurator.traceErrors)
+				if (Log5FConfigurator.traceErrors)
 					trace("Log5F:", event.text);
 			}
 			else
@@ -243,7 +242,7 @@ package org.log5f.core
 			
 			_status = ConfigurationLoaderStatus.READY;
 			
-			if (Configurator.traceErrors)
+			if (Log5FConfigurator.traceErrors)
 				trace("Log5F:", event.text);
 		}
 		

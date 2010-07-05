@@ -8,7 +8,6 @@ package org.log5f
 	import flash.events.Event;
 	import flash.system.Capabilities;
 	
-	import org.log5f.core.configuration.Configurator;
 	import org.log5f.events.LogEvent;
 
 	public class Category implements IAppenderAttachable

@@ -47,6 +47,24 @@ package org.log5f
 			return _ready;
 		}
 
+		//-----------------------------------
+		//	traceErrors
+		//-----------------------------------
+		
+		/**
+		 * @private
+		 * Storage for the traceErrors property.
+		 */
+		private static var _traceErrors:Boolean;
+
+		/**
+		 * A flag that indicates need to trace error messages.
+		 */
+		public static function get traceErrors():Boolean
+		{
+			return _traceErrors;
+		}
+
 		//----------------------------------------------------------------------
 		//
 		//	Class methods
