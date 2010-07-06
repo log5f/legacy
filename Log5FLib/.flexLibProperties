@@ -4,9 +4,11 @@
     <classEntry path="org.log5f.IAppenderAttachable"/>
     <classEntry path="org.log5f.IFormatter"/>
     <classEntry path="org.log5f.Layout"/>
+    <classEntry path="org.log5f.Log5FConfigurator"/>
     <classEntry path="org.log5f.PropertyConfigurator"/>
     <classEntry path="org.log5f.PropertyLoader"/>
     <classEntry path="org.log5f.appenders.PysarAppender"/>
+    <classEntry path="org.log5f.core.configurators.ConfiguratorFactory"/>
     <classEntry path="org.log5f.error.CallAbstractMethodError"/>
     <classEntry path="org.log5f.error.FileNotFoundError"/>
     <classEntry path="org.log5f.error.IllegalArgumentError"/>
@@ -19,6 +21,8 @@
     <classEntry path="org.log5f.filters.LevelRangeFilter"/>
     <classEntry path="org.log5f.filters.StringMatchFilter"/>
     <classEntry path="org.log5f.formatters.UpperCaseFormatter"/>
+    <classEntry path="org.log5f.helpers.formatters.DateFormatter"/>
+    <classEntry path="org.log5f.helpers.resources.ResourceManager"/>
     <classEntry path="org.log5f.layouts.Log4JLayout"/>
     <classEntry path="org.log5f.layouts.PatternLayout"/>
     <classEntry path="org.log5f.layouts.SimpleLayout"/>
@@ -27,10 +31,6 @@
     <classEntry path="org.log5f.layouts.converters.LineNumberConverter"/>
     <classEntry path="org.log5f.layouts.converters.StackPart"/>
     <classEntry path="org.log5f.log5f_internal"/>
-    <classEntry path="org.log5f.helpers.formatters.DateFormatter"/>
-    <classEntry path="org.log5f.helpers.resources.ResourceManager"/>
-    <classEntry path="org.log5f.core.configurators.ConfiguratorFactory"/>
-    <classEntry path="org.log5f.Log5FConfigurator"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

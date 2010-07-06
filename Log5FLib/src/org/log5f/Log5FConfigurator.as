@@ -55,10 +55,20 @@ package org.log5f
 		 * @private
 		 * Storage for the traceErrors property.
 		 */
-		private static var _traceErrors:Boolean;
+		private static var _traceErrors:Boolean = true;
 
 		/**
 		 * A flag that indicates need to trace error messages.
+		 * 
+		 * <p>By default error tracing enabled, it can be disabled from 
+		 * configuration.</p>
+		 * 
+		 * <p><b>Note</b>: This feature con't be enabled from configuration.
+		 * If you can two configuration first that disables traceErrors and 
+		 * second that allows traceErrors the allowing from the second 
+		 * will ignored. Only way to enable this feauter - not disable it.</p> 
+		 * 
+		 * @default true
 		 */
 		public static function get traceErrors():Boolean
 		{
@@ -89,6 +99,8 @@ package org.log5f
 				if (configurator)
 				{
 					configurator.configure(source);
+					
+					_traceErrors = configurator.traceErrors;
 					
 					_ready = true;
 					

@@ -115,14 +115,14 @@ package org.log5f.core.configurators.xml
 		/**
 		 * @private 
 		 */
-		private var _traceErrors:Boolean = false;
+		private var _traceErrors:Boolean = true;
 		
 		/**
 		 * @inheritDoc
 		 */
 		public function get traceErrors():Boolean
 		{
-			return false;
+			return this._traceErrors;
 		}
 		
 		//----------------------------------------------------------------------
