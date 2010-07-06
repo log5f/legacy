@@ -353,7 +353,7 @@ package org.log5f
 			{
 				LoggerManager.log5f_internal::addDeferredLog(this, level, message, stack);
 				
-				Log5FConfigurator.configure();
+				Log5FConfigurator.configure(null, true);
 				
 				return;
 			}

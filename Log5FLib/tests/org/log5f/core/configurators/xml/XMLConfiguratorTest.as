@@ -41,7 +41,7 @@ package org.log5f.core.configurators.xml
 		//----------------------------------------------------------------------
 		
 		[Test]
-		public function testConfigure():void
+		public function configure():void
 		{
 			var source:XML = 
 				<configuration xsi:noNamespaceSchemaLocation="log5f.properties.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:log5j="http://log5f.org">

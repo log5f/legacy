@@ -15,6 +15,7 @@ package org.log5f.core
 	
 	import mx.core.Singleton;
 	
+	import org.log5f.Log5FConfigurator;
 	import org.log5f.core.configurators.xml.XMLConfigurator;
 	import org.log5f.error.AppenderNotFoundError;
 	import org.log5f.error.CallAbstractMethodError;
@@ -26,8 +27,8 @@ package org.log5f.core
 	import org.log5f.error.InvalidConfigError;
 	import org.log5f.error.SingletonError;
 	import org.log5f.helpers.resources.ResourceManager;
-	import org.log5f.utils.FlashvarsUtils;
-	import org.log5f.Log5FConfigurator;
+	import org.log5f.log5f_internal;
+	import org.log5f.utils.LoaderInfoUtil;
 	
 	[ExcludeClass]
 	
@@ -43,14 +44,9 @@ package org.log5f.core
 		//----------------------------------------------------------------------
 		
 		/**
-		 * The name of configuration file.
-		 */
-		public static const FILE:String = "log5f.properties";
-		
-		/**
 		 * Defines the queue of configuration files. 
 		 */
-		private static const FILES:Array = 
+		private static const PREDEFINED_URLS:Array = 
 			[
 				"log5f.xml",
 				"log5f.properties",
@@ -61,6 +57,21 @@ package org.log5f.core
 		//	Class variables
 		//
 		//----------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private static var initialized:Boolean = false;
+		
+		/**
+		 * @private
+		 */
+		private static var loading:Boolean = false;
+		
+		/**
+		 * @private
+		 */
+		private static var urls:Array;
 		
 		//----------------------------------------------------------------------
 		//
@@ -132,6 +143,21 @@ package org.log5f.core
 			return _status;
 		}
 		
+		//-----------------------------------
+		//	hasSpecifiedURLs
+		//-----------------------------------
+		
+		/**
+		 * Indicates if files specified manauly exist.
+		 */
+		public static function get hasSpecifiedURLs():Boolean
+		{
+			if (!urls || urls.length == 0)
+				return false;
+			
+			return urls.every(checkSpecifiedFiles);
+		}
+		
 		//----------------------------------------------------------------------
 		//
 		//	Class methods
@@ -139,20 +165,33 @@ package org.log5f.core
 		//----------------------------------------------------------------------
 		
 		/**
-		 * Loads configuration file, if it is not loaded.
+		 * 
 		 */
-		public static function load(url:String=null):void
+		log5f_internal static function add(url:String):void
 		{
-			if (url)
-			{
-				FILES.push(url);
-			}
+			if (!initialized)
+				initialize();
 			
-			if (status == ConfigurationLoaderStatus.READY)
+			urls.unshift(url);
+		}
+		
+		/**
+		 * 
+		 */
+		log5f_internal static function load():void
+		{
+			if (!initialized)
+				initialize();
+			
+			if (!loading)
 			{
-				if (FILES && FILES.length > 0)
+				if (urls && urls.length > 0)
 				{
-					loadReal(FILES.shift());
+					load(urls.shift());
+				}
+				else if (status != ConfigurationLoaderStatus.SUCCESS)
+				{
+					_status = ConfigurationLoaderStatus.FAILURE;
 				}
 			}
 		}
@@ -160,7 +199,27 @@ package org.log5f.core
 		/**
 		 * @private
 		 */
-		private static function loadReal(url:String):void
+		private static function initialize():void
+		{
+			if (initialized)
+				return;
+			
+			if (!urls)
+			{
+				urls = PREDEFINED_URLS.concat([]);
+			}
+			
+			var params:Object = LoaderInfoUtil.getParameters();
+			
+			if (params && params["log5f"])
+			{
+				urls.unshift(params["log5f"]);
+			}
+			
+			initialized = true;
+		}
+		
+		private static function load(url:String):void
 		{
 			_url = url;
 			
@@ -171,7 +230,19 @@ package org.log5f.core
 			
 			loader.load(new URLRequest(url));
 			
-			_status = ConfigurationLoaderStatus.LOADING;
+			loading = true;
+		}
+		
+		//-----------------------------------
+		//	Class methods: For arrays
+		//-----------------------------------
+		
+		/**
+		 * @private
+		 */
+		private static function checkSpecifiedFiles(item:*, index:int, array:Array):Boolean
+		{
+			return PREDEFINED_URLS.indexOf(item) == -1;
 		}
 		
 		//----------------------------------------------------------------------
@@ -193,11 +264,18 @@ package org.log5f.core
 			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
 			event.target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
 			
-			_status = ConfigurationLoaderStatus.READY;
+			loading = false;
+			
+			_status = ConfigurationLoaderStatus.SUCCESS;
 			
 			_data = new XML(URLLoader(event.target).data);
 			
 			Log5FConfigurator.configure(data);
+			
+			if (hasSpecifiedURLs)
+			{
+				load(urls.shift());
+			}
 		}
 		
 		/**
@@ -214,16 +292,25 @@ package org.log5f.core
 			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
 			event.target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
 			
-			_status = ConfigurationLoaderStatus.READY;
+			loading = false;
 			
-			if (!FILES || FILES.length == 0)
+			if (PREDEFINED_URLS.indexOf(url) == -1)
 			{
 				if (Log5FConfigurator.traceErrors)
 					trace("Log5F:", event.text);
 			}
-			else
+			
+			if (urls && urls.length > 0)
 			{
-				load();
+				load(urls.shift());
+			}
+			else 
+			{
+				if (Log5FConfigurator.traceErrors)
+					trace("Log5F:", event.text);
+				
+				if (status != ConfigurationLoaderStatus.SUCCESS)
+					_status = ConfigurationLoaderStatus.FAILURE;
 			}
 		}
 		
@@ -240,7 +327,9 @@ package org.log5f.core
 			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOErrorHandler);
 			event.target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderSecurityErrorHandler);
 			
-			_status = ConfigurationLoaderStatus.READY;
+			loading = false;
+			
+			_status = ConfigurationLoaderStatus.FAILURE;
 			
 			if (Log5FConfigurator.traceErrors)
 				trace("Log5F:", event.text);

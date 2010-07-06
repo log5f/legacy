@@ -7,16 +7,22 @@ package org.log5f.layouts
 {
 	import flash.display.LoaderInfo;
 	
-	import org.log5f.helpers.resources.ResourceManager;
 	import mx.utils.StringUtil;
 	
 	import org.log5f.Layout;
 	import org.log5f.events.LogEvent;
+	import org.log5f.helpers.resources.ResourceManager;
 	import org.log5f.layouts.converters.ClassConverter;
 	import org.log5f.layouts.converters.FileConverter;
 	import org.log5f.layouts.converters.LineNumberConverter;
 	import org.log5f.layouts.converters.MethodConverter;
+	import org.log5f.utils.LoaderInfoUtil;
 	
+	/**
+	 * Perform log event to <i>Log4J XML Format</i>.
+	 * 
+	 * @see http://wiki.apache.org/logging-log4j/Log4jXmlFormat Log4jXmlFormat
+	 */
 	public class Log4JLayout extends Layout
 	{
 		//----------------------------------------------------------------------
@@ -25,8 +31,11 @@ package org.log5f.layouts
 		//
 		//----------------------------------------------------------------------
 		
-		private static var template:String = 
-		'<log4j:event logger="{0}" timestamp="{1}" level="{2}" thread="{3}">' + 
+		/**
+		 * @private
+		 */
+		private static const TEMPLATE:String = 
+		'<log4j:event logger="{0}" timestamp="{1}" level="{2}" thread="{3}" xmlns:log4j="http://jakarta.apache.org/log4j/">' + 
 			'<log4j:message>' + 
 				'<![CDATA[' + 
 					'{4}' + 
@@ -54,81 +63,31 @@ package org.log5f.layouts
 		
 		//----------------------------------------------------------------------
 		//
-		//	Variables
-		//
-		//----------------------------------------------------------------------
-		
-		/**
-		 * The information about application.
-		 */
-		private var info:LoaderInfo = null;
-		
-		//----------------------------------------------------------------------
-		//
-		//	Methods
-		//
-		//----------------------------------------------------------------------
-		
-		/**
-		 * Returns url of application.
-		 */
-		private function getApplicationURL():String
-		{
-			if (this.info)
-				return this.info.url;
-			
-			try
-			{
-				this.info = LoaderInfo.getLoaderInfoByDefinition({});
-			}
-			catch (error:SecurityError)
-			{
-				return "{LoaderInfo is inaccessible.}";
-			}
-			
-			return this.info ? this.info.url : null;
-		}
-
-		/**
-		 * Returns name of swf or html file.
-		 */
-		private function getApplicationName():String
-		{
-			var url:String = this.getApplicationURL();
-			
-			if (!url)
-				return null;
-			
-			var pattern:RegExp = /\w+(?=\.)/;
-			
-			var matches:Array = url.match(pattern);
-			
-			if (!matches || matches.length == 0)
-				return null;
-			
-			return matches.pop();
-		}
-		
-		//----------------------------------------------------------------------
-		//
 		//	Overridden methods
 		//
 		//----------------------------------------------------------------------
 		
+		/**
+		 * Performs log event to <i>Log4J XML Format</i>.
+		 * 
+		 * @param event The log event to performing.
+		 * 
+		 * @return Performed string in <i>Log4J XML Format</i>.
+		 */
 		override public function format(event:LogEvent):String
 		{
 			var category:String = event.category.name;
 			var time:String = new Date().time.toString();
 			var level:String = event.level.toString();
-			var thread:String = this.getApplicationURL();
+			var thread:String = LoaderInfoUtil.getApplicationURL();
 			var message:String = event.message.toString();
 			var className:String = new ClassConverter().convert(event);
 			var methodName:String = new MethodConverter().convert(event);
 			var fileName:String = new FileConverter().convert(event);
 			var lineNumber:String = new LineNumberConverter().convert(event);
-			var applicationName:String = this.getApplicationName();
+			var applicationName:String = LoaderInfoUtil.getApplicationName();
 			
-			return StringUtil.substitute(Log4JLayout.template, 
+			return StringUtil.substitute(Log4JLayout.TEMPLATE, 
 										 [category, time, level, thread, 
 										 message, className, methodName, 
 										 fileName, lineNumber, applicationName]);

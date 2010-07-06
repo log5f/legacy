@@ -63,8 +63,9 @@
     <classEntry path="org.log5f.layouts.converters.StackConverter"/>
     <classEntry path="org.log5f.layouts.converters.StackPart"/>
     <classEntry path="org.log5f.log5f_internal"/>
-    <classEntry path="org.log5f.utils.FlashvarsUtils"/>
     <classEntry path="org.log5f.Log5FTests"/>
+    <classEntry path="org.log5f.Log5FConfiguratorTest"/>
+    <classEntry path="org.log5f.utils.LoaderInfoUtil"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

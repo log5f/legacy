@@ -88,7 +88,7 @@ package org.log5f
 		 * 
 		 * @see TODO SEE MORE ABOUT DEFAULT URLs
 		 */
-		public static function configure(source:Object=null):void
+		public static function configure(source:Object=null, force:Boolean=false):void
 		{
 			if (source)
 			{
@@ -97,11 +97,9 @@ package org.log5f
 				
 				if (configurator)
 				{
-					configurator.configure(source);
+					_ready = _ready || configurator.configure(source);
 					
 					_traceErrors = configurator.traceErrors;
-					
-					_ready = true;
 					
 					LoggerManager.log5f_internal::processDeferredLogs();
 					
@@ -109,7 +107,15 @@ package org.log5f
 				}
 			}
 			
-			ConfigurationLoader.load(source as String);
+			if (source is String)
+			{
+				ConfigurationLoader.log5f_internal::add(String(source));
+			}
+			
+			if (force)
+			{
+				ConfigurationLoader.log5f_internal::load();
+			}
 		}
 		
 		//----------------------------------------------------------------------

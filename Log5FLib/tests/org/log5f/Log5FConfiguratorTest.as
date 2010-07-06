@@ -3,53 +3,42 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.utils
+package org.log5f
 {
-	import flash.display.Loader;
-
-	/**
-	 * Contains methods to help using FlashVars.
-	 */
-	public class FlashvarsUtils
+	public class Log5FConfiguratorTest
 	{
 		//----------------------------------------------------------------------
 		//
-		//	Class variables
+		//	Before/After
 		//
 		//----------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
-		private static var _parameters:Object;
-		
-		//----------------------------------------------------------------------
-		//
-		//	Class methods
-		//
-		//----------------------------------------------------------------------
-		
-		/**
-		 * @return Returns object contained flash vars passed to flash 
-		 * application.  
-		 */
-		public static function getParameters():Object
+		[Before]
+		public function setUp():void
 		{
-			if (_parameters != null)
-				return _parameters;
+		}
+		
+		[After]
+		public function tearDown():void
+		{
+		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Tests
+		//
+		//----------------------------------------------------------------------
+		
+		[Test]
+		public function configure():void
+		{
 			
-			try
-			{
-				var t:* = new Loader();
-				
-				_parameters = new Loader().loaderInfo.parameters;
-			}
-			catch (error:Error)
-			{
-				
-			}
+		}
+		
+		[Test]
+		public function traceErrors():void
+		{
 			
-			return _parameters || {};
 		}
 	}
 }
