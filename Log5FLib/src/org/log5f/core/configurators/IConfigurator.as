@@ -10,13 +10,8 @@ package org.log5f.core.configurators
 	/**
 	 * Interface for configurators.
 	 */
-	public interface IConfigurator extends IEventDispatcher
+	public interface IConfigurator 
 	{
-		/**
-		 * Flag that indicates if Log5F is configured.
-		 */
-		function get isConfigured():Boolean; 
-		
 		/**
 		 * A flag that indicates need to trace error messages.
 		 */
@@ -27,6 +22,6 @@ package org.log5f.core.configurators
 		 * 
 		 * @param source Configuration of Log5F in raw data. 
 		 */
-		function configure(source:Object):void;
+		function configure(source:Object):Boolean;
 	}
 }

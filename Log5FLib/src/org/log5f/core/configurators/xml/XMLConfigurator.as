@@ -30,7 +30,7 @@ package org.log5f.core.configurators.xml
 	/**
 	 * The implementation of IConfigurator that configures Log5F from XML.
 	 */
-	public class XMLConfigurator extends EventDispatcher implements IConfigurator
+	public class XMLConfigurator implements IConfigurator
 	{
 		//--------------------------------------------------------------------------
 		//
@@ -138,7 +138,7 @@ package org.log5f.core.configurators.xml
 		/**
 		 * @inheritDoc
 		 */
-		public function configure(source:Object):void
+		public function configure(source:Object):Boolean
 		{
 			this.properties = source as XML;
 			
@@ -170,9 +170,7 @@ package org.log5f.core.configurators.xml
 			
 			this._traceErrors = !(properties.@traceErrors == "false");
 			
-			this.dispatchEvent(new Event(Event.COMPLETE));
-			
-			this._isConfigured = true;
+			return true;
 		}
 
 		//-----------------------------------

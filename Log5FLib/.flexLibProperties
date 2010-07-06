@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
+    <classEntry path="org.log5f.Appender"/>
+    <classEntry path="org.log5f.AppenderAttachable"/>
+    <classEntry path="org.log5f.Category"/>
+    <classEntry path="org.log5f.IAppender"/>
     <classEntry path="org.log5f.IAppenderAttachable"/>
+    <classEntry path="org.log5f.IConverter"/>
     <classEntry path="org.log5f.IFormatter"/>
     <classEntry path="org.log5f.Layout"/>
+    <classEntry path="org.log5f.Level"/>
+    <classEntry path="org.log5f.Log5F"/>
     <classEntry path="org.log5f.Log5FConfigurator"/>
+    <classEntry path="org.log5f.Logger"/>
+    <classEntry path="org.log5f.LoggerManager"/>
+    <classEntry path="org.log5f.Priority"/>
     <classEntry path="org.log5f.PropertyConfigurator"/>
     <classEntry path="org.log5f.PropertyLoader"/>
+    <classEntry path="org.log5f.appenders.ArthropodAppender"/>
+    <classEntry path="org.log5f.appenders.FirebugAppender"/>
+    <classEntry path="org.log5f.appenders.LocalConnectionAppender"/>
     <classEntry path="org.log5f.appenders.PysarAppender"/>
+    <classEntry path="org.log5f.appenders.TraceAppender"/>
+    <classEntry path="org.log5f.appenders.XMLSocketAppender"/>
+    <classEntry path="org.log5f.appenders.XPanelAppender"/>
+    <classEntry path="org.log5f.core.ConfigurationLoader"/>
+    <classEntry path="org.log5f.core.ConfigurationLoaderStatus"/>
+    <classEntry path="org.log5f.core.LogEntry"/>
     <classEntry path="org.log5f.core.configurators.ConfiguratorFactory"/>
+    <classEntry path="org.log5f.core.configurators.IConfigurator"/>
+    <classEntry path="org.log5f.core.configurators.xml.ParamType"/>
+    <classEntry path="org.log5f.core.configurators.xml.XMLConfigurator"/>
+    <classEntry path="org.log5f.error.AppenderNotFoundError"/>
     <classEntry path="org.log5f.error.CallAbstractMethodError"/>
+    <classEntry path="org.log5f.error.ClassNotFoundError"/>
+    <classEntry path="org.log5f.error.DocumentInvalidError"/>
     <classEntry path="org.log5f.error.FileNotFoundError"/>
     <classEntry path="org.log5f.error.IllegalArgumentError"/>
     <classEntry path="org.log5f.error.InvalidAppenderError"/>
@@ -21,16 +46,25 @@
     <classEntry path="org.log5f.filters.LevelRangeFilter"/>
     <classEntry path="org.log5f.filters.StringMatchFilter"/>
     <classEntry path="org.log5f.formatters.UpperCaseFormatter"/>
+    <classEntry path="org.log5f.helpers.deferred.DeferredLogs"/>
     <classEntry path="org.log5f.helpers.formatters.DateFormatter"/>
     <classEntry path="org.log5f.helpers.resources.ResourceManager"/>
     <classEntry path="org.log5f.layouts.Log4JLayout"/>
     <classEntry path="org.log5f.layouts.PatternLayout"/>
     <classEntry path="org.log5f.layouts.SimpleLayout"/>
+    <classEntry path="org.log5f.layouts.converters.CategoryConverter"/>
+    <classEntry path="org.log5f.layouts.converters.ClassConverter"/>
+    <classEntry path="org.log5f.layouts.converters.DateConverter"/>
     <classEntry path="org.log5f.layouts.converters.FileConverter"/>
     <classEntry path="org.log5f.layouts.converters.LevelConverter"/>
     <classEntry path="org.log5f.layouts.converters.LineNumberConverter"/>
+    <classEntry path="org.log5f.layouts.converters.MessageConverter"/>
+    <classEntry path="org.log5f.layouts.converters.MethodConverter"/>
+    <classEntry path="org.log5f.layouts.converters.StackConverter"/>
     <classEntry path="org.log5f.layouts.converters.StackPart"/>
     <classEntry path="org.log5f.log5f_internal"/>
+    <classEntry path="org.log5f.utils.FlashvarsUtils"/>
+    <classEntry path="org.log5f.Log5FTests"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>
