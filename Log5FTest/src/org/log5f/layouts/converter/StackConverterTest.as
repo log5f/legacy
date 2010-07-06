@@ -4,8 +4,8 @@ package org.log5f.layouts.converter
 	
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
-	import org.log5f.layouts.coverters.StackConverter;
-	import org.log5f.layouts.coverters.StackPart;
+	import org.log5f.layouts.converters.StackConverter;
+	import org.log5f.layouts.converters.StackPart;
 
 	public class StackConverterTest
 	{

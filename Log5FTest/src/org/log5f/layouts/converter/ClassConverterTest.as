@@ -4,7 +4,7 @@ package org.log5f.layouts.converter
 	
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
-	import org.log5f.layouts.coverters.ClassConverter;
+	import org.log5f.layouts.converters.ClassConverter;
 
 	public class ClassConverterTest
 	{

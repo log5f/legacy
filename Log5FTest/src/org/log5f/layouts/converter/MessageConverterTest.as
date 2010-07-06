@@ -4,8 +4,8 @@ package org.log5f.layouts.converter
 	
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
-	import org.log5f.layouts.coverters.FileConverter;
-	import org.log5f.layouts.coverters.MessageConverter;
+	import org.log5f.layouts.converters.FileConverter;
+	import org.log5f.layouts.converters.MessageConverter;
 
 	public class MessageConverterTest
 	{

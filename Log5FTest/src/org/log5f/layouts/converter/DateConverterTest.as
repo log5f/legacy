@@ -6,7 +6,7 @@ package org.log5f.layouts.converter
 	
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
-	import org.log5f.layouts.coverters.DateConverter;
+	import org.log5f.layouts.converters.DateConverter;
 
 	public class DateConverterTest
 	{
