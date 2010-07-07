@@ -143,19 +143,46 @@ package org.log5f.core
 			return _status;
 		}
 		
+		/**
+		 * @private
+		 */
+		private static function set status(value:String):void
+		{
+			if (value == _status)
+				return;
+			
+			if (!value != ConfigurationLoaderStatus.READY &&
+				!value != ConfigurationLoaderStatus.SUCCESS &&
+				!value != ConfigurationLoaderStatus.FAILURE)
+			{
+				return;
+			}
+			
+			if (_status == ConfigurationLoaderStatus.SUCCESS)
+				return;
+			
+			_status = value;
+		}
+		
 		//-----------------------------------
-		//	hasSpecifiedURLs
+		//	hasSpecifiedURL
 		//-----------------------------------
 		
 		/**
-		 * Indicates if files specified manauly exist.
+		 * Check if some specified urls exist.
+		 * 
+		 * @return <code>true</code> - if specified url exists, or 
+		 * <code>false</code> - otherwise.
 		 */
-		public static function get hasSpecifiedURLs():Boolean
+		log5f_internal static function get hasSpecifiedURL():Boolean
 		{
-			if (!urls || urls.length == 0)
-				return false;
+			for each (var url:String in urls)
+			{
+				if (!log5f_internal::isPredefinedURL(url))
+					return true;
+			}
 			
-			return urls.every(checkSpecifiedFiles);
+			return false;
 		}
 		
 		//----------------------------------------------------------------------
@@ -163,6 +190,10 @@ package org.log5f.core
 		//	Class methods
 		//
 		//----------------------------------------------------------------------
+		
+		//-----------------------------------
+		//	 Class methods: External API
+		//-----------------------------------
 		
 		/**
 		 * 
@@ -189,12 +220,29 @@ package org.log5f.core
 				{
 					load(urls.shift());
 				}
-				else if (status != ConfigurationLoaderStatus.SUCCESS)
+				else
 				{
-					_status = ConfigurationLoaderStatus.FAILURE;
+					status = ConfigurationLoaderStatus.FAILURE;
 				}
 			}
 		}
+		
+		/**
+		 * Check if specified <code>url</code> is default Log5F's url.
+		 * 
+		 * @param url The url to check.
+		 * 
+		 * @return <code>true</code> - if specified url is predefined, 
+		 * or <code>false</code> - otherwise.
+		 */
+		log5f_internal static function isPredefinedURL(url:String):Boolean
+		{
+			return PREDEFINED_URLS.indexOf(url) != -1;
+		}
+
+		//-----------------------------------
+		//	 Class methods: Private
+		//-----------------------------------
 		
 		/**
 		 * @private
@@ -233,18 +281,6 @@ package org.log5f.core
 			loading = true;
 		}
 		
-		//-----------------------------------
-		//	Class methods: For arrays
-		//-----------------------------------
-		
-		/**
-		 * @private
-		 */
-		private static function checkSpecifiedFiles(item:*, index:int, array:Array):Boolean
-		{
-			return PREDEFINED_URLS.indexOf(item) == -1;
-		}
-		
 		//----------------------------------------------------------------------
 		//
 		//	Class event handlers
@@ -272,7 +308,7 @@ package org.log5f.core
 			
 			Log5FConfigurator.configure(data);
 			
-			if (hasSpecifiedURLs)
+			if (log5f_internal::hasSpecifiedURL)
 			{
 				load(urls.shift());
 			}
@@ -309,8 +345,7 @@ package org.log5f.core
 				if (Log5FConfigurator.traceErrors)
 					trace("Log5F:", event.text);
 				
-				if (status != ConfigurationLoaderStatus.SUCCESS)
-					_status = ConfigurationLoaderStatus.FAILURE;
+				status = ConfigurationLoaderStatus.FAILURE;
 			}
 		}
 		
@@ -329,7 +364,7 @@ package org.log5f.core
 			
 			loading = false;
 			
-			_status = ConfigurationLoaderStatus.FAILURE;
+			status = ConfigurationLoaderStatus.FAILURE;
 			
 			if (Log5FConfigurator.traceErrors)
 				trace("Log5F:", event.text);

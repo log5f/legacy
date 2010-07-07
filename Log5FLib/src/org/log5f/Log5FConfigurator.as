@@ -99,7 +99,7 @@ package org.log5f
 				{
 					_ready = _ready || configurator.configure(source);
 					
-					_traceErrors = configurator.traceErrors;
+					_traceErrors = _traceErrors ? configurator.traceErrors : false;
 					
 					LoggerManager.log5f_internal::processDeferredLogs();
 					
