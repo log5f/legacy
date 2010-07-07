@@ -115,11 +115,6 @@ package org.log5f
 				ConfigurationLoader.log5f_internal::add(String(source));
 			}
 			
-			if (source is String)
-			{
-				ConfigurationLoader.log5f_internal::add(String(source));
-			}
-			
 			if (force)
 			{
 				log5f_internal::configure();
