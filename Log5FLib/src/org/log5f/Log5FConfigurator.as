@@ -8,6 +8,7 @@ package org.log5f
 	import org.log5f.core.ConfigurationLoader;
 	import org.log5f.core.configurators.ConfiguratorFactory;
 	import org.log5f.core.configurators.IConfigurator;
+	import org.log5f.core.managers.DeferredManager;
 
 	/**
 	 * Configures the Log5F.
@@ -81,30 +82,37 @@ package org.log5f
 		//----------------------------------------------------------------------
 		
 		/**
-		 * Starts configuration process, if <code>data</code> param is not 
-		 * specified the configuration file will be loaded from default sources.
+		 * This is a external method, it can be used to configure Log5F in 
+		 * runtime.
 		 * 
-		 * @param data The configuration data, can be <code>XML</code> or <code>String</code>.
+		 * @param source Contains a configuration data, can be <code>XML</code> 
+		 * or <code>String</code>. If it is a <code>XML</code> it will used for
+		 * configuration immediately, if it is a <code>String</code> it will 
+		 * used as an url to load configuration data.
+		 * 
+		 * @param force Inidicates if need to start loading XML data from 
+		 * specified url in <code>source</code> at once.
 		 * 
 		 * @see TODO SEE MORE ABOUT DEFAULT URLs
 		 */
-		public static function configure(source:Object=null, force:Boolean=false):void
+		public static function configure(source:Object, force:Boolean=false):void
 		{
-			if (source)
+			var configurator:IConfigurator = 
+				ConfiguratorFactory.getConfigurator(source);
+			
+			if (configurator)
 			{
-				var configurator:IConfigurator = 
-					ConfiguratorFactory.getConfigurator(source);
+				_ready = _ready || configurator.configure(source);
 				
-				if (configurator)
-				{
-					_ready = _ready || configurator.configure(source);
-					
-					_traceErrors = _traceErrors ? configurator.traceErrors : false;
-					
-					LoggerManager.log5f_internal::processDeferredLogs();
-					
-					return;
-				}
+				_traceErrors = _traceErrors ? configurator.traceErrors : false;
+				
+				DeferredManager.log5f_internal::processLogs();
+				
+				return;
+			}
+			else if (source is String)
+			{
+				ConfigurationLoader.log5f_internal::add(String(source));
 			}
 			
 			if (source is String)
@@ -114,8 +122,16 @@ package org.log5f
 			
 			if (force)
 			{
-				ConfigurationLoader.log5f_internal::load();
+				log5f_internal::configure();
 			}
+		}
+		
+		/**
+		 * The internal method that starts loading configuration files.
+		 */
+		log5f_internal static function configure():void
+		{
+			ConfigurationLoader.log5f_internal::load();
 		}
 		
 		//----------------------------------------------------------------------

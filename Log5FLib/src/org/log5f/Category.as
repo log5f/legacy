@@ -8,6 +8,8 @@ package org.log5f
 	import flash.events.Event;
 	import flash.system.Capabilities;
 	
+	import org.log5f.core.LogEntry;
+	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.events.LogEvent;
 
 	public class Category implements IAppenderAttachable
@@ -351,9 +353,9 @@ package org.log5f
 			
 			if (!Log5FConfigurator.ready)
 			{
-				LoggerManager.log5f_internal::addDeferredLog(this, level, message, stack);
+				DeferredManager.log5f_internal::addLog(this, level, message, stack);
 				
-				Log5FConfigurator.configure(null, true);
+				Log5FConfigurator.log5f_internal::configure();
 				
 				return;
 			}

@@ -46,7 +46,7 @@
     <classEntry path="org.log5f.filters.LevelRangeFilter"/>
     <classEntry path="org.log5f.filters.StringMatchFilter"/>
     <classEntry path="org.log5f.formatters.UpperCaseFormatter"/>
-    <classEntry path="org.log5f.helpers.deferred.DeferredLogs"/>
+    <classEntry path="org.log5f.core.managers.DeferredManager"/>
     <classEntry path="org.log5f.helpers.formatters.DateFormatter"/>
     <classEntry path="org.log5f.helpers.resources.ResourceManager"/>
     <classEntry path="org.log5f.layouts.Log4JLayout"/>

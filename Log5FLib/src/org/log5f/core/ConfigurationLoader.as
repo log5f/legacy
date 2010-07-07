@@ -146,7 +146,7 @@ package org.log5f.core
 		/**
 		 * @private
 		 */
-		private static function set status(value:String):void
+		log5f_internal static function set status(value:String):void
 		{
 			if (value == _status)
 				return;
@@ -222,7 +222,7 @@ package org.log5f.core
 				}
 				else
 				{
-					status = ConfigurationLoaderStatus.FAILURE;
+					log5f_internal::status = ConfigurationLoaderStatus.FAILURE;
 				}
 			}
 		}
@@ -345,7 +345,7 @@ package org.log5f.core
 				if (Log5FConfigurator.traceErrors)
 					trace("Log5F:", event.text);
 				
-				status = ConfigurationLoaderStatus.FAILURE;
+				log5f_internal::status = ConfigurationLoaderStatus.FAILURE;
 			}
 		}
 		
@@ -364,7 +364,7 @@ package org.log5f.core
 			
 			loading = false;
 			
-			status = ConfigurationLoaderStatus.FAILURE;
+			log5f_internal::status = ConfigurationLoaderStatus.FAILURE;
 			
 			if (Log5FConfigurator.traceErrors)
 				trace("Log5F:", event.text);

@@ -18,7 +18,7 @@ package org.log5f
     import org.log5f.filters.LevelRangeFilter;
     import org.log5f.filters.StringMatchFilter;
     import org.log5f.formatters.UpperCaseFormatter;
-    import org.log5f.helpers.deferred.DeferredLogs;
+    import org.log5f.core.managers.DeferredManager;
     import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
@@ -57,7 +57,7 @@ package org.log5f
 		/**
 		 * @private
 		 */
-		private static var deferredLogs:DeferredLogs = null;
+		private static var deferredLogs:DeferredManager = null;
 		
 		//----------------------------------------------------------------------
 		//
@@ -126,6 +126,7 @@ package org.log5f
             return loggers[name];
         }
 		
+		[Deprecated(message="",replacement="LogEntryManager",since="1.0")]
 		/**
 		 * Defers log entry, the deferred log entries will be sent after 
 		 * completing of configuration process.
@@ -137,11 +138,12 @@ package org.log5f
 		log5f_internal static function addDeferredLog(category:Category, level:Level, message:Object, stack:String=null):void
 		{
 			if (deferredLogs == null)
-				deferredLogs = new DeferredLogs();
+				deferredLogs = new DeferredManager();
 			
 			deferredLogs.addLog(category, level, message, stack);
 		}
 		
+		[Deprecated(message="",replacement="LogEntryManager",since="1.0")]
 		/**
 		 * Removes all deferred log entries, used if configuration process is 
 		 * fail.
@@ -154,6 +156,7 @@ package org.log5f
 			deferredLogs.removeLogs();
 		}
 		
+		[Deprecated(message="",replacement="LogEntryManager",since="1.0")]
 		/**
 		 * Processes deferred log entries.
 		 */
