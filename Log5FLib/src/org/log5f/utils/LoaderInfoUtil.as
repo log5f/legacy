@@ -6,6 +6,8 @@
 package org.log5f.utils
 {
 	import flash.display.LoaderInfo;
+	
+	import org.log5f.Log5FConfigurator;
 
 	/**
 	 * Provides the utility methods for work with <code>LoaderInfo</code> class.
@@ -118,7 +120,15 @@ package org.log5f.utils
 		 */
 		private static function initialize():void
 		{
-			info = LoaderInfo.getLoaderInfoByDefinition({});
+			try
+			{
+				info = LoaderInfo.getLoaderInfoByDefinition({});
+			}
+			catch (error:SecurityError)
+			{
+				if (Log5FConfigurator.traceErrors)
+					trace("Log5F", error);
+			}
 			
 			initialized = true;
 		}
