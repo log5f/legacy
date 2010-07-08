@@ -6,6 +6,9 @@
 package org.log5f.utils
 {
 	import flash.display.LoaderInfo;
+	import flash.utils.getDefinitionByName;
+	
+	import mx.managers.SystemManager;
 	
 	import org.log5f.Log5FConfigurator;
 
@@ -128,6 +131,38 @@ package org.log5f.utils
 			{
 				if (Log5FConfigurator.traceErrors)
 					trace("Log5F", error);
+			}
+			
+			if (!info)
+			{
+				try
+				{
+					var FlexGlobals:Class = 
+						getDefinitionByName("mx.core::FlexGlobals") as Class;
+					
+					info = FlexGlobals.topLevelApplication.systemManager.loaderInfo;
+				}
+				catch (error:Error)
+				{
+					if (Log5FConfigurator.traceErrors)
+						trace("Log5F", error);
+				}
+			}
+			
+			if (!info)
+			{
+				try
+				{
+					var AppGlobals:Class = 
+						getDefinitionByName("mx.core::ApplicationGlobals") as Class;
+				
+					info = AppGlobals.application.systemManager.loaderInfo;
+				}
+				catch (error:Error)
+				{
+					if (Log5FConfigurator.traceErrors)
+						trace("Log5F", error);
+				}
 			}
 			
 			initialized = true;
