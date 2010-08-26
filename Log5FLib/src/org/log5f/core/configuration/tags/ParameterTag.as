@@ -1,42 +1,26 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2009 http://log5f.wordpress.com
-// This program is made available under the terms of the MIT License.
+// Copyright 2007, Transparent Language, Inc..
+// All Rights Reserved.
+// Transparent Language Confidential Information
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.core.configurators
+package org.log5f.core.configuration.tags
 {
-	import org.log5f.core.configuration.tags.ConfigurationTag;
-	import org.log5f.core.configurators.xml.XMLConfigurator;
-	import org.log5f.core.configurators.mxml.MXMLConfigurator;
-
+	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
+	
+	import mx.core.IMXMLObject;
+	
 	/**
-	 * A factory that encapsulates logic of the creating configurators.
+	 * TODO Add comment
 	 */
-	public class ConfiguratorFactory
+	public class ParameterTag extends EventDispatcher implements IMXMLObject
 	{
 		//----------------------------------------------------------------------
 		//
-		//	Class methods
+		//	Class constants
 		//
 		//----------------------------------------------------------------------
-		
-		/**
-		 * A factory method that creates a concrete configurator by type of the 
-		 * specified param.
-		 * 
-		 * @param data The data that used to configure <code>Log5F</code>.
-		 * 
-		 * @return Concrete configurator for the specified data.
-		 */
-		public static function getConfigurator(data:Object):IConfigurator
-		{
-			if (data is XML)
-				return new XMLConfigurator();
-			if (data is ConfigurationTag)
-				return new MXMLConfigurator();
-			
-			return null;
-		}
 		
 		//----------------------------------------------------------------------
 		//
@@ -45,11 +29,11 @@ package org.log5f.core.configurators
 		//----------------------------------------------------------------------
 		
 		/**
-		 * Constructor
+		 * Constructor.
 		 */
-		public function ConfiguratorFactory()
+		public function ParameterTag(target:IEventDispatcher=null)
 		{
-			super();
+			super(target);
 		}
 		
 		//----------------------------------------------------------------------
@@ -57,6 +41,16 @@ package org.log5f.core.configurators
 		//	Variables
 		//
 		//----------------------------------------------------------------------
+		
+		/**
+		 * The prameter's name.
+		 */
+		public var name:String;
+
+		/**
+		 * The prameter's value.
+		 */
+		public var value:Object;
 		
 		//----------------------------------------------------------------------
 		//
@@ -69,5 +63,17 @@ package org.log5f.core.configurators
 		//	Methods
 		//
 		//----------------------------------------------------------------------
+
+		//-----------------------------------
+		//	Methods: IMXMLObject
+		//-----------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function initialized(document:Object, id:String):void
+		{
+			
+		}
 	}
 }

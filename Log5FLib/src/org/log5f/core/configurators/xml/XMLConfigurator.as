@@ -142,6 +142,8 @@ package org.log5f.core.configurators.xml
 		{
 			this.properties = source as XML;
 			
+			this._traceErrors = !(properties.@traceErrors == "false");
+			
 			for each (var logger:XML in properties.logger)
 			{
 				try
@@ -152,6 +154,8 @@ package org.log5f.core.configurators.xml
 				{
 					if (this.traceErrors)
 						trace("Log5F:", error.getStackTrace());
+					
+					return false;
 				}
 			}
 			
@@ -165,10 +169,10 @@ package org.log5f.core.configurators.xml
 				{
 					if (this.traceErrors)
 						trace("Log5F:", error.getStackTrace());
+					
+					return false;
 				}
 			}
-			
-			this._traceErrors = !(properties.@traceErrors == "false");
 			
 			return true;
 		}
