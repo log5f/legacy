@@ -50,7 +50,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 	// DO NOT MODIFY THE FOLLOWING FOUR LINES
 	// Location visited after installation is complete if installation is required
 	var MMPlayerType = (isIE == true) ? "ActiveX" : "PlugIn";
-	var MMredirectURL = encodeURI(window.location);
+	var MMredirectURL = window.location;
     document.title = document.title.slice(0, 47) + " - Flash Player Installation";
     var MMdoctitle = document.title;
 
@@ -73,6 +73,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 	// embed the Flash Content SWF when all tests are passed
 	AC_FL_RunContent(
 			"src", "${swf}",
+			"FlashVars", "log5f=log5f_from_fv.xml",
 			"width", "${width}",
 			"height", "${height}",
 			"align", "middle",

@@ -4,22 +4,42 @@
     xmlns:mx="http://www.adobe.com/2006/mxml"
     preloader="org.log5f.demos.view.controls.Preloader"
     xmlns:view="org.log5f.demos.test.view.*"
-    applicationComplete="applicationCompleteHandler(event)">
+    applicationComplete="applicationCompleteHandler(event)" xmlns:log5f="http://log5f.org" xmlns:appenders="org.log5f.appenders.*" xmlns:layouts="org.log5f.layouts.*">
 
     <mx:Script>
         <![CDATA[
-            import mx.events.FlexEvent;
-            import org.log5f.demos.test.SomeTestClass;
+			import mx.events.FlexEvent;
+			
+			import org.log5f.Log5FConfigurator;
+			import org.log5f.demos.test.SomeTestClass;
 
+			[Bindable]
+			private var m:String;
+			
             protected function applicationCompleteHandler(event:FlexEvent):void
             {
-                this.service.send();
+//                this.service.send();
+				
+				var params:Object = Application.application.parameters;
+				
+				Log5FConfigurator.configure(new URLRequest("notexisting.url"));
             }
         ]]>
     </mx:Script>
 
     <mx:Style source="assets/styles/style.css"/>
 
+	<!--<log5f:Configuration>
+		<log5f:Logger category="{this}" level="ERROR">
+			<appenders:TraceAppender>
+				<appenders:layout>
+					<layouts:SimpleLayout />
+				</appenders:layout>
+			</appenders:TraceAppender>
+		</log5f:Logger>
+	</log5f:Configuration>-->
+	
+	
     <mx:HTTPService id="service"
         url="log5f.properties"
         resultFormat="e4x"/>
