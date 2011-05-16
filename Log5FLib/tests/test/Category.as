@@ -16,6 +16,8 @@ package test
 	
 	use namespace log5f_internal;
 	
+	// TODO Try to use mock object instead of this class.
+	
 	public class Category extends org.log5f.Category implements IEventDispatcher
 	{
 		public function Category(name:String)
