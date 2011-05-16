@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This build file provdes a close approximation of the build process 
+     and build settings inside Flash Builder, but it is not an exact copy.  
+     Please customize this file as necessary. -->
+<!-- Generated from project settings as of 7/15/10 6:07 PM -->
+<project name="Log5FTest" default="build" basedir="D:/Workspaces/CW1/Log5FTest">
+
+	<property name="FLEX_HOME" value="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/sdks/4.0.0"/>
+	<property name="SDK_VERSION" value="4.0.0.14159"/>
+
+	<taskdef name="mxmlc" classname="flex.ant.MxmlcTask" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+	<taskdef name="compc" classname="flex.ant.CompcTask" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+	<taskdef name="html-wrapper" classname="flex.ant.HtmlWrapperTask" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+	<taskdef name="asdoc" classname="flex.ant.AsDocTask" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+
+	<property name="PROJECT_DIR" value="D:/Workspaces/CW1/Log5FTest"/>
+	<property name="SOURCE_DIR" value="${PROJECT_DIR}/src"/>
+	<property name="OUTPUT_DIR" value="${PROJECT_DIR}/bin-debug"/>
+	<property name="LOCALE" value="en_US"/>
+
+	<target name="build">
+		<antcall target="clean"/>
+		<antcall target="compile"/>
+		<antcall target="wrapper"/>
+		<antcall target="asdoc"/>
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true">
+			<fileset dir="${OUTPUT_DIR}" includes="**/*"/>
+		</delete>
+	</target>
+
+	<target name="compile">
+		<mxmlc 
+			file="${SOURCE_DIR}/TestRunner.mxml"
+			output="${OUTPUT_DIR}/TestRunner.swf"
+			locale="${LOCALE}"
+			static-rsls="false"
+			accessible="false"
+		>
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+
+			<source-path path-element="${SOURCE_DIR}"/>
+
+			<library-path file="${FLEX_HOME}/frameworks/libs/textLayout.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/osmf.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/framework.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/spark.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/sparkskins.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/rpc.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/datavisualization.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/flash-integration.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/flex.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/utilities.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/locale/${LOCALE}" append="true"/>
+			<library-path file="${PROJECT_DIR}/libs" append="true"/>
+			<library-path file="D:/Workspaces/CW1/Log5F/bin/Log5F.swc" append="true"/>
+			<library-path file="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/libs/version4libs/Common/" append="true"/>
+			<library-path file="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/libs/version4libs/FlexProject/" append="true"/>
+			<library-path file="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/locale/version4locale/" append="true"/>
+
+			<external-library-path file="${FLEX_HOME}/frameworks/libs/player/10.0/playerglobal.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/datavisualization.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/flash-integration.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/flex.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/utilities.swc" append="true"/>
+			<library-path file="D:/Workspaces/CW1/Log5F/bin/Log5F.swc" append="true"/>
+
+			<library-path dir="${FLEX_HOME}/frameworks/locale/${LOCALE}" includes="*" append="true"/>
+			<library-path dir="${PROJECT_DIR}/libs" includes="*" append="true"/>
+			<library-path dir="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/libs/version4libs/Common/" includes="*" append="true"/>
+			<library-path dir="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/libs/version4libs/FlexProject/" includes="*" append="true"/>
+			<library-path dir="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/locale/version4locale/" includes="*" append="true"/>
+
+		</mxmlc>
+
+
+	</target>
+
+	<target name="wrapper">
+		<html-wrapper 
+			output="${OUTPUT_DIR}"
+			file="TestRunner.html"
+			swf="TestRunner"
+			history="true"
+			express-install="true"
+			version-detection="true"
+			version-major="10"
+			version-minor="0"
+			version-revision="0"
+			height="100%"
+			width="100%"
+			title="TestRunner"
+			bgcolor="white"
+		/>
+	</target>
+
+	<target name="asdoc">
+		<asdoc output="${OUTPUT_DIR}/asdoc" lenient="true" failonerror="false">
+			<doc-sources path-element="${SOURCE_DIR}"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/textLayout.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/osmf.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/framework.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/spark.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/sparkskins.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/rpc.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/datavisualization.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/flash-integration.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/flex.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/utilities.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/locale/${LOCALE}" append="true"/>
+			<library-path file="${PROJECT_DIR}/libs" append="true"/>
+			<library-path file="D:/Workspaces/CW1/Log5F/bin/Log5F.swc" append="true"/>
+			<library-path file="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/libs/version4libs/Common/" append="true"/>
+			<library-path file="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/libs/version4libs/FlexProject/" append="true"/>
+			<library-path file="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/locale/version4locale/" append="true"/>
+
+			<external-library-path file="${FLEX_HOME}/frameworks/libs/player/10.0/playerglobal.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/datavisualization.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/flash-integration.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/flex.swc" append="true"/>
+			<library-path file="${FLEX_HOME}/frameworks/libs/utilities.swc" append="true"/>
+			<library-path file="D:/Workspaces/CW1/Log5F/bin/Log5F.swc" append="true"/>
+
+			<library-path dir="${FLEX_HOME}/frameworks/locale/${LOCALE}" includes="*" append="true"/>
+			<library-path dir="${PROJECT_DIR}/libs" includes="*" append="true"/>
+			<library-path dir="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/libs/version4libs/Common/" includes="*" append="true"/>
+			<library-path dir="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/libs/version4libs/FlexProject/" includes="*" append="true"/>
+			<library-path dir="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4 Plug-in/eclipse/plugins/com.adobe.flexbuilder.flexunit_4.0.0.272416/flexunitframework/locale/version4locale/" includes="*" append="true"/>
+		</asdoc>
+	</target>
+
+</project>

@@ -4,12 +4,19 @@ package org.log5f.layouts
 	
 	import flexunit.framework.Assert;
 	
+	import org.flexunit.assertThat;
+	import org.flexunit.asserts.assertEquals;
+	import org.flexunit.asserts.assertTrue;
+	import org.hamcrest.core.anyOf;
+	import org.hamcrest.object.equalTo;
 	import org.log5f.Category;
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
 
 	public class Log4JLayoutTest
 	{
+		namespace log4j = "http://jakarta.apache.org/log4j/"; 
+		
 		//----------------------------------------------------------------------
 		//
 		//  Constructor
@@ -57,19 +64,19 @@ package org.log5f.layouts
 			
 			var event:LogEvent = new LogEvent(new Category("xxx.yyy.zzz"), Level.DEBUG, "Message", stack);
 			
-			Assert.assertEquals("", 
-				'<log4j:event logger="xxx.yyy.zzz" timestamp="' + new Date().time + '" level="DEBUG" thread="' + LoaderInfo.getLoaderInfoByDefinition({}).url + '">' + 
-					'<log4j:message>' + 
-						'<![CDATA[' + 
-							'Message' + 
-						']]>' + 
-					'</log4j:message>' + 
-					'<log4j:locationInfo class="my.test.Test" method="my" file="C:\Labs\Log5FTest\src\my\test\Test.as" line="21"/>' + 
-					'<log4j:properties>' + 
-						'<log4j:data name="application" value="TestRunner" />' + 
-					'</log4j:properties>' + 
-				'</log4j:event>', 
-				layout.format(event));
+			use namespace log4j;
+			
+			var log4j:XML = new XML(layout.format(event));
+			
+			assertEquals("xxx.yyy.zzz", log4j.@logger);
+			assertEquals(LoaderInfo.getLoaderInfoByDefinition({}).url, log4j.@thread);
+			assertEquals("Message", log4j.message);
+			assertEquals("my.test.Test", log4j.locationInfo.attribute("class"));
+			assertEquals("my", log4j.locationInfo.@method);
+			assertEquals("C:\Labs\Log5FTest\src\my\test\Test.as", log4j.locationInfo.@file);
+			assertEquals("21", log4j.locationInfo.@line);
+			assertEquals("application", log4j.properties.data.@name);
+			assertThat(log4j.properties.data.@value, anyOf(equalTo("TestRunner"), equalTo("FlexUnitApplication")));
 		}
 		
 		[Test]
@@ -79,19 +86,19 @@ package org.log5f.layouts
 			
 			var event:LogEvent = new LogEvent(new Category("xxx.yyy.zzz"), Level.DEBUG, "Message");
 			
-			Assert.assertEquals("", 
-				'<log4j:event logger="xxx.yyy.zzz" timestamp="' + new Date().time + '" level="DEBUG" thread="' + LoaderInfo.getLoaderInfoByDefinition({}).url + '">' + 
-					'<log4j:message>' + 
-						'<![CDATA[' + 
-							'Message' + 
-						']]>' + 
-					'</log4j:message>' + 
-					'<log4j:locationInfo class="" method="" file="" line=""/>' + 
-					'<log4j:properties>' + 
-						'<log4j:data name="application" value="TestRunner" />' + 
-					'</log4j:properties>' + 
-				'</log4j:event>', 
-				layout.format(event));
+			use namespace log4j;
+			
+			var log4j:XML = new XML(layout.format(event));
+			
+			assertEquals("xxx.yyy.zzz", log4j.@logger);
+			assertEquals(LoaderInfo.getLoaderInfoByDefinition({}).url, log4j.@thread);
+			assertEquals("Message", log4j.message);
+			assertEquals("", log4j.locationInfo.attribute("class"));
+			assertEquals("", log4j.locationInfo.@method);
+			assertEquals("", log4j.locationInfo.@file);
+			assertEquals("", log4j.locationInfo.@line);
+			assertEquals("application", log4j.properties.data.@name);
+			assertThat(log4j.properties.data.@value, anyOf(equalTo("TestRunner"), equalTo("FlexUnitApplication")));
 		}
 	}
 }

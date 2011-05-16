@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="" >
+<testsuite  name="Default Test Suite" project="Log5FTest">
+<testsuite name="org.log5f:Log5FTests" type="testsuiteclass"/>
+</testsuite>
+</testrun>
