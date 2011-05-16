@@ -6,11 +6,17 @@
 package org.log5f
 {
 	import org.log5f.core.configurators.xml.XMLConfiguratorTest;
+	import org.log5f.core.managers.DeferredManagerTest;
+	import org.log5f.core.net.ConfigLoaderTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
 	public class Log5FTests
 	{
 		public var XMLConfigurator:XMLConfiguratorTest;
+		
+		public var DeferredManager:DeferredManagerTest;
+
+		public var ConfigLoader:ConfigLoaderTest;
 	}
 }

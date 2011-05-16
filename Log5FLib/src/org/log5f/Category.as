@@ -347,13 +347,18 @@ package org.log5f
 		 */
 		log5f_internal function log(level:Level, message:Object, stack:String=null):void
 		{
+			if (!LoggerManager.log5f_internal::enabled)
+			{
+				return;
+			}
+			
 			// if Log5F isn't configured - defer log entry
 			
-			if (!Log5FConfigurator.ready)
+			if (Log5FConfigurator.log5f_internal::needUpdate)
 			{
 				DeferredManager.log5f_internal::addLog(this, level, message, stack);
 				
-				Log5FConfigurator.log5f_internal::configure();
+				Log5FConfigurator.log5f_internal::update();
 				
 				return;
 			}
@@ -390,7 +395,7 @@ package org.log5f
 			
 			// stack is not used 
 			
-			if (!this.useStack && Log5FConfigurator.ready)
+			if (!this.useStack && !Log5FConfigurator.log5f_internal::needUpdate)
 			{
 				this.log5f_internal::log(level, message);
 				

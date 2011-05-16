@@ -14,11 +14,13 @@ package org.log5f
     import org.log5f.appenders.TraceAppender;
     import org.log5f.appenders.XMLSocketAppender;
     import org.log5f.appenders.XPanelAppender;
+    import org.log5f.core.ConfigurationLoader;
+    import org.log5f.core.ConfigurationLoaderStatus;
+    import org.log5f.core.managers.DeferredManager;
     import org.log5f.filters.DenyAllFilter;
     import org.log5f.filters.LevelRangeFilter;
     import org.log5f.filters.StringMatchFilter;
     import org.log5f.formatters.UpperCaseFormatter;
-    import org.log5f.core.managers.DeferredManager;
     import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
@@ -54,10 +56,46 @@ package org.log5f
 		 */
 		private static var loggers:Object;
 
+		[Deprecated(message="",replacement="DeferredManager",since="1.0")]
 		/**
 		 * @private
 		 */
 		private static var deferredLogs:DeferredManager = null;
+		
+		//----------------------------------------------------------------------
+		//
+		//	Class variables
+		//
+		//----------------------------------------------------------------------
+		
+		//-----------------------------------
+		//	ready
+		//-----------------------------------
+		
+		private static var _enabled:Boolean = true;
+		
+		/**
+		 * Indicates if Log5F is <i>enabled</i>.
+		 * 
+		 * <p>If this property is <code>true</code> this means that least one 
+		 * configuration process was successfull.</p>
+		 * 
+		 * <p><b>Note</b>: If this property is <code>false</code>, all logs
+		 * will be ignored.</p>
+		 *   
+		 */
+		log5f_internal static function get enabled():Boolean
+		{
+			return _enabled;
+		}
+		
+		/**
+		 * @private
+		 */
+		log5f_internal static function set enabled(value:Boolean):void
+		{
+			_enabled = value;
+		}
 		
 		//----------------------------------------------------------------------
 		//
@@ -126,7 +164,7 @@ package org.log5f
             return loggers[name];
         }
 		
-		[Deprecated(message="",replacement="LogEntryManager",since="1.0")]
+		[Deprecated(message="",replacement="DeferredManager",since="1.0")]
 		/**
 		 * Defers log entry, the deferred log entries will be sent after 
 		 * completing of configuration process.
@@ -137,35 +175,26 @@ package org.log5f
 		 */
 		log5f_internal static function addDeferredLog(category:Category, level:Level, message:Object, stack:String=null):void
 		{
-			if (deferredLogs == null)
-				deferredLogs = new DeferredManager();
 			
-			deferredLogs.addLog(category, level, message, stack);
 		}
 		
-		[Deprecated(message="",replacement="LogEntryManager",since="1.0")]
+		[Deprecated(message="",replacement="DeferredManager",since="1.0")]
 		/**
 		 * Removes all deferred log entries, used if configuration process is 
 		 * fail.
 		 */
 		log5f_internal static function removeDeferredLogs():void
 		{
-			if (deferredLogs == null)
-				return;
 			
-			deferredLogs.removeLogs();
 		}
 		
-		[Deprecated(message="",replacement="LogEntryManager",since="1.0")]
+		[Deprecated(message="",replacement="DeferredManager",since="1.0")]
 		/**
 		 * Processes deferred log entries.
 		 */
 		log5f_internal static function processDeferredLogs():void
 		{
-			if (deferredLogs == null)
-				return;
 			
-			deferredLogs.processLogs();
 		}
 		
 		/**

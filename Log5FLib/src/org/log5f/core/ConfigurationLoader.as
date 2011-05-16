@@ -151,9 +151,9 @@ package org.log5f.core
 			if (value == _status)
 				return;
 			
-			if (!value != ConfigurationLoaderStatus.READY &&
-				!value != ConfigurationLoaderStatus.SUCCESS &&
-				!value != ConfigurationLoaderStatus.FAILURE)
+			if (value != ConfigurationLoaderStatus.READY &&
+				value != ConfigurationLoaderStatus.SUCCESS &&
+				value != ConfigurationLoaderStatus.FAILURE)
 			{
 				return;
 			}

@@ -5,10 +5,15 @@
 
 package org.log5f
 {
-	import org.log5f.core.ConfigurationLoader;
+	import flash.events.ErrorEvent;
+	import flash.events.Event;
+	import flash.net.URLRequest;
+	
 	import org.log5f.core.configurators.ConfiguratorFactory;
 	import org.log5f.core.configurators.IConfigurator;
 	import org.log5f.core.managers.DeferredManager;
+	import org.log5f.core.net.ConfigLoader;
+	import org.log5f.utils.LoaderInfoUtil;
 
 	/**
 	 * Configures the Log5F.
@@ -21,32 +26,42 @@ package org.log5f
 		//
 		//----------------------------------------------------------------------
 		
+		/**
+		 * Defines the queue of configuration files. 
+		 */
+		private static const PREDEFINED_REQUESTS:Array = 
+			[
+				new URLRequest("log5f.xml"),
+				new URLRequest("log5f.properties"),
+			];
+		
+		//----------------------------------------------------------------------
+		//
+		//	Class variables
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private static var ready:Boolean = false;
+		
+		/**
+		 * @private
+		 */
+		private static var loader:ConfigLoader;
+		
+		/**
+		 * @private
+		 */
+		private static var initialized:Boolean = init();
+		
 		//----------------------------------------------------------------------
 		//
 		//	Class properties
 		//
 		//----------------------------------------------------------------------
 		
-		//-----------------------------------
-		//	ready
-		//-----------------------------------
-		
-		/**
-		 * @private
-		 * Storage for the ready property.
-		 */
-		private static var _ready:Boolean = false;
-
-		/**
-		 * Indicates if Log5F is ready to use.
-		 * 
-		 * @default false;
-		 */
-		public static function get ready():Boolean
-		{
-			return _ready;
-		}
-
 		//-----------------------------------
 		//	traceErrors
 		//-----------------------------------
@@ -90,75 +105,148 @@ package org.log5f
 		 * configuration immediately, if it is a <code>String</code> it will 
 		 * used as an url to load configuration data.
 		 * 
-		 * @param force Inidicates if need to start loading XML data from 
-		 * specified url in <code>source</code> at once.
-		 * 
 		 * @see TODO SEE MORE ABOUT DEFAULT URLs
 		 */
-		public static function configure(source:Object, force:Boolean=false):void
+		public static function configure(source:Object):void
 		{
 			var configurator:IConfigurator = 
 				ConfiguratorFactory.getConfigurator(source);
 			
 			if (configurator)
 			{
-				_ready = _ready || configurator.configure(source);
+				ready = ready || configurator.configure(source);
 				
 				_traceErrors = _traceErrors ? configurator.traceErrors : false;
 				
-				DeferredManager.log5f_internal::processLogs();
-				
 				return;
 			}
-			else if (source is String)
-			{
-				ConfigurationLoader.log5f_internal::add(String(source));
-			}
 			
-			if (force)
+			source = source is String ? new URLRequest(String(source)) : source;
+			
+			if (source is URLRequest)
 			{
-				log5f_internal::configure();
+				if (!loader)
+				{
+					loader = new ConfigLoader();
+					loader.addEventListener(Event.CHANGE, loader_changeHandler);
+					loader.addEventListener(Event.COMPLETE, loader_completeHandler);
+					loader.addEventListener(ErrorEvent.ERROR, loader_errorHandler);
+				}
+				
+				loader.addRequest(URLRequest(source));
 			}
+		}
+
+		/**
+		 * Indicates if Log5FConfigurator is needed for update
+		 */
+		log5f_internal static function get needUpdate():Boolean
+		{
+			return (loader && loader.hasSpecifiedRequest) || !ready;
 		}
 		
 		/**
 		 * The internal method that starts loading configuration files.
 		 */
-		log5f_internal static function configure():void
+		log5f_internal static function update():void
 		{
-			ConfigurationLoader.log5f_internal::load();
+			if (loader)
+				loader.load();
+			else
+				changeEnabled();
+		}
+		
+		/**
+		 * @private
+		 */
+		private static function init():Boolean
+		{
+			loader = new ConfigLoader();
+			loader.addEventListener(Event.CHANGE, loader_changeHandler);
+			loader.addEventListener(Event.COMPLETE, loader_completeHandler);
+			loader.addEventListener(ErrorEvent.ERROR, loader_errorHandler);
+			
+			loader.predefinedRequests = PREDEFINED_REQUESTS;
+			
+			var params:Object = LoaderInfoUtil.getParameters();
+			
+			if (params && params["log5f"])
+			{
+				loader.addRequest(new URLRequest(params["log5f"]));
+			}
+			
+			return true;
+		}
+		
+		/**
+		 * @private
+		 */
+		private static function changeEnabled():void
+		{
+			LoggerManager.log5f_internal::enabled = ready;
+			
+			if (ready)
+			{
+				DeferredManager.log5f_internal::processLogs();
+			}
+			else
+			{
+				DeferredManager.log5f_internal::removeLogs();
+			}
 		}
 		
 		//----------------------------------------------------------------------
 		//
-		//	Constructor
+		//	Class event handlers
 		//
 		//----------------------------------------------------------------------
 		
 		/**
-		 * Constructor
+		 * @private
 		 */
-		public function Log5FConfigurator()
+		private static function loader_completeHandler(event:Event):void
 		{
-			super();
+			if (loader)
+			{
+				loader.removeEventListener(Event.CHANGE, loader_changeHandler);
+				loader.removeEventListener(Event.COMPLETE, loader_completeHandler);
+				loader.removeEventListener(ErrorEvent.ERROR, loader_errorHandler);
+				
+				loader = null;
+			}
+			
+			changeEnabled();
 		}
 		
-		//----------------------------------------------------------------------
-		//
-		//	Variables
-		//
-		//----------------------------------------------------------------------
+		/**
+		 * @private
+		 */
+		private static function loader_changeHandler(event:Event):void
+		{
+			if (loader)
+			{
+				Log5FConfigurator.configure(loader.data);
+			}
+		}
 		
-		//----------------------------------------------------------------------
-		//
-		//	Properties
-		//
-		//----------------------------------------------------------------------
-		
-		//----------------------------------------------------------------------
-		//
-		//	Methods
-		//
-		//----------------------------------------------------------------------
+		/**
+		 * @private
+		 */
+		private static function loader_errorHandler(event:ErrorEvent):void
+		{
+			if (loader)
+			{
+				loader.removeEventListener(Event.CHANGE, loader_changeHandler);
+				loader.removeEventListener(Event.COMPLETE, loader_completeHandler);
+				loader.removeEventListener(ErrorEvent.ERROR, loader_errorHandler);
+				
+				loader = null;
+			}
+			
+			if (traceErrors)
+				trace("Log5F:", event.text);
+			
+			changeEnabled();
+		}
 	}
 }

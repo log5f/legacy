@@ -32,6 +32,7 @@ package org.log5f.core.configurators
 		{
 			if (data is XML)
 				return new XMLConfigurator();
+			
 			if (data is ConfigurationTag)
 				return new MXMLConfigurator();
 			

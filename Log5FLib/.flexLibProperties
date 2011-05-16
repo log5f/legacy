@@ -71,6 +71,10 @@
     <classEntry path="org.log5f.core.configuration.tags.ConfigurationTag"/>
     <classEntry path="org.log5f.core.configuration.tags.ParameterTag"/>
     <classEntry path="org.log5f.core.configurators.mxml.MXMLConfigurator"/>
+    <classEntry path="org.log5f.core.net.ConfigLoader"/>
+    <classEntry path="org.log5f.core.managers.DeferredManagerTest"/>
+    <classEntry path="test.Category"/>
+    <classEntry path="org.log5f.core.net.ConfigLoaderTest"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>
