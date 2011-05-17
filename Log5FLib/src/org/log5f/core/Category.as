@@ -516,7 +516,7 @@ package org.log5f.core
 		public function toString():String
 		{
 			return '[Category name="' + this.name + 
-				   '" level="' + this.level.toString() + '"]';
+				   '" level="' + this.level + '"]';
 		}
 	}
 }

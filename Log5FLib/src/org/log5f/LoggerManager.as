@@ -64,6 +64,9 @@ package org.log5f
 		//	ready
 		//-----------------------------------
 		
+		/**
+		 * Storage for enabled property.
+		 */
 		private static var _enabled:Boolean = true;
 		
 		/**

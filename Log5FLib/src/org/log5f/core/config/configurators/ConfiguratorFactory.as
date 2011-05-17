@@ -5,9 +5,9 @@
 
 package org.log5f.core.config.configurators
 {
-	import org.log5f.core.config.tags.ConfigurationTag;
-	import org.log5f.core.config.configurators.xml.XMLConfigurator;
 	import org.log5f.core.config.configurators.mxml.MXMLConfigurator;
+	import org.log5f.core.config.configurators.xml.XMLConfigurator;
+	import org.log5f.core.config.tags.ConfigurationTag;
 
 	/**
 	 * A factory that encapsulates logic of the creating configurators.
@@ -30,11 +30,11 @@ package org.log5f.core.config.configurators
 		 */
 		public static function getConfigurator(data:Object):IConfigurator
 		{
-			if (data is XML)
-				return new XMLConfigurator();
-			
 			if (data is ConfigurationTag)
 				return new MXMLConfigurator();
+			
+			if (data is XML || data is String)
+				return new XMLConfigurator();
 			
 			return null;
 		}

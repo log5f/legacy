@@ -9,14 +9,14 @@ package org.log5f.core.config
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	
+	import org.log5f.LoggerManager;
 	import org.log5f.core.config.configurators.ConfiguratorFactory;
 	import org.log5f.core.config.configurators.IConfigurator;
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.core.net.ConfigLoader;
 	import org.log5f.error.InvalidConfigError;
-	import org.log5f.utils.LoaderInfoUtil;
-	import org.log5f.LoggerManager;
 	import org.log5f.log5f_internal;
+	import org.log5f.utils.LoaderInfoUtil;
 
 	/**
 	 * Configures the Log5F.
@@ -255,8 +255,8 @@ package org.log5f.core.config
 				loader = null;
 			}
 			
-			if (traceErrors)
-				trace("Log5F:", event.text);
+//			if (traceErrors)
+//				trace("Log5F:", event.text);
 			
 			changeEnabled();
 		}

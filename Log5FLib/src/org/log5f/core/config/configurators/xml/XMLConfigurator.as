@@ -147,7 +147,7 @@ package org.log5f.core.config.configurators.xml
 		 */
 		public function configure(source:Object):Boolean
 		{
-			this.properties = source as XML;
+			this.properties = XML(source);
 			
 			this._traceErrors = !(properties.@traceErrors == "false");
 			

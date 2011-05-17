@@ -282,13 +282,14 @@ package org.log5f.core.net
 			{
 				this.load();
 			}
+			else
+			{
+				this.dispatchEvent(new Event(Event.COMPLETE));
+			}
 		}
 		
 		/**
 		 * The handler of "ioError" event of <code>loader</code>.
-		 *
-		 * Sets <code>status</code> to <code>failure</code> if not many files to
-		 * load, or <code>redy</code> - otherwise.
 		 *
 		 * @param event The Input/Output Error event.
 		 */
@@ -319,8 +320,6 @@ package org.log5f.core.net
 		
 		/**
 		 * The handler of <i>securityError</i> event of <code>loader</code>.
-		 *
-		 * Sets <code>status</code> to <code>failure</code>.
 		 *
 		 * @param event The Security Error event.
 		 */
