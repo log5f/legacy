@@ -10,8 +10,8 @@ package org.log5f.core.configurators.mxml
 	import org.log5f.Level;
 	import org.log5f.Logger;
 	import org.log5f.LoggerManager;
-	import org.log5f.core.configuration.tags.ConfigurationTag;
-	import org.log5f.core.configuration.tags.LoggerTag;
+	import org.log5f.core.config.tags.ConfigurationTag;
+	import org.log5f.core.config.tags.LoggerTag;
 	import org.log5f.core.configurators.IConfigurator;
 	
 	[ExcludeClass]

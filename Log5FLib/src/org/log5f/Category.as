@@ -12,6 +12,11 @@ package org.log5f
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.events.LogEvent;
 
+	[ExcludeClass]
+	
+	/**
+	 * 
+	 */
 	public class Category implements IAppenderAttachable
 	{
 		//----------------------------------------------------------------------

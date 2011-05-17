@@ -4,7 +4,7 @@
 // Transparent Language Confidential Information
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.core.configuration.tags
+package org.log5f.core.config.tags
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -55,7 +55,7 @@ package org.log5f.core.configuration.tags
 		public var traceErrors:Boolean = true;
 		
 		[ArrayElementType("org.log5f.IAppender")]
-		[ArrayElementType("org.log5f.core.configuration.tags.LoggerTag")]
+		[ArrayElementType("org.log5f.core.config.tags.LoggerTag")]
 		/**
 		 * Contains loggers and appenders.
 		 */

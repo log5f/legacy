@@ -4,7 +4,7 @@
 // Transparent Language Confidential Information
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.core.configuration.tags
+package org.log5f.core.config.tags
 {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;

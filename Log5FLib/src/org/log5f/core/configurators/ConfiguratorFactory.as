@@ -5,7 +5,7 @@
 
 package org.log5f.core.configurators
 {
-	import org.log5f.core.configuration.tags.ConfigurationTag;
+	import org.log5f.core.config.tags.ConfigurationTag;
 	import org.log5f.core.configurators.xml.XMLConfigurator;
 	import org.log5f.core.configurators.mxml.MXMLConfigurator;
 

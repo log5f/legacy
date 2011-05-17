@@ -4,7 +4,7 @@
 // Transparent Language Confidential Information
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.core.configuration.tags
+package org.log5f.core.config.tags
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -57,7 +57,7 @@ package org.log5f.core.configuration.tags
 		 */
 		public var type:IFactory;
 		
-		[ArrayElementType("org.log5f.core.configuration.tags.ParameterTag")]
+		[ArrayElementType("org.log5f.core.config.tags.ParameterTag")]
 		/**
 		 * A list of parameters that configure appender.
 		 */

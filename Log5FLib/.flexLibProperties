@@ -64,10 +64,10 @@
     <classEntry path="org.log5f.Log5FTests"/>
     <classEntry path="org.log5f.Log5FConfiguratorTest"/>
     <classEntry path="org.log5f.utils.LoaderInfoUtil"/>
-    <classEntry path="org.log5f.core.configuration.tags.LoggerTag"/>
-    <classEntry path="org.log5f.core.configuration.tags.AppenderTag"/>
-    <classEntry path="org.log5f.core.configuration.tags.ConfigurationTag"/>
-    <classEntry path="org.log5f.core.configuration.tags.ParameterTag"/>
+    <classEntry path="org.log5f.core.config.tags.LoggerTag"/>
+    <classEntry path="org.log5f.core.config.tags.AppenderTag"/>
+    <classEntry path="org.log5f.core.config.tags.ConfigurationTag"/>
+    <classEntry path="org.log5f.core.config.tags.ParameterTag"/>
     <classEntry path="org.log5f.core.configurators.mxml.MXMLConfigurator"/>
     <classEntry path="org.log5f.core.net.ConfigLoader"/>
     <classEntry path="org.log5f.core.managers.DeferredManagerTest"/>
