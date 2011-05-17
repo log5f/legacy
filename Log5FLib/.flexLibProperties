@@ -6,7 +6,7 @@
     <classEntry path="org.log5f.core.Category"/>
     <classEntry path="org.log5f.IAppender"/>
     <classEntry path="org.log5f.core.IAppenderAttachable"/>
-    <classEntry path="org.log5f.IConverter"/>
+    <classEntry path="org.log5f.layouts.converters.IConverter"/>
     <classEntry path="org.log5f.IFormatter"/>
     <classEntry path="org.log5f.Level"/>
     <classEntry path="org.log5f.Log5F"/>

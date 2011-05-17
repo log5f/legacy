@@ -5,7 +5,7 @@
 
 package org.log5f.layouts
 {
-	import org.log5f.IConverter;
+	import org.log5f.layouts.converters.IConverter;
 	import org.log5f.ILayout;
 	import org.log5f.events.LogEvent;
 	import org.log5f.layouts.converters.CategoryConverter;

@@ -5,6 +5,7 @@
 
 package org.log5f.core.config
 {
+	[Deprecated(replacement="Log5FConfigurator",since="1.0")]
 	/**
 	 * Defines values for <code>ConfigurationLoader.status</code> property.
 	 */

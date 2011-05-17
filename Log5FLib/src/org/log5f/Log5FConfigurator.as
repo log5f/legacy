@@ -13,6 +13,7 @@ package org.log5f
 	import org.log5f.core.config.configurators.IConfigurator;
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.core.net.ConfigLoader;
+	import org.log5f.error.InvalidConfigError;
 	import org.log5f.utils.LoaderInfoUtil;
 
 	/**
@@ -80,8 +81,9 @@ package org.log5f
 		 * 
 		 * <p><b>Note</b>: This feature con't be enabled from configuration.
 		 * If you can two configuration first that disables traceErrors and 
-		 * second that allows traceErrors the allowing from the second 
-		 * will ignored. Only way to enable this feauter - not disable it.</p> 
+		 * second that allows traceErrors the allowing from the second one 
+		 * will be ignored. There is only one way to enable this feauter - 
+		 * not disable it.</p> 
 		 * 
 		 * @default true
 		 */
@@ -114,6 +116,16 @@ package org.log5f
 			
 			if (configurator)
 			{
+				try
+				{
+					ready = ready || configurator.configure(source);
+				}
+				catch (error:InvalidConfigError)
+				{
+					if (traceErrors)
+						trace("Log5F:", error.getStackTrace());
+				}
+				
 				ready = ready || configurator.configure(source);
 				
 				_traceErrors = _traceErrors ? configurator.traceErrors : false;

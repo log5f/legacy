@@ -31,7 +31,7 @@ package org.log5f.core.config
 	import org.log5f.utils.LoaderInfoUtil;
 	
 	[ExcludeClass]
-	
+	[Deprecated(replacement="Log5FConfigurator",since="1.0")]
 	/**
 	 * Loads configuration file.
 	 */

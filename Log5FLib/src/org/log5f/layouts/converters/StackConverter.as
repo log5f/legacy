@@ -5,7 +5,6 @@
 
 package org.log5f.layouts.converters
 {
-	import org.log5f.IConverter;
 	import org.log5f.events.LogEvent;
 
 	/**

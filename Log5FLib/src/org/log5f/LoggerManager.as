@@ -14,9 +14,6 @@ package org.log5f
     import org.log5f.appenders.TraceAppender;
     import org.log5f.appenders.XMLSocketAppender;
     import org.log5f.appenders.XPanelAppender;
-    import org.log5f.core.config.ConfigurationLoader;
-    import org.log5f.core.config.ConfigurationLoaderStatus;
-    import org.log5f.core.managers.DeferredManager;
     import org.log5f.filters.DenyAllFilter;
     import org.log5f.filters.LevelRangeFilter;
     import org.log5f.filters.StringMatchFilter;
@@ -57,12 +54,6 @@ package org.log5f
 		 */
 		private static var loggers:Object;
 
-		[Deprecated(message="",replacement="DeferredManager",since="1.0")]
-		/**
-		 * @private
-		 */
-		private static var deferredLogs:DeferredManager = null;
-		
 		//----------------------------------------------------------------------
 		//
 		//	Class variables
@@ -165,39 +156,6 @@ package org.log5f
             return loggers[name];
         }
 		
-		[Deprecated(message="",replacement="DeferredManager",since="1.0")]
-		/**
-		 * Defers log entry, the deferred log entries will be sent after 
-		 * completing of configuration process.
-		 * 
-		 * @param category The category of a defferd log entry.
-		 * @param level The level of a defferd log entry.
-		 * @param message The message of a defferd log entry.
-		 */
-		log5f_internal static function addDeferredLog(category:Category, level:Level, message:Object, stack:String=null):void
-		{
-			
-		}
-		
-		[Deprecated(message="",replacement="DeferredManager",since="1.0")]
-		/**
-		 * Removes all deferred log entries, used if configuration process is 
-		 * fail.
-		 */
-		log5f_internal static function removeDeferredLogs():void
-		{
-			
-		}
-		
-		[Deprecated(message="",replacement="DeferredManager",since="1.0")]
-		/**
-		 * Processes deferred log entries.
-		 */
-		log5f_internal static function processDeferredLogs():void
-		{
-			
-		}
-		
 		/**
 		 * This method does nothing, it used for force compile specified class.
 		 * 
@@ -215,7 +173,7 @@ package org.log5f
 		 */
 		public static function forceCompile(someClass:Class):void
 		{
-			
+			// stub
 		}
 		
 		/**
@@ -266,30 +224,6 @@ package org.log5f
         		logger.parent = LoggerManager.getRootLogger();
         }
 		
-		[Deprecated("Use forceCompile method if there is a need.")]
-        public static function registerFilter(filter:Class):void
-        {
-            LoggerManager.forceCompile(filter);
-        }
-		
-		[Deprecated("Use forceCompile method if there is a need.")]
-        public static function registerLayout(layout:Class):void
-        {
-			LoggerManager.forceCompile(layout);
-        }
-		
-		[Deprecated("Use forceCompile method if there is a need.")]
-        public static function registerAppender(appender:Class):void
-        {
-			LoggerManager.forceCompile(appender);
-        }
-		
-		[Deprecated("Use forceCompile method if there is a need.")]
-        public static function registerFormatter(formatter:Class):void
-        {
-			LoggerManager.forceCompile(formatter);
-        }
-
 		//----------------------------------------------------------------------
 		//
 		//	Constructor
