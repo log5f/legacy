@@ -8,15 +8,13 @@ package org.log5f.core
 	import flash.events.Event;
 	import flash.system.Capabilities;
 	
+	import org.log5f.Level;
+	import org.log5f.LoggerManager;
+	import org.log5f.core.config.Log5FConfigurator;
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.events.LogEvent;
-	import org.log5f.core.config.Log5FConfigurator;
-	import org.log5f.LoggerManager;
 	import org.log5f.log5f_internal;
-	import org.log5f.Level;
 
-	[ExcludeClass]
-	
 	/**
 	 * 
 	 */
@@ -39,8 +37,9 @@ package org.log5f.core
 		 */
 		public function Category(name:String)
 		{
-			this.name = name;
-			this.category = name;
+			this._name = name;
+			
+			this._category = name;
 		}
 
 		//----------------------------------------------------------------------
@@ -73,7 +72,7 @@ package org.log5f.core
 		private var _name:String;
 
 		/**
-		 *
+		 * The name of category.
 		 */
 		public function get name():String
 		{
@@ -98,7 +97,7 @@ package org.log5f.core
 		private var _level:Level;
 
 		/**
-		 *
+		 * 
 		 */
 		public function get level():Level
 		{
@@ -154,7 +153,7 @@ package org.log5f.core
 		private var _category:String;
 
 		/**
-		 *
+		 * 
 		 */
 		public function get category():String
 		{
@@ -208,7 +207,55 @@ package org.log5f.core
 			
 			this.useStackManual = true;
 		}
-		 
+		
+		//-----------------------------------
+		//	isDebugEnabled
+		//-----------------------------------
+		
+		/**
+		 * Check if this category is enabled for <code>DEBUG</code> level.
+		 */
+		public function get isDebugEnabled():Boolean
+		{
+			return Level.DEBUG.isGreaterOrEqual(this.getEffectiveLevel());
+		}
+		
+		//-----------------------------------
+		//	isInfoEnabled
+		//-----------------------------------
+		
+		/**
+		 * Check if this category is enabled for <code>INFO</code> level.
+		 */
+		public function get isInfoEnabled():Boolean
+		{
+			return Level.INFO.isGreaterOrEqual(this.getEffectiveLevel());
+		}
+		
+		//-----------------------------------
+		//	isWarningEnabled
+		//-----------------------------------
+		
+		/**
+		 * Check if this category is enabled for <code>WARN</code> level.
+		 */
+		public function get isWarningEnabled():Boolean
+		{
+			return Level.WARN.isGreaterOrEqual(this.getEffectiveLevel());
+		}
+		
+		//-----------------------------------
+		//	isErrorEnabled
+		//-----------------------------------
+		
+		/**
+		 * Check if this category is enabled for <code>ERROR</code> level.
+		 */
+		public function get isErrorEnabled():Boolean
+		{
+			return Level.ERROR.isGreaterOrEqual(this.getEffectiveLevel());
+		}
+		
 		//----------------------------------------------------------------------
 		//
 		//	Methods
@@ -216,7 +263,7 @@ package org.log5f.core
 		//----------------------------------------------------------------------
 
 		//-----------------------------------
-		//	Methods: Appenders
+		//	Methods: IAppenderAttachable
 		//-----------------------------------
 
 		/**
@@ -300,8 +347,23 @@ package org.log5f.core
 			return this.appenders.removeAppender(key);
 		}
 
+		/**
+		 * Calls <code>doAppend</code> method of all appenders.
+		 * 
+		 * @param event The log event.
+		 * 
+		 * @see org.log5f.IAppender#doAppend
+		 */
+		public function callAppenders(event:LogEvent):void
+		{
+			for each (var appender:IAppender in this.getAllAppenders())
+			{
+				appender.doAppend(event);
+			}
+		}
+		
 		//-----------------------------------
-		//	Methods: Logger
+		//	Methods: Logging
 		//-----------------------------------
 
 		/**
@@ -343,6 +405,10 @@ package org.log5f.core
 		{
 			this.log5f_internal::log(Level.FATAL, rest);
 		}
+		
+		//-----------------------------------
+		//	Methods: Common
+		//-----------------------------------
 		
 		/**
 		 * This method call appenders for logging message.
@@ -438,20 +504,9 @@ package org.log5f.core
 			return null;
 		}
 		
-		/**
-		 * Calls <code>doAppend</code> method of all appenders.
-		 * 
-		 * @param event The log event.
-		 * 
-		 * @see org.log5f.IAppender#doAppend
-		 */
-		public function callAppenders(event:LogEvent):void
-		{
-			for each (var appender:IAppender in this.getAllAppenders())
-			{
-				appender.doAppend(event);
-			}
-		}
+		//-----------------------------------
+		//	Methods: Objects
+		//-----------------------------------
 		
 		/**
 		 * Returns category's name and level in readable form.
@@ -463,6 +518,5 @@ package org.log5f.core
 			return '[Category name="' + this.name + 
 				   '" level="' + this.level.toString() + '"]';
 		}
-		
 	}
 }
