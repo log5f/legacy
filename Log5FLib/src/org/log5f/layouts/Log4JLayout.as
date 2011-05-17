@@ -9,7 +9,7 @@ package org.log5f.layouts
 	
 	import mx.utils.StringUtil;
 	
-	import org.log5f.ILayout;
+	import org.log5f.core.ILayout;
 	import org.log5f.events.LogEvent;
 	import org.log5f.helpers.resources.ResourceManager;
 	import org.log5f.layouts.converters.ClassConverter;

@@ -10,7 +10,7 @@ package org.log5f.utils
 	
 	import mx.managers.SystemManager;
 	
-	import org.log5f.Log5FConfigurator;
+	import org.log5f.core.config.Log5FConfigurator;
 
 	/**
 	 * Provides the utility methods for work with <code>LoaderInfo</code> class.

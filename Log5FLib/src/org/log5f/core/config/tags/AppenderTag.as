@@ -13,7 +13,7 @@ package org.log5f.core.config.tags
 	import mx.core.IFactory;
 	import mx.core.IMXMLObject;
 	
-	import org.log5f.IAppender;
+	import org.log5f.core.IAppender;
 	
 	[DefaultProperty("parameters")]
 	

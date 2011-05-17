@@ -10,11 +10,10 @@ package org.log5f.core
 	
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.events.LogEvent;
-	import org.log5f.Level;
-	import org.log5f.Log5FConfigurator;
+	import org.log5f.core.config.Log5FConfigurator;
 	import org.log5f.LoggerManager;
 	import org.log5f.log5f_internal;
-	import org.log5f.IAppender;
+	import org.log5f.Level;
 
 	[ExcludeClass]
 	

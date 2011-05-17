@@ -5,7 +5,7 @@
 
 package org.log5f.layouts
 {
-	import org.log5f.ILayout;
+	import org.log5f.core.ILayout;
 	import org.log5f.events.LogEvent;
 	
 	/**
@@ -41,7 +41,7 @@ package org.log5f.layouts
 		 * Returns <code>false</code> - the <code>SimpleLayot</code> doesn't 
 		 * need information from the stack.
 		 */
-		public function isStackNeeded():Boolean
+		public function get isStackNeeded():Boolean
 		{
 			return false;
 		}

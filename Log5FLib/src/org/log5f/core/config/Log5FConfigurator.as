@@ -3,7 +3,7 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f
+package org.log5f.core.config
 {
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -15,6 +15,8 @@ package org.log5f
 	import org.log5f.core.net.ConfigLoader;
 	import org.log5f.error.InvalidConfigError;
 	import org.log5f.utils.LoaderInfoUtil;
+	import org.log5f.LoggerManager;
+	import org.log5f.log5f_internal;
 
 	/**
 	 * Configures the Log5F.
@@ -197,7 +199,7 @@ package org.log5f
 			
 			if (ready)
 			{
-				DeferredManager.log5f_internal::processLogs();
+				DeferredManager.log5f_internal::proceedLogs();
 			}
 			else
 			{

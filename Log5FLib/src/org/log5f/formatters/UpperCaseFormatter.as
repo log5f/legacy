@@ -1,6 +1,6 @@
 package org.log5f.formatters
 {
-	import org.log5f.IFormatter;
+	import org.log5f.core.IFormatter;
 	import org.log5f.events.LogEvent;
 
 	public class UpperCaseFormatter implements IFormatter

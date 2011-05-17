@@ -13,7 +13,7 @@ package org.log5f.core.config.configurators.xml
 	import mx.utils.StringUtil;
 	
 	import org.log5f.core.Appender;
-	import org.log5f.IAppender;
+	import org.log5f.core.IAppender;
 	import org.log5f.Level;
 	import org.log5f.LoggerManager;
 	import org.log5f.error.AppenderNotFoundError;

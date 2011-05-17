@@ -4,8 +4,10 @@
 // Transparent Language Confidential Information
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f
+package org.log5f.core
 {
+	import org.log5f.events.LogEvent;
+
 	/**
 	 * The ILayout interface defines methods 
 	 * 

@@ -71,7 +71,7 @@ package org.log5f.core.managers
 		/**
 		 * Processes deferred log entries.
 		 */
-		log5f_internal static function processLogs():void
+		log5f_internal static function proceedLogs():void
 		{
 			if (!logs)
 				return;

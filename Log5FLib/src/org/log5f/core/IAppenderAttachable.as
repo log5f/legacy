@@ -1,6 +1,5 @@
 package org.log5f.core
 {
-	import org.log5f.IAppender;
 
 	public interface IAppenderAttachable
 	{

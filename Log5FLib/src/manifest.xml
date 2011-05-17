@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <componentPackage>
 	<component id="Log5F" class="org.log5f.Log5F" />
-	<component id="Logger" class="org.log5f.core.configuration.tags.LoggerTag" />
-	<component id="Appender" class="org.log5f.core.configuration.tags.AppenderTag" />
-	<component id="Parameter" class="org.log5f.core.configuration.tags.ParameterTag" />
-	<component id="Configuration" class="org.log5f.core.configuration.tags.ConfigurationTag" />
+	<component id="Logger" class="org.log5f.core.config.tags.LoggerTag" />
+	<component id="Appender" class="org.log5f.core.config.tags.AppenderTag" />
+	<component id="Parameter" class="org.log5f.core.config.tags.ParameterTag" />
+	<component id="Configuration" class="org.log5f.core.config.tags.ConfigurationTag" />
 </componentPackage>

@@ -6,7 +6,7 @@
 
 package org.log5f.core.config.configurators.mxml
 {
-	import org.log5f.IAppender;
+	import org.log5f.core.IAppender;
 	import org.log5f.Level;
 	import org.log5f.Logger;
 	import org.log5f.LoggerManager;

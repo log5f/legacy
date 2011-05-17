@@ -67,7 +67,7 @@ package org.log5f.core.config.tags
 		 */
 		public var level:String;
 		
-		[ArrayElementType("org.log5f.IAppender")]
+		[ArrayElementType("org.log5f.core.IAppender")]
 		/**
 		 * The list of appenders that will be used of the logger.
 		 */

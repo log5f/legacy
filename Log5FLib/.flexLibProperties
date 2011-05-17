@@ -4,13 +4,13 @@
     <classEntry path="org.log5f.core.Appender"/>
     <classEntry path="org.log5f.core.AppenderAttachable"/>
     <classEntry path="org.log5f.core.Category"/>
-    <classEntry path="org.log5f.IAppender"/>
+    <classEntry path="org.log5f.core.IAppender"/>
     <classEntry path="org.log5f.core.IAppenderAttachable"/>
     <classEntry path="org.log5f.layouts.converters.IConverter"/>
-    <classEntry path="org.log5f.IFormatter"/>
+    <classEntry path="org.log5f.core.IFormatter"/>
     <classEntry path="org.log5f.Level"/>
     <classEntry path="org.log5f.Log5F"/>
-    <classEntry path="org.log5f.Log5FConfigurator"/>
+    <classEntry path="org.log5f.core.config.Log5FConfigurator"/>
     <classEntry path="org.log5f.Logger"/>
     <classEntry path="org.log5f.LoggerManager"/>
     <classEntry path="org.log5f.core.Priority"/>
@@ -66,9 +66,8 @@
     <classEntry path="org.log5f.core.config.configurators.mxml.MXMLConfigurator"/>
     <classEntry path="org.log5f.core.net.ConfigLoader"/>
     <classEntry path="org.log5f.core.managers.DeferredManagerTest"/>
-    <classEntry path="test.Category"/>
     <classEntry path="org.log5f.core.net.ConfigLoaderTest"/>
-    <classEntry path="org.log5f.ILayout"/>
+    <classEntry path="org.log5f.core.ILayout"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

@@ -16,7 +16,7 @@ package org.log5f.core.net
 	
 	import mx.automation.events.EventDetails;
 	
-	import org.log5f.Log5FConfigurator;
+	import org.log5f.core.config.Log5FConfigurator;
 
 	//-------------------------------------
 	//	Events

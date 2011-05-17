@@ -12,7 +12,7 @@ package org.log5f.core.config.tags
 	
 	import mx.core.IMXMLObject;
 	
-	import org.log5f.Log5FConfigurator;
+	import org.log5f.core.config.Log5FConfigurator;
 	
 	[DefaultProperty("objects")]
 	
@@ -54,7 +54,7 @@ package org.log5f.core.config.tags
 		 */
 		public var traceErrors:Boolean = true;
 		
-		[ArrayElementType("org.log5f.IAppender")]
+		[ArrayElementType("org.log5f.core.IAppender")]
 		[ArrayElementType("org.log5f.core.config.tags.LoggerTag")]
 		/**
 		 * Contains loggers and appenders.
