@@ -5,7 +5,7 @@
 
 package org.log5f
 {
-	import org.log5f.core.configurators.xml.XMLConfiguratorTest;
+	import org.log5f.core.config.xml.XMLConfiguratorTest;
 	import org.log5f.core.managers.DeferredManagerTest;
 	import org.log5f.core.net.ConfigLoaderTest;
 
