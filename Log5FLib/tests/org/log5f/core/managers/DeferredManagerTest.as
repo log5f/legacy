@@ -2,18 +2,23 @@ package org.log5f.core.managers
 {
 	import flash.events.Event;
 	
+	import mockolate.make;
+	import mockolate.mock;
+	import mockolate.prepare;
+	import mockolate.verify;
+	
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;
 	import org.log5f.Level;
+	import org.log5f.core.Category;
 	import org.log5f.log5f_internal;
 	
-	import test.Category;
-
 	public class DeferredManagerTest
 	{		
-		[Before]
+		[Before(async)]
 		public function setUp():void
 		{
+			Async.proceedOnEvent(this, prepare(Category), Event.COMPLETE);
 		}
 		
 		[After]
@@ -31,53 +36,44 @@ package org.log5f.core.managers
 		{
 		}
 		
-		[Test(async, timeout="500")]
+		[Test]
 		public function addLog():void
 		{
-			var category:Category = new Category("addLog");
+			var category:Category = make(Category);
+			mock(category).method("log").args("test addLog() method");
 			
-			DeferredManager.log5f_internal::addLog(category, Level.DEBUG, "addLog");
+			DeferredManager.log5f_internal::addLog(category, Level.DEBUG, "test addLog() method");
 			
-			Async.handleEvent(this, category, "log", verify_addLog, 500, category);
+			DeferredManager.log5f_internal::proceedLogs();
 			
-			DeferredManager.log5f_internal::processLogs();
+			verify(category);
 		}
 		
-		[Test(async, timeout="500")]
-		public function processLogs():void
+		[Test]
+		public function proceedLogs():void
 		{
-			var category:Category = new Category("processLogs");
+			var category:Category = make(Category);
+			mock(category).method("log").args("test proceedLogs() method");
 			
-			DeferredManager.log5f_internal::addLog(category, Level.DEBUG, "processLogs");
+			DeferredManager.log5f_internal::addLog(category, Level.DEBUG, "test proceedLogs() method");
 			
-			Async.handleEvent(this, category, "log", verify_processLogs, 500, category);
+			DeferredManager.log5f_internal::proceedLogs();
 			
-			DeferredManager.log5f_internal::processLogs();
+			verify(category);
 		}
 		
-		[Test(async, timeout="500")]
+		[Test]
 		public function removeLogs():void
 		{
-			var category:Category = new Category("removeLogs");
+			var category:Category = make(Category);
+			mock("log").never();
 			
-			DeferredManager.log5f_internal::addLog(category, Level.DEBUG, "removeLogs");
+			DeferredManager.log5f_internal::addLog(category, Level.DEBUG, "test removeLogs() method");
 			
 			DeferredManager.log5f_internal::removeLogs();
 			
-			Async.registerFailureEvent(this, category, "log");
-			
-			DeferredManager.log5f_internal::processLogs();
+			DeferredManager.log5f_internal::proceedLogs();
 		}
 		
-		private function verify_addLog(event:Event, data:Object=null):void
-		{
-			assertEquals("addLog", data.name);
-		}
-		
-		private function verify_processLogs(event:Event, data:Object=null):void
-		{
-			assertEquals("processLogs", data.name);
-		}
-
 	}
 }
