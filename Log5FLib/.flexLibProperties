@@ -15,8 +15,6 @@
     <classEntry path="org.log5f.Logger"/>
     <classEntry path="org.log5f.LoggerManager"/>
     <classEntry path="org.log5f.Priority"/>
-    <classEntry path="org.log5f.PropertyConfigurator"/>
-    <classEntry path="org.log5f.PropertyLoader"/>
     <classEntry path="org.log5f.appenders.ArthropodAppender"/>
     <classEntry path="org.log5f.appenders.FirebugAppender"/>
     <classEntry path="org.log5f.appenders.LocalConnectionAppender"/>
