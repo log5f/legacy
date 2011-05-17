@@ -16,7 +16,7 @@ package org.log5f.core
 	import mx.core.Singleton;
 	
 	import org.log5f.Log5FConfigurator;
-	import org.log5f.core.configurators.xml.XMLConfigurator;
+	import org.log5f.core.config.configurators.xml.XMLConfigurator;
 	import org.log5f.error.AppenderNotFoundError;
 	import org.log5f.error.CallAbstractMethodError;
 	import org.log5f.error.ClassNotFoundError;

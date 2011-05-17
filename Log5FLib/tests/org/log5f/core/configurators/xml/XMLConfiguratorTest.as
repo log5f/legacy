@@ -15,6 +15,7 @@ package org.log5f.core.configurators.xml
 	import org.log5f.Level;
 	import org.log5f.Logger;
 	import org.log5f.LoggerManager;
+	import org.log5f.core.config.configurators.xml.XMLConfigurator;
 	
 	public class XMLConfiguratorTest
 	{	

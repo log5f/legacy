@@ -25,10 +25,10 @@
     <classEntry path="org.log5f.core.ConfigurationLoader"/>
     <classEntry path="org.log5f.core.ConfigurationLoaderStatus"/>
     <classEntry path="org.log5f.core.LogEntry"/>
-    <classEntry path="org.log5f.core.configurators.ConfiguratorFactory"/>
-    <classEntry path="org.log5f.core.configurators.IConfigurator"/>
-    <classEntry path="org.log5f.core.configurators.xml.ParamType"/>
-    <classEntry path="org.log5f.core.configurators.xml.XMLConfigurator"/>
+    <classEntry path="org.log5f.core.config.configurators.ConfiguratorFactory"/>
+    <classEntry path="org.log5f.core.config.configurators.IConfigurator"/>
+    <classEntry path="org.log5f.core.config.configurators.xml.ParamType"/>
+    <classEntry path="org.log5f.core.config.configurators.xml.XMLConfigurator"/>
     <classEntry path="org.log5f.error.AppenderNotFoundError"/>
     <classEntry path="org.log5f.error.CallAbstractMethodError"/>
     <classEntry path="org.log5f.error.ClassNotFoundError"/>
@@ -68,7 +68,7 @@
     <classEntry path="org.log5f.core.config.tags.AppenderTag"/>
     <classEntry path="org.log5f.core.config.tags.ConfigurationTag"/>
     <classEntry path="org.log5f.core.config.tags.ParameterTag"/>
-    <classEntry path="org.log5f.core.configurators.mxml.MXMLConfigurator"/>
+    <classEntry path="org.log5f.core.config.configurators.mxml.MXMLConfigurator"/>
     <classEntry path="org.log5f.core.net.ConfigLoader"/>
     <classEntry path="org.log5f.core.managers.DeferredManagerTest"/>
     <classEntry path="test.Category"/>

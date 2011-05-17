@@ -9,8 +9,8 @@ package org.log5f
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	
-	import org.log5f.core.configurators.ConfiguratorFactory;
-	import org.log5f.core.configurators.IConfigurator;
+	import org.log5f.core.config.configurators.ConfiguratorFactory;
+	import org.log5f.core.config.configurators.IConfigurator;
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.core.net.ConfigLoader;
 	import org.log5f.utils.LoaderInfoUtil;
