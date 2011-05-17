@@ -14,8 +14,8 @@ package org.log5f
     import org.log5f.appenders.TraceAppender;
     import org.log5f.appenders.XMLSocketAppender;
     import org.log5f.appenders.XPanelAppender;
-    import org.log5f.core.ConfigurationLoader;
-    import org.log5f.core.ConfigurationLoaderStatus;
+    import org.log5f.core.config.ConfigurationLoader;
+    import org.log5f.core.config.ConfigurationLoaderStatus;
     import org.log5f.core.managers.DeferredManager;
     import org.log5f.filters.DenyAllFilter;
     import org.log5f.filters.LevelRangeFilter;

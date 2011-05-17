@@ -22,7 +22,7 @@ package org.log5f.core.config.configurators.xml
 	import org.log5f.error.InvalidAppenderError;
 	import org.log5f.error.InvalidConfigError;
 	import org.log5f.error.SingletonError;
-	import org.log5f.core.ConfigurationLoader;
+	import org.log5f.core.config.ConfigurationLoader;
 	import org.log5f.core.config.configurators.IConfigurator;
 	
 	[ExcludeClass]

@@ -3,7 +3,7 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f.core
+package org.log5f.core.config
 {
 	/**
 	 * Defines values for <code>ConfigurationLoader.status</code> property.

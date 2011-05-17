@@ -22,8 +22,8 @@
     <classEntry path="org.log5f.appenders.TraceAppender"/>
     <classEntry path="org.log5f.appenders.XMLSocketAppender"/>
     <classEntry path="org.log5f.appenders.XPanelAppender"/>
-    <classEntry path="org.log5f.core.ConfigurationLoader"/>
-    <classEntry path="org.log5f.core.ConfigurationLoaderStatus"/>
+    <classEntry path="org.log5f.core.config.ConfigurationLoader"/>
+    <classEntry path="org.log5f.core.config.ConfigurationLoaderStatus"/>
     <classEntry path="org.log5f.core.LogEntry"/>
     <classEntry path="org.log5f.core.config.configurators.ConfiguratorFactory"/>
     <classEntry path="org.log5f.core.config.configurators.IConfigurator"/>
