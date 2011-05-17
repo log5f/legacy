@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
-    <classEntry path="org.log5f.Appender"/>
-    <classEntry path="org.log5f.AppenderAttachable"/>
-    <classEntry path="org.log5f.Category"/>
+    <classEntry path="org.log5f.core.Appender"/>
+    <classEntry path="org.log5f.core.AppenderAttachable"/>
+    <classEntry path="org.log5f.core.Category"/>
     <classEntry path="org.log5f.IAppender"/>
-    <classEntry path="org.log5f.IAppenderAttachable"/>
+    <classEntry path="org.log5f.core.IAppenderAttachable"/>
     <classEntry path="org.log5f.IConverter"/>
     <classEntry path="org.log5f.IFormatter"/>
-    <classEntry path="org.log5f.Layout"/>
     <classEntry path="org.log5f.Level"/>
     <classEntry path="org.log5f.Log5F"/>
     <classEntry path="org.log5f.Log5FConfigurator"/>
     <classEntry path="org.log5f.Logger"/>
     <classEntry path="org.log5f.LoggerManager"/>
-    <classEntry path="org.log5f.Priority"/>
+    <classEntry path="org.log5f.core.Priority"/>
     <classEntry path="org.log5f.appenders.ArthropodAppender"/>
     <classEntry path="org.log5f.appenders.FirebugAppender"/>
     <classEntry path="org.log5f.appenders.LocalConnectionAppender"/>

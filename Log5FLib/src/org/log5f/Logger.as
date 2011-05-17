@@ -5,6 +5,8 @@
 
 package org.log5f
 {
+	import org.log5f.core.Category;
+
 	/**
 	 * 
 	 */

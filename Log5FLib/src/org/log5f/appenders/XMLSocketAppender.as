@@ -14,7 +14,7 @@ package org.log5f.appenders
 	
 	import mx.core.EventPriority;
 	
-	import org.log5f.Appender;
+	import org.log5f.core.Appender;
 	import org.log5f.events.LogEvent;
 	
 	/**

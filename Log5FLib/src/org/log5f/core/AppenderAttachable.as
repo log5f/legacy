@@ -1,5 +1,7 @@
-package org.log5f
+package org.log5f.core
 {
+	import org.log5f.IAppender;
+
 	public class AppenderAttachable implements IAppenderAttachable
 	{
 		// ----------------- STATIC FIELDS ---------------- //

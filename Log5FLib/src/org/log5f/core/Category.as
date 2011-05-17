@@ -3,14 +3,18 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f
+package org.log5f.core
 {
 	import flash.events.Event;
 	import flash.system.Capabilities;
 	
-	import org.log5f.core.LogEntry;
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.events.LogEvent;
+	import org.log5f.Level;
+	import org.log5f.Log5FConfigurator;
+	import org.log5f.LoggerManager;
+	import org.log5f.log5f_internal;
+	import org.log5f.IAppender;
 
 	[ExcludeClass]
 	

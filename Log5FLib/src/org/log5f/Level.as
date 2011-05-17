@@ -5,6 +5,7 @@
 
 package org.log5f
 {
+	import org.log5f.core.Priority;
 	
 	
 	public class Level extends Priority

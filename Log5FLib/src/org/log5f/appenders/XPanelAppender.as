@@ -11,7 +11,7 @@ package org.log5f.appenders
 	import flash.net.LocalConnection;
 	import flash.utils.getTimer;
 	
-	import org.log5f.Appender;
+	import org.log5f.core.Appender;
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
 

@@ -5,7 +5,6 @@
 
 package org.log5f.core
 {
-	import org.log5f.Category;
 	import org.log5f.Level;
 
 	/**

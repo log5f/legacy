@@ -1,6 +1,6 @@
 package org.log5f.events
 {
-	import org.log5f.Category;
+	import org.log5f.core.Category;
 	import org.log5f.Level;
 	
 	public class LogEvent

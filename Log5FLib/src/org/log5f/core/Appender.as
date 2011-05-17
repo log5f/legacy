@@ -3,11 +3,13 @@
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.log5f
+package org.log5f.core
 {
     import org.log5f.events.LogEvent;
     import org.log5f.filters.Filter;
     import org.log5f.helpers.resources.ResourceManager;
+    import org.log5f.ILayout;
+    import org.log5f.IAppender;
 
     /**
      * The base class for all appenders.

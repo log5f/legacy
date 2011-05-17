@@ -10,7 +10,7 @@ package org.log5f.appenders
 	import flash.events.StatusEvent;
 	import flash.net.LocalConnection;
 	
-	import org.log5f.Appender;
+	import org.log5f.core.Appender;
 	import org.log5f.events.LogEvent;
 	
 	/**

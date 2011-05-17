@@ -10,7 +10,7 @@ package test
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
-	import org.log5f.Category;
+	import org.log5f.core.Category;
 	import org.log5f.Level;
 	import org.log5f.log5f_internal;
 	
@@ -18,7 +18,7 @@ package test
 	
 	// TODO Try to use mock object instead of this class.
 	
-	public class Category extends org.log5f.Category implements IEventDispatcher
+	public class Category extends org.log5f.core.Category implements IEventDispatcher
 	{
 		public function Category(name:String)
 		{

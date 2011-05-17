@@ -24,6 +24,7 @@ package org.log5f
     import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
+    import org.log5f.core.Category;
 	
 	/**
 	 * Use the <code>LoggerManager</code> class to retreive <code>Logger</code> 
