@@ -5,7 +5,7 @@
 
 package org.log5f.layouts
 {
-	import org.log5f.Layout;
+	import org.log5f.ILayout;
 	import org.log5f.events.LogEvent;
 	
 	/**
@@ -15,7 +15,7 @@ package org.log5f.layouts
 	 * 		DEBUG - Hello world
 	 * </pre>
 	 */
-	public class SimpleLayout extends Layout
+	public class SimpleLayout implements ILayout
 	{
 		//----------------------------------------------------------------------
 		//
@@ -33,7 +33,22 @@ package org.log5f.layouts
 		
 		//----------------------------------------------------------------------
 		//
-		//	Overridden methods
+		//	Properties
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * Returns <code>false</code> - the <code>SimpleLayot</code> doesn't 
+		 * need information from the stack.
+		 */
+		public function isStackNeeded():Boolean
+		{
+			return false;
+		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Methods
 		//
 		//----------------------------------------------------------------------
 		
@@ -47,7 +62,7 @@ package org.log5f.layouts
 		 * 
 		 * @return A string in SimpleLayout format.
 		 */
-		override public function format(event:LogEvent):String
+		public function format(event:LogEvent):String
 		{
 			return event.level.toString() + " - " + event.message + "\n";
 		}

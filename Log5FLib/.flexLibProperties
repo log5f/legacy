@@ -75,6 +75,7 @@
     <classEntry path="org.log5f.core.managers.DeferredManagerTest"/>
     <classEntry path="test.Category"/>
     <classEntry path="org.log5f.core.net.ConfigLoaderTest"/>
+    <classEntry path="org.log5f.ILayout"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

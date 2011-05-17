@@ -5,10 +5,9 @@
 
 package org.log5f
 {
-    import org.log5f.helpers.resources.ResourceManager;
-
     import org.log5f.events.LogEvent;
     import org.log5f.filters.Filter;
+    import org.log5f.helpers.resources.ResourceManager;
 
     /**
      * The base class for all appenders.
@@ -90,12 +89,12 @@ package org.log5f
          * @private
          * Storage for the layout property.
          */
-        private var _layout:Layout;
+        private var _layout:ILayout;
 
         /**
          * @inheritDoc
          */
-        public function get layout():Layout
+        public function get layout():ILayout
         {
             return this._layout;
         }
@@ -103,7 +102,7 @@ package org.log5f
         /**
          * @private
          */
-        public function set layout(value:Layout):void
+        public function set layout(value:ILayout):void
         {
             if (value === this._layout)
                 return;

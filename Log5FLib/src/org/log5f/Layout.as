@@ -9,6 +9,7 @@ package org.log5f
 
     import org.log5f.events.LogEvent;
 
+	[Deprecated(replacement="org.log5f.ILayout",since="1.0")]
     /**
      * The base class for all layouts.
      */

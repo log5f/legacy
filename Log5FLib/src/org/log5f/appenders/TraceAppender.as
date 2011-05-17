@@ -6,7 +6,6 @@
 package org.log5f.appenders
 {
 	import org.log5f.Appender;
-	import org.log5f.Layout;
 	import org.log5f.events.LogEvent;
 	
 	/**

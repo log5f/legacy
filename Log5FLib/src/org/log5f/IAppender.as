@@ -20,11 +20,11 @@ package org.log5f
 		 * 
 		 * @see org.log5f.Layout
 		 */
-		function get layout():Layout;
+		function get layout():ILayout;
 		/**
 		 * @private
 		 */
-		function set layout(value:Layout):void;
+		function set layout(value:ILayout):void;
 		
 		/**
 		 * The head filter.

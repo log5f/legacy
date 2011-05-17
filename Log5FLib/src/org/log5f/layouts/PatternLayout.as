@@ -6,7 +6,7 @@
 package org.log5f.layouts
 {
 	import org.log5f.IConverter;
-	import org.log5f.Layout;
+	import org.log5f.ILayout;
 	import org.log5f.events.LogEvent;
 	import org.log5f.layouts.converters.CategoryConverter;
 	import org.log5f.layouts.converters.ClassConverter;
@@ -17,7 +17,7 @@ package org.log5f.layouts
 	import org.log5f.layouts.converters.MessageConverter;
 	import org.log5f.layouts.converters.MethodConverter;
 
-	public class PatternLayout extends Layout
+	public class PatternLayout implements ILayout
 	{
 		//----------------------------------------------------------------------
 		//
@@ -61,11 +61,22 @@ package org.log5f.layouts
 		
 		//----------------------------------------------------------------------
 		//
-		//	Overridden properties
+		//	Properties
 		//
 		//----------------------------------------------------------------------
 		
-		override public function get isStackNeeded():Boolean
+		//-----------------------------------
+		//	isStackNeeded
+		//-----------------------------------
+		
+		/**
+		 * If <code>conversionPattern</code> contains <code>%M</code>, 
+		 * <code>%F</code> or <code>%L</code> this property will be 
+		 * <code>true</code>, or <code>false</code> - otherwise.
+		 * <br />
+		 * @inheritDoc
+		 */
+		public function get isStackNeeded():Boolean
 		{
 			PatternLayout.PATTERN_FILE.lastIndex = 0;
 			PatternLayout.PATTERN_METHOD.lastIndex = 0;
@@ -74,15 +85,9 @@ package org.log5f.layouts
 			var pattern:String = this.conversionPattern;
 			
 			return PatternLayout.PATTERN_FILE.test(pattern) || 
-				   PatternLayout.PATTERN_METHOD.test(pattern) || 
-				   PatternLayout.PATTERN_LINE_NUMBER.test(pattern);
+				PatternLayout.PATTERN_METHOD.test(pattern) || 
+				PatternLayout.PATTERN_LINE_NUMBER.test(pattern);
 		}
-		
-		//----------------------------------------------------------------------
-		//
-		//	Properties
-		//
-		//----------------------------------------------------------------------
 		
 		//-----------------------------------
 		//	conversionPattern
@@ -119,7 +124,13 @@ package org.log5f.layouts
 		//
 		//----------------------------------------------------------------------
 
-		override public function format(event:LogEvent):String
+		/**
+		 * Converts log event to string representation using 
+		 * <code>conversionPattern</code> as template.
+		 * 
+		 * @inheritDoc
+		 */
+		public function format(event:LogEvent):String
 		{
 			var result:String = this.conversionPattern;
 			

@@ -9,7 +9,7 @@ package org.log5f.layouts
 	
 	import mx.utils.StringUtil;
 	
-	import org.log5f.Layout;
+	import org.log5f.ILayout;
 	import org.log5f.events.LogEvent;
 	import org.log5f.helpers.resources.ResourceManager;
 	import org.log5f.layouts.converters.ClassConverter;
@@ -23,7 +23,7 @@ package org.log5f.layouts
 	 * 
 	 * @see http://wiki.apache.org/logging-log4j/Log4jXmlFormat Log4jXmlFormat
 	 */
-	public class Log4JLayout extends Layout
+	public class Log4JLayout implements ILayout
 	{
 		//----------------------------------------------------------------------
 		//
@@ -63,7 +63,24 @@ package org.log5f.layouts
 		
 		//----------------------------------------------------------------------
 		//
-		//	Overridden methods
+		//	Properties
+		//
+		//----------------------------------------------------------------------
+		
+		/**
+		 * Returns <code>true</code>, bacause <code>Lo4JLayout</code> allways 
+		 * need information from the stack.
+		 * <br />
+		 * @inheritDoc
+		 */
+		public function get isStackNeeded():Boolean
+		{
+			return true;
+		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Methods
 		//
 		//----------------------------------------------------------------------
 		
@@ -74,7 +91,7 @@ package org.log5f.layouts
 		 * 
 		 * @return Performed string in <i>Log4J XML Format</i>.
 		 */
-		override public function format(event:LogEvent):String
+		public function format(event:LogEvent):String
 		{
 			var category:String = event.category.name;
 			var time:String = new Date().time.toString();
