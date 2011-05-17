@@ -22,7 +22,6 @@ package org.log5f.core.config.configurators.xml
 	import org.log5f.error.InvalidAppenderError;
 	import org.log5f.error.InvalidConfigError;
 	import org.log5f.error.SingletonError;
-	import org.log5f.core.config.ConfigurationLoader;
 	import org.log5f.core.config.configurators.IConfigurator;
 	
 	[ExcludeClass]
@@ -136,7 +135,15 @@ package org.log5f.core.config.configurators.xml
 		//-----------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Configures Log5F from specified XML object.
+		 * 
+		 * @throws InvalidConfigError If configuration XML is invalid
+		 * @throws InvalidAppenderError If configuration for appender is invalid.
+		 * @throws AppenderNotFoundError If configuration for some appender name 
+		 * is not exist in config
+		 * @throws ClassNotFoundError If some class is not exist in current 
+		 * application domain.
+		 * @throws IllegalArgumentError Caused by ArgumentError
 		 */
 		public function configure(source:Object):Boolean
 		{
@@ -146,32 +153,12 @@ package org.log5f.core.config.configurators.xml
 			
 			for each (var logger:XML in properties.logger)
 			{
-				try
-				{
-					this.configureLogger(logger);
-				}
-				catch (error:Error)
-				{
-					if (this.traceErrors)
-						trace("Log5F:", error.getStackTrace());
-					
-					return false;
-				}
+				this.configureLogger(logger);
 			}
 			
 			if (properties.root.length() > 0)
 			{
-				try
-				{
-					this.configureLogger(properties.root[0]);
-				}
-				catch (error:Error)
-				{
-					if (this.traceErrors)
-						trace("Log5F:", error.getStackTrace());
-					
-					return false;
-				}
+				this.configureLogger(properties.root[0]);
 			}
 			
 			return true;
@@ -191,7 +178,7 @@ package org.log5f.core.config.configurators.xml
 			if (logger.@name.toString() == "" && 
 				logger.name().toString() != LoggerManager.ROOT_LOGGER_NAME)
 			{
-				throw new InvalidConfigError(ConfigurationLoader.url);
+				throw new InvalidConfigError();
 			}
 			
 			var name:String = logger.@name.toString() == "" ? 
@@ -241,10 +228,10 @@ package org.log5f.core.config.configurators.xml
 			var className:String = node.attribute("class").toString();
 			
 			if (!name || name == "")
-				throw new InvalidConfigError(ConfigurationLoader.url);
+				throw new InvalidConfigError();
 			
 			if (!className || className == "")
-				throw new InvalidConfigError(ConfigurationLoader.url);
+				throw new InvalidConfigError();
 			
 			try
 			{
@@ -332,7 +319,7 @@ package org.log5f.core.config.configurators.xml
 				var value:Object = param.@value.toString();
 				
 				if (!name || name == "" || !value)
-					throw new InvalidConfigError(ConfigurationLoader.url);
+					throw new InvalidConfigError();
 				
 				switch (type)
 				{
@@ -375,7 +362,7 @@ package org.log5f.core.config.configurators.xml
 						
 					default:
 					{
-						throw new InvalidConfigError(ConfigurationLoader.url);
+						throw new InvalidConfigError();
 						
 						break;
 					}

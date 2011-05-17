@@ -120,13 +120,11 @@ package org.log5f
 				{
 					ready = ready || configurator.configure(source);
 				}
-				catch (error:InvalidConfigError)
+				catch (error:Error)
 				{
 					if (traceErrors)
 						trace("Log5F:", error.getStackTrace());
 				}
-				
-				ready = ready || configurator.configure(source);
 				
 				_traceErrors = _traceErrors ? configurator.traceErrors : false;
 				

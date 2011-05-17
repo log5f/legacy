@@ -5,10 +5,9 @@ package org.log5f.error
 
 	public class InvalidConfigError extends Error
 	{
-		public function InvalidConfigError(file:String)
+		public function InvalidConfigError()
 		{
-			super(ResourceManager.instance.
-				getString("errorInvalidConfig", [file]), 2002);
+			super(ResourceManager.instance.getString("errorInvalidConfig"), 2002);
 		}
 		
 		public function toString():String
