@@ -14,6 +14,8 @@ package org.log5f
     import org.log5f.appenders.TraceAppender;
     import org.log5f.appenders.XMLSocketAppender;
     import org.log5f.appenders.XPanelAppender;
+    import org.log5f.core.Category;
+    import org.log5f.core.config.Configurator;
     import org.log5f.filters.DenyAllFilter;
     import org.log5f.filters.LevelRangeFilter;
     import org.log5f.filters.StringMatchFilter;
@@ -21,7 +23,6 @@ package org.log5f
     import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
-    import org.log5f.core.Category;
 	
 	/**
 	 * Use the <code>LoggerManager</code> class to retreive <code>Logger</code> 
@@ -97,6 +98,22 @@ package org.log5f
 		//	Class methods
 		//
 		//----------------------------------------------------------------------
+		
+		/**
+		 * This is a external method, it can be used to configure Log5F in 
+		 * runtime.
+		 * 
+		 * @param source Contains a configuration data, can be <code>XML</code> 
+		 * or <code>String</code>. If it is a <code>XML</code> it will used for
+		 * configuration immediately, if it is a <code>String</code> it will 
+		 * used as an url to load configuration data.
+		 * 
+		 * @see TODO SEE MORE ABOUT DEFAULT URLs
+		 */
+		public static function configure(source:Object):void
+		{
+			Configurator.configure(source);
+		}
 		
 		/**
 		 * Retrives root logger.

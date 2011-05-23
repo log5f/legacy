@@ -1,7 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2007, Transparent Language, Inc..
-// All Rights Reserved.
-// Transparent Language Confidential Information
+// Copyright (c) 2009 http://log5f.wordpress.com
+// This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
 package org.log5f.core.net
@@ -14,9 +13,7 @@ package org.log5f.core.net
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
-	import mx.automation.events.EventDetails;
-	
-	import org.log5f.core.config.Log5FConfigurator;
+	import org.log5f.core.config.Configurator;
 
 	//-------------------------------------
 	//	Events
@@ -301,7 +298,7 @@ package org.log5f.core.net
 			
 			if (!this.isPredefinedRequest(this.request))
 			{
-				if (Log5FConfigurator.traceErrors)
+				if (Configurator.traceErrors)
 					trace("Log5F:", event.text);
 			}
 			

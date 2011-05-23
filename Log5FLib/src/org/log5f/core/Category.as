@@ -10,7 +10,7 @@ package org.log5f.core
 	
 	import org.log5f.Level;
 	import org.log5f.LoggerManager;
-	import org.log5f.core.config.Log5FConfigurator;
+	import org.log5f.core.config.Configurator;
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.events.LogEvent;
 	import org.log5f.log5f_internal;
@@ -403,7 +403,7 @@ package org.log5f.core
 		 */
 		public function fatal(...rest):void
 		{
-			this.log5f_internal::log(Level.FATAL, rest);
+			this.log(Level.FATAL, rest);
 		}
 		
 		//-----------------------------------
@@ -428,11 +428,11 @@ package org.log5f.core
 			
 			// if Log5F isn't configured - defer log entry
 			
-			if (Log5FConfigurator.log5f_internal::needUpdate)
+			if (Configurator.log5f_internal::needUpdate)
 			{
 				DeferredManager.log5f_internal::addLog(this, level, message, stack);
 				
-				Log5FConfigurator.log5f_internal::update();
+				Configurator.log5f_internal::update();
 				
 				return;
 			}
@@ -469,7 +469,7 @@ package org.log5f.core
 			
 			// stack is not used 
 			
-			if (!this.useStack && !Log5FConfigurator.log5f_internal::needUpdate)
+			if (!this.useStack && !Configurator.log5f_internal::needUpdate)
 			{
 				this.log5f_internal::log(level, message);
 				

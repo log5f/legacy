@@ -45,7 +45,7 @@ package org.log5f.layouts.converters
 		 */
 		public function convert(event:LogEvent):String
 		{
-			return event.message.toString();
+			return String(event.message);
 		}
 	}
 }

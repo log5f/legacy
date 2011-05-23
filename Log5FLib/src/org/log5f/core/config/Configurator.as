@@ -21,7 +21,7 @@ package org.log5f.core.config
 	/**
 	 * Configures the Log5F.
 	 */
-	public class Log5FConfigurator
+	public class Configurator
 	{
 		//----------------------------------------------------------------------
 		//
@@ -32,7 +32,7 @@ package org.log5f.core.config
 		/**
 		 * Defines the queue of configuration files. 
 		 */
-		private static const PREDEFINED_REQUESTS:Array = 
+		private static const PREDEFINED_REQUESTS:Array =
 			[
 				new URLRequest("log5f.xml"),
 				new URLRequest("log5f.properties"),
@@ -57,7 +57,7 @@ package org.log5f.core.config
 		/**
 		 * @private
 		 */
-		private static var initialized:Boolean = init();
+		private static var initialized:Boolean = false;
 		
 		//----------------------------------------------------------------------
 		//
@@ -113,6 +113,8 @@ package org.log5f.core.config
 		 */
 		public static function configure(source:Object):void
 		{
+			if (!initialized) init();
+			
 			var configurator:IConfigurator = 
 				ConfiguratorFactory.getConfigurator(source);
 			
@@ -154,6 +156,8 @@ package org.log5f.core.config
 		 */
 		log5f_internal static function get needUpdate():Boolean
 		{
+			if (!initialized) init();
+			
 			return (loader && loader.hasSpecifiedRequest) || !ready;
 		}
 		
@@ -162,6 +166,8 @@ package org.log5f.core.config
 		 */
 		log5f_internal static function update():void
 		{
+			if (!initialized) init();
+			
 			if (loader)
 				loader.load();
 			else
@@ -171,7 +177,7 @@ package org.log5f.core.config
 		/**
 		 * @private
 		 */
-		private static function init():Boolean
+		private static function init():void
 		{
 			loader = new ConfigLoader();
 			loader.addEventListener(Event.CHANGE, loader_changeHandler);
@@ -187,7 +193,7 @@ package org.log5f.core.config
 				loader.addRequest(new URLRequest(params["log5f"]));
 			}
 			
-			return true;
+			initialized = true;
 		}
 		
 		/**
@@ -237,7 +243,7 @@ package org.log5f.core.config
 		{
 			if (loader)
 			{
-				Log5FConfigurator.configure(loader.data);
+				Configurator.configure(loader.data);
 			}
 		}
 		

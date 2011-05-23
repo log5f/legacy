@@ -1,7 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2007, Transparent Language, Inc..
-// All Rights Reserved.
-// Transparent Language Confidential Information
+// Copyright (c) 2009 http://log5f.wordpress.com
+// This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
 package org.log5f.core.config.tags

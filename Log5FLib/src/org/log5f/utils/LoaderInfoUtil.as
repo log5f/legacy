@@ -10,7 +10,7 @@ package org.log5f.utils
 	
 	import mx.managers.SystemManager;
 	
-	import org.log5f.core.config.Log5FConfigurator;
+	import org.log5f.core.config.Configurator;
 
 	/**
 	 * Provides the utility methods for work with <code>LoaderInfo</code> class.
@@ -129,7 +129,7 @@ package org.log5f.utils
 			}
 			catch (error:SecurityError)
 			{
-				if (Log5FConfigurator.traceErrors)
+				if (Configurator.traceErrors)
 					trace("Log5F", error);
 			}
 			
@@ -144,7 +144,7 @@ package org.log5f.utils
 				}
 				catch (error:Error)
 				{
-					if (Log5FConfigurator.traceErrors)
+					if (Configurator.traceErrors)
 						trace("Log5F", error);
 				}
 			}
@@ -160,7 +160,7 @@ package org.log5f.utils
 				}
 				catch (error:Error)
 				{
-					if (Log5FConfigurator.traceErrors)
+					if (Configurator.traceErrors)
 						trace("Log5F", error);
 				}
 			}

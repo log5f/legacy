@@ -1,7 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2007, Transparent Language, Inc..
-// All Rights Reserved.
-// Transparent Language Confidential Information
+// Copyright (c) 2009 http://log5f.wordpress.com
+// This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
 package org.log5f.core.config.tags
@@ -12,7 +11,7 @@ package org.log5f.core.config.tags
 	
 	import mx.core.IMXMLObject;
 	
-	import org.log5f.core.config.Log5FConfigurator;
+	import org.log5f.core.config.Configurator;
 	
 	[DefaultProperty("objects")]
 	
@@ -76,7 +75,7 @@ package org.log5f.core.config.tags
 		 */
 		public function initialized(document:Object, id:String):void
 		{
-			Log5FConfigurator.configure(this);
+			Configurator.configure(this);
 		}
 	}
 }
