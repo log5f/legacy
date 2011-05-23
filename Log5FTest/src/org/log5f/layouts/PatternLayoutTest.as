@@ -4,7 +4,7 @@ package org.log5f.layouts
 	
 	import mx.formatters.DateFormatter;
 	
-	import org.log5f.Category;
+	import org.log5f.core.Category;
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
 

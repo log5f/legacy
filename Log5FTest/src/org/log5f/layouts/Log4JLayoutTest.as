@@ -9,7 +9,7 @@ package org.log5f.layouts
 	import org.flexunit.asserts.assertTrue;
 	import org.hamcrest.core.anyOf;
 	import org.hamcrest.object.equalTo;
-	import org.log5f.Category;
+	import org.log5f.core.Category;
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
 

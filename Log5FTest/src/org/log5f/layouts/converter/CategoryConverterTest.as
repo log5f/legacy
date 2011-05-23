@@ -2,7 +2,7 @@ package org.log5f.layouts.converter
 {
 	import flexunit.framework.Assert;
 	
-	import org.log5f.Category;
+	import org.log5f.core.Category;
 	import org.log5f.Level;
 	import org.log5f.events.LogEvent;
 	import org.log5f.layouts.converters.CategoryConverter;

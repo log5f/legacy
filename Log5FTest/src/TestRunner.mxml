@@ -9,7 +9,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import org.log5f.Log5FTest;
+			import org.log5f.Log5FTests;
 			import mx.events.FlexEvent;
 			import org.flexunit.listeners.UIListener;
 			import org.flexunit.runner.FlexUnitCore;
@@ -20,7 +20,7 @@
 			{
  				this.core.addListener(new UIListener(this.testRunner));
  				
- 				this.core.run(Log5FTest);
+ 				this.core.run(Log5FTests);
 			}
 
 		]]>

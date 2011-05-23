@@ -16,7 +16,7 @@ package org.log5f
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
-	public class Log5FTest
+	public class Log5FTests
 	{
 		public var LocalConnectionAppender:LocalConnectionAppenderTest;
 		
