@@ -12,6 +12,47 @@ package org.log5f
 	 */
 	public interface ILogger
 	{
+		//----------------------------------------------------------------------
+		//
+		//  Properties
+		//
+		//----------------------------------------------------------------------
+		
+		//-----------------------------------
+		//	Properties: Checking API
+		//-----------------------------------
+		
+		/**
+		 * Check if this category is enabled for <code>DEBUG</code> level.
+		 */
+		function get isDebugEnabled():Boolean;
+		
+		/**
+		 * Check if this category is enabled for <code>INFO</code> level.
+		 */
+		function get isInfoEnabled():Boolean;
+		
+		/**
+		 * Check if this category is enabled for <code>WARN</code> level.
+		 */
+		function get isWarningEnabled():Boolean;
+		
+		/**
+		 * Check if this category is enabled for <code>ERROR</code> level.
+		 */
+		function get isErrorEnabled():Boolean;
+		
+		
+		//----------------------------------------------------------------------
+		//
+		//  Methods
+		//
+		//----------------------------------------------------------------------
+		
+		//-----------------------------------
+		//	Methods: Logging API
+		//-----------------------------------
+		
 		/**
 		 * Logs the message specified in <code>rest</code> aurguments with the 
 		 * <code>DEBUG</code> level.

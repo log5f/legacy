@@ -8,9 +8,10 @@ package org.log5f.core
 	import flash.events.Event;
 	import flash.system.Capabilities;
 	
+	import org.log5f.ILogger;
 	import org.log5f.Level;
 	import org.log5f.LoggerManager;
-	import org.log5f.core.config.Configurator;
+	import org.log5f.core.config.Config;
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.events.LogEvent;
 	import org.log5f.log5f_internal;
@@ -18,7 +19,7 @@ package org.log5f.core
 	/**
 	 * 
 	 */
-	public class Category implements IAppenderAttachable
+	public class Category implements IAppenderAttachable, ILogger
 	{
 		//----------------------------------------------------------------------
 		//
@@ -38,8 +39,6 @@ package org.log5f.core
 		public function Category(name:String)
 		{
 			this._name = name;
-			
-			this._category = name;
 		}
 
 		//----------------------------------------------------------------------
@@ -48,6 +47,9 @@ package org.log5f.core
 		//
 		//----------------------------------------------------------------------
 
+		/**
+		 * @private
+		 */
 		private var appenders:AppenderAttachable;
 
 		/**
@@ -97,7 +99,7 @@ package org.log5f.core
 		private var _level:Level;
 
 		/**
-		 * 
+		 * The priority level of the category.
 		 */
 		public function get level():Level
 		{
@@ -135,12 +137,6 @@ package org.log5f.core
 		public function set parent(value:Category):void
 		{
 			this._parent = value;
-
-			this.category = this.name;
-
-//			this.category = this.parent != LoggerManager.getRootLogger() ?
-//							this.parent.name :
-//							this.name;
 		}
 
 		//-----------------------------------
@@ -148,26 +144,14 @@ package org.log5f.core
 		//-----------------------------------
 
 		/**
-		 * Storage for the category property.
-		 */
-		private var _category:String;
-
-		/**
-		 * 
+		 * The string representation of the category name. Returns same value
+		 * that <code>name</code> property.
 		 */
 		public function get category():String
 		{
-			return this._category;
+			return this._name;
 		}
 
-		/**
-		 * @private
-		 */
-		public function set category(value:String):void
-		{
-			this._category = value;
-		}
-		
 		//-----------------------------------
 		//	useStack
 		//-----------------------------------
@@ -192,10 +176,14 @@ package org.log5f.core
 					return true;
 			}
 			
-			if (!this.parent || this.parent == this)
-				return false;
+			var parent:Category = this.log5f_internal::parent;
 			
-			return this.parent.useStack;
+			if (!parent || parent == this)
+			{
+				return false;
+			}
+			
+			return parent.useStack;
 		}
 		
 		/**
@@ -209,47 +197,35 @@ package org.log5f.core
 		}
 		
 		//-----------------------------------
-		//	isDebugEnabled
+		//	Properties: Checking API
 		//-----------------------------------
 		
 		/**
-		 * Check if this category is enabled for <code>DEBUG</code> level.
+		 * @inheritDoc
 		 */
 		public function get isDebugEnabled():Boolean
 		{
 			return Level.DEBUG.isGreaterOrEqual(this.getEffectiveLevel());
 		}
 		
-		//-----------------------------------
-		//	isInfoEnabled
-		//-----------------------------------
-		
 		/**
-		 * Check if this category is enabled for <code>INFO</code> level.
+		 * @inheritDoc
 		 */
 		public function get isInfoEnabled():Boolean
 		{
 			return Level.INFO.isGreaterOrEqual(this.getEffectiveLevel());
 		}
 		
-		//-----------------------------------
-		//	isWarningEnabled
-		//-----------------------------------
-		
 		/**
-		 * Check if this category is enabled for <code>WARN</code> level.
+		 * @inheritDoc
 		 */
 		public function get isWarningEnabled():Boolean
 		{
 			return Level.WARN.isGreaterOrEqual(this.getEffectiveLevel());
 		}
 		
-		//-----------------------------------
-		//	isErrorEnabled
-		//-----------------------------------
-		
 		/**
-		 * Check if this category is enabled for <code>ERROR</code> level.
+		 * @inheritDoc
 		 */
 		public function get isErrorEnabled():Boolean
 		{
@@ -363,11 +339,11 @@ package org.log5f.core
 		}
 		
 		//-----------------------------------
-		//	Methods: Logging
+		//	Methods: ILogger
 		//-----------------------------------
 
 		/**
-		 * This method logs with <code>DEBUG</code> level.
+		 * @inheritDoc
 		 */
 		public function debug(...rest):void
 		{
@@ -375,7 +351,7 @@ package org.log5f.core
 		}
 
 		/**
-		 * This method logs with <code>INFO</code> level.
+		 * @inheritDoc
 		 */
 		public function info(...rest):void
 		{
@@ -383,7 +359,7 @@ package org.log5f.core
 		}
 
 		/**
-		 * This method logs with <code>WARN</code> level.
+		 * @inheritDoc
 		 */
 		public function warn(...rest):void
 		{
@@ -391,7 +367,7 @@ package org.log5f.core
 		}
 
 		/**
-		 * This method logs with <code>ERROR</code> level.
+		 * @inheritDoc
 		 */
 		public function error(...rest):void
 		{
@@ -399,7 +375,7 @@ package org.log5f.core
 		}
 
 		/**
-		 * This method logs with <code>FATAL</code> level.
+		 * @inheritDoc
 		 */
 		public function fatal(...rest):void
 		{
@@ -407,47 +383,8 @@ package org.log5f.core
 		}
 		
 		//-----------------------------------
-		//	Methods: Common
+		//	Methods: Logging 
 		//-----------------------------------
-		
-		/**
-		 * This method call appenders for logging message.
-		 *
-		 * @param level The specified level
-		 *
-		 * @param message The message to logging.
-		 *
-		 * @param stack The string representation of the call stack.
-		 */
-		log5f_internal function log(level:Level, message:Object, stack:String=null):void
-		{
-			if (!LoggerManager.log5f_internal::enabled)
-			{
-				return;
-			}
-			
-			// if Log5F isn't configured - defer log entry
-			
-			if (Configurator.log5f_internal::needUpdate)
-			{
-				DeferredManager.log5f_internal::addLog(this, level, message, stack);
-				
-				Configurator.log5f_internal::update();
-				
-				return;
-			}
-			
-			if (!level.isGreaterOrEqual(this.getEffectiveLevel()))
-				return;
-			
-			var event:LogEvent = new LogEvent(this, level, message, stack);
-			
-			for (var c:Category = this; c != null; c = c.parent)
-			{
-				if (level.isGreaterOrEqual(c.getEffectiveLevel()))
-					c.callAppenders(event);
-			}
-		}
 		
 		/**
 		 * Gets call stack if need and call <code>log</code> method.
@@ -469,7 +406,7 @@ package org.log5f.core
 			
 			// stack is not used 
 			
-			if (!this.useStack && !Configurator.log5f_internal::needUpdate)
+			if (!this.useStack && !Config.log5f_internal::needUpdate)
 			{
 				this.log5f_internal::log(level, message);
 				
@@ -489,13 +426,56 @@ package org.log5f.core
 		}
 
 		/**
+		 * This method call appenders for logging message.
+		 *
+		 * @param level The specified level
+		 *
+		 * @param message The message to logging.
+		 *
+		 * @param stack The string representation of the call stack.
+		 */
+		log5f_internal function log(level:Level, message:Object, stack:String=null):void
+		{
+			if (!LoggerManager.log5f_internal::enabled)
+			{
+				return;
+			}
+			
+			// if Log5F isn't configured - defer log entry
+			
+			if (Config.log5f_internal::needUpdate)
+			{
+				DeferredManager.log5f_internal::addLog(this, level, message, stack);
+				
+				Config.log5f_internal::update();
+				
+				return;
+			}
+			
+			if (!level.isGreaterOrEqual(this.getEffectiveLevel()))
+				return;
+			
+			var event:LogEvent = new LogEvent(this, level, message, stack);
+			
+			for (var c:Category = this; c != null; c = c.log5f_internal::parent)
+			{
+				if (level.isGreaterOrEqual(c.getEffectiveLevel()))
+					c.callAppenders(event);
+			}
+		}
+		
+		//-----------------------------------
+		//	Methods: Internal
+		//-----------------------------------
+		
+		/**
 		 * Calculates and returns effective log level.
 		 * 
 		 * @return The effective log level.
 		 */
-		public function getEffectiveLevel():Level
+		protected function getEffectiveLevel():Level
 		{
-			for (var c:Category = this; c != null; c = c.parent)
+			for (var c:Category = this; c != null; c = c.log5f_internal::parent)
 			{
 				if (c.level)
 					return c.level;

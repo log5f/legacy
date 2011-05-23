@@ -76,7 +76,7 @@ package org.log5f.core.config.configurators.xml
 			assertTrue(root.useStack);
 			
 			var logger:Logger = LoggerManager.getLogger("com.example");
-			assertEquals(logger.category, "com.example");
+			assertEquals(logger.name, "com.example");
 			assertEquals(Level.DEBUG, logger.level);
 			assertThat(logger.getAppender("xpanel"), notNullValue());
 			assertThat(logger.getAppender("firebug"), notNullValue());

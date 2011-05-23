@@ -15,7 +15,7 @@ package org.log5f
     import org.log5f.appenders.XMLSocketAppender;
     import org.log5f.appenders.XPanelAppender;
     import org.log5f.core.Category;
-    import org.log5f.core.config.Configurator;
+    import org.log5f.core.config.Config;
     import org.log5f.filters.DenyAllFilter;
     import org.log5f.filters.LevelRangeFilter;
     import org.log5f.filters.StringMatchFilter;
@@ -23,6 +23,8 @@ package org.log5f
     import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
+	
+	use namespace log5f_internal;
 	
 	/**
 	 * Use the <code>LoggerManager</code> class to retreive <code>Logger</code> 
@@ -112,7 +114,7 @@ package org.log5f
 		 */
 		public static function configure(source:Object):void
 		{
-			Configurator.configure(source);
+			Config.configure(source);
 		}
 		
 		/**
@@ -148,7 +150,7 @@ package org.log5f
                 name = info.@name[0].toString().replace("::", ".");
             }
 
-            return log5f_internal::getLogger(name);
+            return getLoggerByName(name);
         }
 		
 		/**
@@ -160,7 +162,7 @@ package org.log5f
 		 * 
 		 * @see org.log5f.Logger#category
 		 */
-        log5f_internal static function getLogger(name:String):Logger
+        protected static function getLoggerByName(name:String):Logger
         {
             if (loggers == null)
                 loggers = {};
@@ -214,9 +216,9 @@ package org.log5f
         			continue;
         		
         		if (child.parent == LoggerManager.getRootLogger() || 
-        			child.parent.name.length > logger.name.length)
+					child.parent.name.length > logger.name.length)
     			{
-        			child.parent = logger;
+					child.parent = logger;
     			}
         	}
         	

@@ -60,7 +60,7 @@ package org.log5f.layouts.converters
 		 */
 		public function convert(event:LogEvent):String
 		{
-			var categoryName:String = event.category.category;
+			var categoryName:String = event.category.name;
 			
 			return categoryName.split(".").slice(-this.precision).join(".");
 		}

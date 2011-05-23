@@ -5,13 +5,14 @@
 
 package org.log5f.core.config.configurators.mxml
 {
-	import org.log5f.core.IAppender;
 	import org.log5f.Level;
 	import org.log5f.Logger;
 	import org.log5f.LoggerManager;
+	import org.log5f.core.IAppender;
+	import org.log5f.core.config.configurators.IConfigurator;
 	import org.log5f.core.config.tags.ConfigurationTag;
 	import org.log5f.core.config.tags.LoggerTag;
-	import org.log5f.core.config.configurators.IConfigurator;
+	import org.log5f.log5f_internal;
 	
 	[ExcludeClass]
 	
@@ -72,7 +73,7 @@ package org.log5f.core.config.configurators.mxml
 			{
 				var logger:Logger = LoggerManager.getLogger(tag.category);
 				
-				logger.level = Level.toLevel(tag.level);
+				logger.log5f_internal::level = Level.toLevel(tag.level);
 				
 				for each (var appender:IAppender in tag.appenders)
 				{

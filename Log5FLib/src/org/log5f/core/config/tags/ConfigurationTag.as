@@ -11,7 +11,7 @@ package org.log5f.core.config.tags
 	
 	import mx.core.IMXMLObject;
 	
-	import org.log5f.core.config.Configurator;
+	import org.log5f.core.config.Config;
 	
 	[DefaultProperty("objects")]
 	
@@ -75,7 +75,7 @@ package org.log5f.core.config.tags
 		 */
 		public function initialized(document:Object, id:String):void
 		{
-			Configurator.configure(this);
+			Config.configure(this);
 		}
 	}
 }

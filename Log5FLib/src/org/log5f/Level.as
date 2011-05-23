@@ -7,7 +7,9 @@ package org.log5f
 {
 	import org.log5f.core.Priority;
 	
-	
+	/**
+	 * Defines a set of priority levels that used for logging.
+	 */
 	public class Level extends Priority
 	{
 		//----------------------------------------------------------------------
@@ -16,15 +18,61 @@ package org.log5f
 		//
 		//----------------------------------------------------------------------
 
+		/**
+		 * Disables logging.
+		 * 
+		 * @see Priority.OFF
+		 */
 		public static const OFF:Level	= new Level(Priority.OFF,	Priority.OFF_LABEL);
+
+		/**
+		 * Designates log event with <code>FATAL</code> priority.
+		 * 
+		 * @see Priority.FATAL
+		 */
 		public static const FATAL:Level	= new Level(Priority.FATAL,	Priority.FATAL_LABEL);
+		
+		/**
+		 * Designates log event with <code>ERROR</code> priority.
+		 * 
+		 * @see Priority.ERROR
+		 */
 		public static const ERROR:Level	= new Level(Priority.ERROR,	Priority.ERROR_LABEL);
+		
+		/**
+		 * Designates log event with <code>WARN</code> priority.
+		 * 
+		 * @see Priority.WARN
+		 */
 		public static const WARN:Level	= new Level(Priority.WARN,	Priority.WARN_LABEL);
+		
+		/**
+		 * Designates log event with <code>FATAL</code> priority.
+		 * 
+		 * @see Priority.INFO
+		 */
 		public static const INFO:Level	= new Level(Priority.INFO,	Priority.INFO_LABEL);
+		
+		/**
+		 * Designates log event with <code>FATAL</code> priority.
+		 * 
+		 * @see Priority.DEBUG
+		 */
 		public static const DEBUG:Level	= new Level(Priority.DEBUG,	Priority.DEBUG_LABEL);
+		
+		/**
+		 * Designates log event with <code>FATAL</code> priority.
+		 * 
+		 * @see Priority.ALL
+		 */
 		public static const ALL:Level	= new Level(Priority.ALL,	Priority.ALL_LABEL);
 
-		public static var DEFAULT:Level = DEBUG;
+		/**
+		 * The default logging level is DEBUG.
+		 * 
+		 * @default DEBUG
+		 */
+		public static const DEFAULT:Level = DEBUG;
 		
 		//----------------------------------------------------------------------
 		//

@@ -12,17 +12,18 @@ package org.log5f.core.config.configurators.xml
 	
 	import mx.utils.StringUtil;
 	
-	import org.log5f.core.Appender;
-	import org.log5f.core.IAppender;
 	import org.log5f.Level;
 	import org.log5f.LoggerManager;
+	import org.log5f.core.Appender;
+	import org.log5f.core.IAppender;
+	import org.log5f.core.config.configurators.IConfigurator;
 	import org.log5f.error.AppenderNotFoundError;
 	import org.log5f.error.ClassNotFoundError;
 	import org.log5f.error.IllegalArgumentError;
 	import org.log5f.error.InvalidAppenderError;
 	import org.log5f.error.InvalidConfigError;
 	import org.log5f.error.SingletonError;
-	import org.log5f.core.config.configurators.IConfigurator;
+	import org.log5f.log5f_internal;
 	
 	[ExcludeClass]
 	
@@ -187,7 +188,7 @@ package org.log5f.core.config.configurators.xml
 			
 			// add level
 			
-			LoggerManager.getLogger(name).level = 
+			LoggerManager.getLogger(name).log5f_internal::level = 
 				(logger.@level != null && logger.@level.toString() != "") ? 
 				Level.toLevel(logger.@level.toString()) : 
 				null;

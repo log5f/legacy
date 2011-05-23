@@ -21,7 +21,7 @@ package org.log5f.core.config
 	/**
 	 * Configures the Log5F.
 	 */
-	public class Configurator
+	public class Config
 	{
 		//----------------------------------------------------------------------
 		//
@@ -243,7 +243,7 @@ package org.log5f.core.config
 		{
 			if (loader)
 			{
-				Configurator.configure(loader.data);
+				Config.configure(loader.data);
 			}
 		}
 		

@@ -13,7 +13,7 @@ package org.log5f.core.net
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
-	import org.log5f.core.config.Configurator;
+	import org.log5f.core.config.Config;
 
 	//-------------------------------------
 	//	Events
@@ -298,7 +298,7 @@ package org.log5f.core.net
 			
 			if (!this.isPredefinedRequest(this.request))
 			{
-				if (Configurator.traceErrors)
+				if (Config.traceErrors)
 					trace("Log5F:", event.text);
 			}
 			
