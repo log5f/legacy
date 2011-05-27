@@ -32,6 +32,7 @@ package org.log5f.filters
 		//
 		//----------------------------------------------------------------------
 		
+		/** @inheritDoc */
 		override public function decide(event:LogEvent):int
 		{
 			return Filter.DENY;

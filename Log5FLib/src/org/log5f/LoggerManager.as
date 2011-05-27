@@ -19,7 +19,6 @@ package org.log5f
     import org.log5f.filters.DenyAllFilter;
     import org.log5f.filters.LevelRangeFilter;
     import org.log5f.filters.StringMatchFilter;
-    import org.log5f.formatters.UpperCaseFormatter;
     import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
@@ -27,10 +26,47 @@ package org.log5f
 	use namespace log5f_internal;
 	
 	/**
-	 * Use the <code>LoggerManager</code> class to retreive <code>Logger</code> 
-	 * instances.
+	 * The <code>LoggerManager</code> class contains public methods for 
+	 * configuration Log5F:
 	 * 
-	 * @see org.log5f.Logger Logger
+	 * <pre>
+	 * // allows to configure from remote file
+	 * LoggerManager.configure("http://example.com/log5f/config.xml");
+	 * 
+	 * // and from remote file
+	 * LoggerManager.configure(<config>...</config>);
+	 * 
+	 * // checking if tracing errors is enabled
+	 * trace(LoggerManager.traceErrors);
+	 * </pre>
+	 * 
+	 * It contains two methods for retrieving loggers, but these methods are 
+	 * deprecated, and replaced by static methods from the <code>Logger</code>
+	 * class.
+	 * 
+	 * <pre>
+	 * 
+	 * package my
+	 * {
+	 * import org.log5f.Logger;
+	 * import org.log5f.ILogger;
+	 * 
+	 * 	public class MyClass
+	 * 	{
+	 * 		private static const logger:ILogger = Logger.getLogger(MyClass);
+	 * 		...
+	 * 	}
+	 * }
+	 * 
+	 * </pre>
+	 * 
+	 * <p>
+	 * Under the hood the <code>LoggerManager</code> creates hierarchical 
+	 * structure of the <code>Logger</code> classes and store it.
+	 * </p>
+	 * 
+	 * @see org.log5f.Logger 
+	 * @see org.log5f.ILogger 
 	 */
     public class LoggerManager
     {
@@ -101,21 +137,30 @@ package org.log5f
 		//
 		//----------------------------------------------------------------------
 		
+		//-----------------------------------
+		//	Class methods: Configuration
+		//-----------------------------------
+		
 		/**
-		 * This is a external method, it can be used to configure Log5F in 
-		 * runtime.
-		 * 
-		 * @param source Contains a configuration data, can be <code>XML</code> 
-		 * or <code>String</code>. If it is a <code>XML</code> it will used for
-		 * configuration immediately, if it is a <code>String</code> it will 
-		 * used as an url to load configuration data.
-		 * 
-		 * @see TODO SEE MORE ABOUT DEFAULT URLs
+		 * @copy Config.configure()
 		 */
 		public static function configure(source:Object):void
 		{
 			Config.configure(source);
 		}
+		
+		/**
+		 * @copy Config.traceErrors
+		 */
+		public static function get traceErrors():Boolean
+		{
+			return Config.traceErrors;
+		}
+		
+		//-----------------------------------
+		//	Class methods: Retrieving 
+		//-----------------------------------
+		
 		
 		/**
 		 * Retrives root logger.
@@ -274,8 +319,6 @@ package org.log5f
 			LoggerManager.forceCompile(XMLSocketAppender);
 			LoggerManager.forceCompile(ArthropodAppender);
 			LoggerManager.forceCompile(LocalConnectionAppender);
-			
-			LoggerManager.forceCompile(UpperCaseFormatter);
 		}
     }
 }

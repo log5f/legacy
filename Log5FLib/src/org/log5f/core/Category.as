@@ -8,6 +8,8 @@ package org.log5f.core
 	import flash.events.Event;
 	import flash.system.Capabilities;
 	
+	import mx.utils.StringUtil;
+	
 	import org.log5f.ILogger;
 	import org.log5f.Level;
 	import org.log5f.LoggerManager;
@@ -176,7 +178,7 @@ package org.log5f.core
 					return true;
 			}
 			
-			var parent:Category = this.log5f_internal::parent;
+			var parent:Category = this.parent;
 			
 			if (!parent || parent == this)
 			{
@@ -345,41 +347,41 @@ package org.log5f.core
 		/**
 		 * @inheritDoc
 		 */
-		public function debug(...rest):void
+		public function debug(...args):void
 		{
-			this.log(Level.DEBUG, rest);
+			this.log(Level.DEBUG, args);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function info(...rest):void
+		public function info(...args):void
 		{
-			this.log(Level.INFO, rest);
+			this.log(Level.INFO, args);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function warn(...rest):void
+		public function warn(...args):void
 		{
-			this.log(Level.WARN, rest);
+			this.log(Level.WARN, args);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function error(...rest):void
+		public function error(...args):void
 		{
-			this.log(Level.ERROR, rest);
+			this.log(Level.ERROR, args);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function fatal(...rest):void
+		public function fatal(...args):void
 		{
-			this.log(Level.FATAL, rest);
+			this.log(Level.FATAL, args);
 		}
 		
 		//-----------------------------------
@@ -396,6 +398,8 @@ package org.log5f.core
 		protected function log(level:Level, message:Object):void
 		{
 			// stack is not available - release version of the Flash Player
+			
+			message = this.substituteMessage(message);
 			
 			if (!Capabilities.isDebugger)
 			{
@@ -457,7 +461,7 @@ package org.log5f.core
 			
 			var event:LogEvent = new LogEvent(this, level, message, stack);
 			
-			for (var c:Category = this; c != null; c = c.log5f_internal::parent)
+			for (var c:Category = this; c != null; c = c.parent)
 			{
 				if (level.isGreaterOrEqual(c.getEffectiveLevel()))
 					c.callAppenders(event);
@@ -475,13 +479,31 @@ package org.log5f.core
 		 */
 		protected function getEffectiveLevel():Level
 		{
-			for (var c:Category = this; c != null; c = c.log5f_internal::parent)
+			for (var c:Category = this; c != null; c = c.parent)
 			{
 				if (c.level)
 					return c.level;
 			}
 
 			return null;
+		}
+		
+		/**
+		 * @private
+		 */
+		private function substituteMessage(message:Object):Object
+		{
+			if (!(message is Array) || message.length < 2) return message;
+			
+			var string:String = string[0] as String;
+			
+			var pattern:RegExp = /\{\d+.?\}/g;
+			
+			if (!pattern.test(string)) return message;
+			
+			message.shift();
+			
+			return StringUtil.substitute(string, message as Array);
 		}
 		
 		//-----------------------------------

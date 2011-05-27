@@ -8,10 +8,9 @@ package org.log5f.core
 	import org.log5f.events.LogEvent;
 
 	/**
-	 * The ILayout interface defines methods 
-	 * 
-	 * Layouts are used to transform log events into form, that is appropriate 
-	 * for end logging tool.
+	 * The <code>ILayout</code> is an interface that each layout must implement.
+	 * The layouts are used for transforming <conde>LogEvent</conde> instances
+	 * into form, that is appropriate for the concrete logging target.
 	 */
 	public interface ILayout
 	{

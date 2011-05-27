@@ -38,10 +38,7 @@ package org.log5f.filters
 		//	levelMin
 		//-----------------------------------
 		
-		/**
-		 * @private
-		 * Storage for the levelMin property.
-		 */
+		/** Storage for the levelMin property. */
 		private var _levelMin:String;
 
 		/**
@@ -52,9 +49,7 @@ package org.log5f.filters
 			return this._levelMin;
 		}
 
-		/**
-		 * @private
-		 */
+		/** @private */
 		public function set levelMin(value:String):void
 		{
 			if (value === this._levelMin)
@@ -67,10 +62,7 @@ package org.log5f.filters
 		//	levelMax
 		//-----------------------------------
 		
-		/**
-		 * @private
-		 * Storage for the levelMax property.
-		 */
+		/** Storage for the levelMax property. */
 		private var _levelMax:String;
 
 		/**
@@ -81,9 +73,7 @@ package org.log5f.filters
 			return this._levelMax;
 		}
 
-		/**
-		 * @private
-		 */
+		/** @private */
 		public function set levelMax(value:String):void
 		{
 			if (value === this._levelMax)
@@ -98,6 +88,7 @@ package org.log5f.filters
 		//
 		//----------------------------------------------------------------------
 		
+		/** @inheritDoc */
 		override public function decide(event:LogEvent):int
 		{
 			var min:Level = Level.toLevel(this.levelMin);

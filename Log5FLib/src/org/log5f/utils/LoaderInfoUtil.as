@@ -167,19 +167,5 @@ package org.log5f.utils
 			
 			initialized = true;
 		}
-		
-		//----------------------------------------------------------------------
-		//
-		//	Constructor
-		//
-		//----------------------------------------------------------------------
-		
-		/**
-		 * Constructor.
-		 */
-		public function LoaderInfoUtil()
-		{
-			super();
-		}
 	}
 }

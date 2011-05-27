@@ -7,7 +7,6 @@ package org.log5f.core.managers
 {
 	import org.log5f.core.Category;
 	import org.log5f.Level;
-	import org.log5f.core.LogEntry;
 	import org.log5f.log5f_internal;
 
 	[ExcludeClass]

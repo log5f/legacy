@@ -8,7 +8,8 @@ package org.log5f.filters
 	import org.log5f.events.LogEvent;
 	
 	/**
-	 * This is a very simple filter based on string matching.
+	 * This filter based on string matching, it filters log events with message
+	 * that continains specified substring.
 	 */
 	public class StringMatchFilter extends Filter
 	{
@@ -36,23 +37,18 @@ package org.log5f.filters
 		//	stringToMatch
 		//-----------------------------------
 		
-		/**
-		 * @private
-		 * Storage for the stringToMatch property.
-		 */
+		/** Storage for the stringToMatch property. */
 		private var _stringToMatch:String;
 
 		/**
-		 * TODO Comment property
+		 * The substring that used to filtering.
 		 */
 		public function get stringToMatch():String
 		{
 			return this._stringToMatch;
 		}
 
-		/**
-		 * @private
-		 */
+		/** @private */
 		public function set stringToMatch(value:String):void
 		{
 			if (value === this._stringToMatch)
@@ -67,6 +63,7 @@ package org.log5f.filters
 		//
 		//----------------------------------------------------------------------
 		
+		/** @inheritDoc */
 		override public function decide(event:LogEvent):int
 		{
 			if (!event.message || event.message == "")

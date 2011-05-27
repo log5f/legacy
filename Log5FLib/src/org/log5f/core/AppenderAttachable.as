@@ -1,32 +1,43 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2009 http://log5f.wordpress.com
+// This program is made available under the terms of the MIT License.
+////////////////////////////////////////////////////////////////////////////////
+
 package org.log5f.core
 {
-
+	/**
+	 * The implementation of the <code>IAppenderAttachable</code> interface.
+	 */
 	public class AppenderAttachable implements IAppenderAttachable
 	{
-		// ----------------- STATIC FIELDS ---------------- //
+		//----------------------------------------------------------------------
+		//
+		//	Constructor
+		//
+		//----------------------------------------------------------------------
 
-		
-
-		// ---------------- PRIVATE FIELDS ---------------- //
-
-		private var appenders:Array;
-
-		// ------------------ CONSTRUCTOR ----------------- //
-
+		/** Constructor */
 		public function AppenderAttachable()
 		{
+			super();
 		}
-
-		// ----------------- PUBLIC FIEDS ----------------- //
-
 		
+		//----------------------------------------------------------------------
+		//
+		//	Variables
+		//
+		//----------------------------------------------------------------------
 
-		// --------------- PROTECTED FIELDS --------------- //
-
+		/** Storage for appenders */
+		private var appenders:Array;
 		
+		//----------------------------------------------------------------------
+		//
+		//	Methods
+		//
+		//----------------------------------------------------------------------
 
-		// ---------------- PUBLIC METHODS ---------------- //
-
+		/** @inheritDoc */
 		public function addAppender(appender:IAppender):void
 		{
 			if(appender == null)
@@ -39,11 +50,13 @@ package org.log5f.core
 				this.appenders.push(appender);
 		}
 		
+		/** @inheritDoc */
 		public function getAllAppenders():Array
 		{
 			return this.appenders;
 		}
 		
+		/** @inheritDoc */
 		public function getAppender(name:String):IAppender
 		{
 			if(this.appenders == null || name == null)
@@ -60,6 +73,7 @@ package org.log5f.core
 			return null;
 		}
 		
+		/** @inheritDoc */
 		public function isAttached(appender:IAppender):Boolean
 		{
 			if(this.appenders == null || appender == null)
@@ -76,6 +90,7 @@ package org.log5f.core
 			return false;
 		}
 		
+		/** @inheritDoc */
 		public function removeAllAppenders():void
 		{
 			if(this.appenders != null)
@@ -91,6 +106,7 @@ package org.log5f.core
 			}
 		}
 		
+		/** @inheritDoc */
 		public function removeAppender(key:Object):void
 		{
 			if(this.appenders == null || key == null)
@@ -122,20 +138,5 @@ package org.log5f.core
 			
 			appender = null;
 		}
-
-		// --------------- PROTECTED METHODS -------------- //
-
-		
-
-		// ---------------- PRIVATE METHODS --------------- //
-
-		
-
-		// ------------------- HANDLERS ------------------- //
-
-		
-
-		// --------------- USER INTERACTION --------------- //
-		
 	}
 }

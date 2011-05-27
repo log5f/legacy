@@ -61,7 +61,7 @@ package org.log5f.layouts.converters
 		 * 
 		 * @see org.log5f.events.LogEvent
 		 * @see org.log5f.layouts.converters.IConverter#convert
-		 */
+		 */	
 		public function convert(event:LogEvent):String
 		{
 			var formatter:DateFormatter = new DateFormatter();
@@ -69,18 +69,21 @@ package org.log5f.layouts.converters
 			switch (this.format)
 			{
 				case "ABSOLUTE" :
-				{
+					
 					formatter.formatString = "YYYY/MM/DD J:NN:SS";
 					
 					break;
-				}
+				
+				case "" :
+					
+					formatter.formatString = "YYYY-MM-DD HH:NN:SS";
+					
+					break;
 				
 				default :
-				{
 					formatter.formatString = format;
 					
 					break;
-				}
 			}
 			
 			return formatter.format(new Date());

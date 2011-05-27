@@ -188,7 +188,7 @@ package org.log5f.core.config.configurators.xml
 			
 			// add level
 			
-			LoggerManager.getLogger(name).log5f_internal::level = 
+			LoggerManager.getLogger(name).level = 
 				(logger.@level != null && logger.@level.toString() != "") ? 
 				Level.toLevel(logger.@level.toString()) : 
 				null;

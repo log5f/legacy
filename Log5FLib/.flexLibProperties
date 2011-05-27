@@ -20,7 +20,6 @@
     <classEntry path="org.log5f.core.IAppenderAttachable"/>
     <classEntry path="org.log5f.core.IFormatter"/>
     <classEntry path="org.log5f.core.ILayout"/>
-    <classEntry path="org.log5f.core.LogEntry"/>
     <classEntry path="org.log5f.core.Priority"/>
     <classEntry path="org.log5f.core.config.Config"/>
     <classEntry path="org.log5f.core.config.configurators.ConfiguratorFactory"/>

@@ -10,8 +10,9 @@ package org.log5f.filters
 	import org.log5f.events.LogEvent;
 	
 	/**
-	 * The abstract class of base filter, you should extend this class to 
-	 * implement customized logging event filtering.
+	 * The <code>Filter</code> is a base class for all filters, it provides
+	 * possibility to organize filters into the linked list. The filters are 
+	 * used for dropping some log events.
 	 */
 	public class Filter
 	{
@@ -63,10 +64,7 @@ package org.log5f.filters
 		//	next
 		//-----------------------------------
 		
-		/**
-		 * @private
-		 * Storage for the next property.
-		 */
+		/** Storage for the next property. */
 		private var _next:Filter;
 
 		/**
@@ -77,9 +75,7 @@ package org.log5f.filters
 			return this._next;
 		}
 
-		/**
-		 * @private
-		 */
+		/** @private */
 		public function set next(value:Filter):void
 		{
 			if (value === this._next)
@@ -92,23 +88,19 @@ package org.log5f.filters
 		//	acceptOnMatch
 		//-----------------------------------
 		
-		/**
-		 * @private
-		 * Storage for the acceptOnMatch property.
-		 */
+		/** Storage for the acceptOnMatch property. */
 		private var _acceptOnMatch:Boolean = true;
 
 		/**
-		 * 
+		 * The flag that defines if the filter will work in including if 
+		 * <code>true</code>, or excluding if <code>false</code> mode.
 		 */
 		public function get acceptOnMatch():Boolean
 		{
 			return this._acceptOnMatch;
 		}
 
-		/**
-		 * @private
-		 */
+		/** @private */
 		public function set acceptOnMatch(value:Boolean):void
 		{
 			if (value === this._acceptOnMatch)
@@ -129,6 +121,8 @@ package org.log5f.filters
 		 * filter, if any, will be invoked. If the decision is ACCEPT then
 		 * the event will be logged without consulting with other filters in
 		 * the chain.
+		 * 
+		 * <p><b>Note</b>: This method is an abstract and must be overridden.</p>
 		 * 
 		 * @param event The LoggingEvent to decide upon.
 		 * @return decision The decision of the filter.

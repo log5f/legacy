@@ -23,20 +23,31 @@ package org.log5f.helpers.formatters
         //
         //----------------------------------------------------------------------
 
-        /**
-         *  @private
-         */
-        private static const VALID_PATTERN_CHARS:String = "Y,M,D,A,E,H,J,K,L,N,S,Q";
+        /** @private */
+        private static const VALID_PATTERN_CHARS:String = 
+			"Y,M,D,A,E,H,J,K,L,N,S,Q";
 		
+        /** @private */
 		private static const timeOfDay:Array = ["AM", "PM"];
 		
-		private static const dayNamesLong:Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        /** @private */
+		private static const dayNamesLong:Array = 
+			["Sunday", "Monday", "Tuesday", "Wednesday", 
+				"Thursday", "Friday", "Saturday"];
 		
-		private static const dayNamesShort:Array = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        /** @private */
+		private static const dayNamesShort:Array = 
+			["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 		
-		private static const monthNamesLong:Array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        /** @private */
+		private static const monthNamesLong:Array = 
+			["January", "February", "March", "April", "May", "June", 
+			 "July", "August", "September", "October", "November", "December"];
 
-		private static const monthNamesShort:Array = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        /** @private */
+		private static const monthNamesShort:Array = 
+			["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+			 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 		
         //----------------------------------------------------------------------
         //

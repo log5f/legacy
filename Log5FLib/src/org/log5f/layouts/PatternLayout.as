@@ -17,6 +17,112 @@ package org.log5f.layouts
 	import org.log5f.layouts.converters.MessageConverter;
 	import org.log5f.layouts.converters.MethodConverter;
 
+	/**
+	 * This layout formats <code>LogEvent</code> into the string using the 
+	 * <i>conversion pattern</i> - string with conversion specifier. 
+	 * 
+	 * <p>
+	 * <b>Note</b>: The next description is mostly copied from the Log4J
+	 * <a href="http://logging.apache.org/log4j/1.2/apidocs/index.html">JavaDoc</a>.
+	 * </p>
+	 * 
+	 * <p>The <i>conversion pattern</i> is related to the Log4J's 
+	 * <code>PatternLayout</code> class. A conversion pattern is composed of 
+	 * literal text and format control expressions called <i>conversion 
+	 * specifiers</i>.</p>
+	 * 
+	 * Each conversion specifier starts with a percent sign (%) and is followed 
+	 * by <i>conversion character</i>. The conversion character specifies the 
+	 * type of data, e.g. category, priority, date, thread name.	
+	 * 
+	 * <p>
+	 * The recognized conversion characters are
+	 * <br />
+	 * 
+	 * <table class="innertable">
+     * <tr><th>Conversion Character</th><th>Effect</th></tr>
+     * <tr>
+	 * <td><b><code>c</code></b></td>
+	 * <td>
+	 * Used to output the category of the logging event. The category conversion 
+	 * specifier can be optionally followed by <i>precision specifier</i>, that 
+	 * is a decimal constant in brackets. 
+	 * <br></br>
+	 * If a precision specifier is given, then only the corresponding number of 
+	 * right most components of the category name will be printed. By default 
+	 * the category name is printed in full. 
+	 * <br></br>
+	 * For example, for the category name "<code>a.b.c</code>" the pattern 
+	 * <b>%c{2}</b> will output "<code>b.c</code>".</td>
+	 * </tr>
+     * <tr>
+	 * <td><b><code>C</code></b></td>
+	 * <td>Used to output the fully qualified class name of the caller issuing 
+	 * the logging request. This conversion specifier can be optionally followed 
+	 * by precision specifier, that is a decimal constant in brackets.
+	 * <br></br>
+	 * If a precision specifier is given, then only the corresponding number of 
+	 * right most components of the class name will be printed. By default the 
+	 * class name is output in fully qualified form. 
+	 * <br></br>
+	 * For example, for the class name "<code>org.xyz.SomeClass</code>", the 
+	 * pattern <b>%C{1}</b> will output "<code>SomeClass</code>".
+	 * <br></br>
+	 * <b>WARNING</b>: Generating the caller class information is slow and works
+	 * only in debug version of FlashPlayer.</td>
+	 * </tr>
+     * <tr>
+	 * <td><b><code>d</code></b></td>
+	 * <td>Used to output the date of the logging event. The date conversion 
+	 * specifier may be followed by a <i>date format specifier</i> enclosed 
+	 * between braces.
+	 * <br></br>
+	 * For example, 
+	 * For example, <b>%d{HH:NN:SS:Q}</b> or %d{DD MMM YYYY HH:NN:SS:Q}. 
+	 * If no date format specifier is given, then <b>YYYY-MM-DD HH:NN:SS</b> 
+	 * pattern is used.</td>
+	 * </tr>
+     * <tr>
+	 * <td><b><code>F</code></b></td>
+	 * <td>Used to output the file name where the logging request was issued.
+	 * <br></br>
+	 * <b>WARNING</b>: Generating caller location information is extremely slow 
+	 * and works only in debug version of Flash Player.</td>
+	 * </tr>
+     * <tr>
+	 * <td><b><code>L</code></b></td>
+	 * <td>Used to output the line number from where the logging request was 
+	 * issued.
+	 * <br></br>
+	 * <b>WARNING</b>: Generating caller location information is extremely slow 
+	 * and works only in debug version of Flash Player.</td>
+	 * </td>
+	 * </tr>
+     * <tr>
+	 * <td><b><code>m</code></b></td>
+	 * <td>Used to output the application supplied message associated with the 
+	 * logging event.</td>
+	 * </tr>
+     * <tr>
+	 * <td><b><code>M</code></b></td>
+	 * <td>Used to output the method name where the logging request was issued.
+	 * <br></br>
+	 * <b>WARNING</b>: Generating caller location information is extremely slow 
+	 * and works only in debug version of Flash Player.</td>
+	 * </td>
+	 * </tr>
+     * <tr>
+	 * <td><b><code>n</code></b></td>
+	 * <td>Outputs new line character, "\n"</td>
+	 * </tr>
+     * <tr>
+	 * <td><b><code>p</code></b></td>
+	 * <td>Used to output the priority of the logging event.</td>
+	 * </tr>
+     * </table>
+	 * 
+	 * @see http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html Log4J PaternLayout
+	 */
 	public class PatternLayout implements ILayout
 	{
 		//----------------------------------------------------------------------
@@ -25,20 +131,38 @@ package org.log5f.layouts
 		//
 		//----------------------------------------------------------------------
 
-		public static const DEFAULT_PATTERN:String = "%m%n";
+		/** @private */
+		private static const DEFAULT_PATTERN:String = "%m%n";
 		
 		//-----------------------------------
-		//	Conversion patterns
+		//	Patterns for conversion characters
 		//-----------------------------------
 		
-		public static const PATTERN_DATE:RegExp			= /(?<=%d{).*?(?=})/g;
+		/** @private */
+		public static const PATTERN_DATE:RegExp			= /(?<=%d{).*?(?=})/gm;
+		
+		/** @private */
 		public static const PATTERN_FILE:RegExp			= /%F/g;
+		
+		/** @private */
 		public static const PATTERN_LEVEL:RegExp		= /(?<=%)\d*(?=p)/g;
+		
+		/** @private */
 		public static const PATTERN_CLASS:RegExp		= /(?<=%C{)\d*(?=})/g;
+		
+		/** @private */
 		public static const PATTERN_METHOD:RegExp		= /%M/g;
+		
+		/** @private */
 		public static const PATTERN_MESSAGE:RegExp		= /%m/g;
+		
+		/** @private */
 		public static const PATTERN_CATEGORY:RegExp		= /(?<=%c{)\d*(?=})/g;
+		
+		/** @private */
 		public static const PATTERN_NEW_LINE:RegExp		= /%n/g;
+		
+		/** @private */
 		public static const PATTERN_LINE_NUMBER:RegExp	= /%L/g;
 		
 		//-----------------------------------
@@ -93,10 +217,7 @@ package org.log5f.layouts
 		//	conversionPattern
 		//-----------------------------------
 		
-		/**
-		 * @private
-		 * Storage for the conversionPattern property.
-		 */
+		/** Storage for the conversionPattern property. */
 		private var _conversionPattern:String;
 
 		/**
@@ -107,9 +228,7 @@ package org.log5f.layouts
 			return this._conversionPattern || DEFAULT_PATTERN;;
 		}
 
-		/**
-		 * @private
-		 */
+		/** @private */
 		public function set conversionPattern(value:String):void
 		{
 			if (value === this._conversionPattern)
@@ -138,6 +257,8 @@ package org.log5f.layouts
 			var n:int;
 			var matches:Array;
 			var converter:IConverter;
+			
+			result = result.replace("%d{}", "%d{YYYY-MM-DD HH:NN:SS}");
 			
 			matches = result.match(PATTERN_DATE);
 			
