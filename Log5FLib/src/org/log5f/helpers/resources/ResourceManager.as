@@ -13,6 +13,7 @@ package org.log5f.helpers.resources
 	//-------------------------------------
 	
 	[ExcludeClass]
+	[ResourceBundle("log")]
 
 	public class ResourceManager
 	{
@@ -22,7 +23,6 @@ package org.log5f.helpers.resources
 		//
 		//----------------------------------------------------------------------
 		
-		[ResourceBundle("log")]
 		private static const bundle:ResourceBundle;
 		
 		//----------------------------------------------------------------------

@@ -495,7 +495,7 @@ package org.log5f.core
 		{
 			if (!(message is Array) || message.length < 2) return message;
 			
-			var string:String = string[0] as String;
+			var string:String = message[0] as String;
 			
 			var pattern:RegExp = /\{\d+.?\}/g;
 			

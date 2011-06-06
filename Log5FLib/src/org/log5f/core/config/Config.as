@@ -190,7 +190,9 @@ package org.log5f.core.config
 			
 			if (params && params["log5f"])
 			{
-				loader.addRequest(new URLRequest(params["log5f"]));
+				var request:URLRequest = new URLRequest(params["log5f"]);
+				
+				loader.addRequest(request);
 			}
 			
 			initialized = true;
