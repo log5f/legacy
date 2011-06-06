@@ -66,6 +66,7 @@
     <classEntry path="org.log5f.layouts.converters.StackPart"/>
     <classEntry path="org.log5f.log5f_internal"/>
     <classEntry path="org.log5f.utils.LoaderInfoUtil"/>
+    <classEntry path="org.log5f.appenders.FirebugAppender"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>
