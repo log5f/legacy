@@ -12,10 +12,10 @@ package org.log5f.appenders
 	import org.log5f.events.LogEvent;
 	
 	/**
-	 * The <code>FirebugAppender</code> appends log events to the 
-	 * Firebug's console.
+	 * The <code>BrowserAppender</code> appends log events to the Browser's
+	 * console.
 	 * 
-	 * @see http://log5f.wordpress.com/appenders/
+	 * @see http://wiki.log5f.org/wiki/Appenders/
 	 */
 	public class BrowserAppender extends Appender
 	{
