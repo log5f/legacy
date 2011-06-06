@@ -7,7 +7,7 @@
     <classEntry path="org.log5f.Logger"/>
     <classEntry path="org.log5f.LoggerManager"/>
     <classEntry path="org.log5f.appenders.ArthropodAppender"/>
-    <classEntry path="org.log5f.appenders.FirebugAppender"/>
+    <classEntry path="org.log5f.appenders.BrowserAppender"/>
     <classEntry path="org.log5f.appenders.LocalConnectionAppender"/>
     <classEntry path="org.log5f.appenders.PysarAppender"/>
     <classEntry path="org.log5f.appenders.TraceAppender"/>

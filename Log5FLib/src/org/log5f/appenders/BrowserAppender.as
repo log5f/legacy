@@ -17,7 +17,7 @@ package org.log5f.appenders
 	 * 
 	 * @see http://log5f.wordpress.com/appenders/
 	 */
-	public class FirebugAppender extends Appender
+	public class BrowserAppender extends Appender
 	{
 		//----------------------------------------------------------------------
 		//
@@ -28,7 +28,7 @@ package org.log5f.appenders
 		/**
 		 * Constructor.
 		 */
-		public function FirebugAppender()
+		public function BrowserAppender()
 		{
 			super();
 		}
