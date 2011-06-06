@@ -9,6 +9,7 @@ package org.log5f
     
     import org.log5f.appenders.ArthropodAppender;
     import org.log5f.appenders.BrowserAppender;
+    import org.log5f.appenders.FirebugAppender;
     import org.log5f.appenders.LocalConnectionAppender;
     import org.log5f.appenders.PysarAppender;
     import org.log5f.appenders.TraceAppender;
@@ -316,6 +317,7 @@ package org.log5f
 			LoggerManager.forceCompile(TraceAppender);
 			LoggerManager.forceCompile(XPanelAppender);
 			LoggerManager.forceCompile(BrowserAppender);
+			LoggerManager.forceCompile(FirebugAppender);
 			LoggerManager.forceCompile(XMLSocketAppender);
 			LoggerManager.forceCompile(ArthropodAppender);
 			LoggerManager.forceCompile(LocalConnectionAppender);
