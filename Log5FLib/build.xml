@@ -21,6 +21,19 @@
 	<!-- SVNAnt (http://subclipse.tigris.org/svnant/svn.html) -->
 	<!--===============================-->
 
+	<path id="path.svnant">
+	    <fileset dir="ant-libs">
+	        <include name="**/*.jar" />
+	    </fileset>
+	</path>
+	
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant" />
+	
+	<!--
+	<typedef 
+		resource="org/tigris/subversion/svnant/svnantlib.xml" 
+		classpathref="path.svnant" />
+	
 	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml">
 		<classpath>
 			<fileset dir="ant-libs">
@@ -31,6 +44,7 @@
 			</fileset>
 		</classpath>
 	</typedef>
+	-->
 	
 	<!--=====================================================================-->
 	<!-- Propertiers -->
@@ -94,13 +108,19 @@
 	<property name="asdoc.window.footer" value="See more on http://log5f.wordpress.com" />
 	
 	<!--===============================-->
+	<!-- SVN -->
+	<!--===============================-->
+	
+	<svnSetting svnkit="true" javahl="false" username="" password="" id="svn.settings" />
+	
+	<!--===============================-->
 	<!-- Version -->
 	<!--===============================-->
 
 	<property name="version.file" location="version.number" />
 
 	<property file="${version.file}" />
-	
+
 	<!--=====================================================================-->
 	<!--	Targets															 -->
 	<!--=====================================================================-->
@@ -110,16 +130,16 @@
 	<!--===============================-->
 	
     <target name="build" depends="build.rsl" description="Build Log5F">
-    	
+    	<echo>${build.number}</echo>
     </target>
 	
-	<target name="build.version" description="Update Version">
-	 	<buildnumber file="build.number"/>
-    	<replaceregexp file="${app.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*.*.*"' replace='public static const VERSION:String = "${version.number}.${major.number}.${minor.number}.${build.number}"' byline="true" />
-    </target>
-	
-	<target name="build.compile" depends="build.version" description="Compile Library">
-		<compc output="${app.bin}/Log5F.swc" locale="${LOCALE}">
+	<target name="build.buildnumber">
+		<buildnumber />
+		<replaceregexp file="${app.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${build.number}"' byline="true" />
+	</target>
+
+	<target name="build.compile" depends="build.buildnumber" description="Compile Library">
+		<compc output="${app.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" locale="${LOCALE}">
 			<namespace uri="http://log5f.org" manifest="${app.src}/manifest.xml" />
 			<include-namespaces>http://log5f.org</include-namespaces>
 			<source-path path-element="${app.src}" />
@@ -135,11 +155,12 @@
 			<warnings>true</warnings>
 			<compute-digest>true</compute-digest>
 		</compc>
+		<echo>${build.number}</echo>
 	</target>
 
     <target name="build.rsl" depends="build.compile" description="Make RSL">
         <sequential>
-			<unzip src="${app.bin}/Log5F.swc" dest="${app.bin.rsl}">
+			<unzip src="${app.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" dest="${app.bin.rsl}">
 				<patternset>
 					<include name="library.swf" />
 				</patternset>
@@ -147,14 +168,14 @@
         	<java jar="${optimizer.jar}" fork="true" failonerror="true">
         		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
         		<arg line="-input ${app.bin.rsl}/library.swf" />
-        		<arg line="-output ${app.bin.rsl}/Log5F.swf" />
+        		<arg line="-output ${app.bin.rsl}/log5f-${version.major}.${version.minor}.${build.number}.swf" />
         		<arg line="-keep-as3-metadata='Bindable,Managed,ChangeEvent,NonCommittingChangeEvent,Transient'" />
     		</java>
         	<delete file="${app.bin.rsl}/library.swf" />
         	<java jar="${digest.jar}" fork="true" failonerror="true">
         		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
-        		<arg line="--digest.rsl-file  ${app.bin.rsl}/Log5F.swf" />
-        		<arg line="--digest.swc-path  ${app.bin}/Log5F.swc" />
+        		<arg line="--digest.rsl-file  ${app.bin.rsl}/log5f-${version.major}.${version.minor}.${build.number}.swf" />
+        		<arg line="--digest.swc-path  ${app.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" />
 			</java>
         </sequential>
     </target>
@@ -163,46 +184,31 @@
 	<!-- Version -->
 	<!--===============================-->
 	
-	<target name="increment.version" depends="internal.increment.version" description="Up Version" />
-
-	<target name="increment.major" depends="internal.increment.major" description="Up Major" />
-
-	<target name="increment.minor" depends="internal.increment.minor" description="Up Minor" />
-	
-	<target name="internal.increment.version">
+	<target name="increment.major">
 		<propertyfile file="${version.file}">
-			<entry key="version.number" type="int" operation="+" value="1" />
-			<entry key="major.number" value="0" />
-			<entry key="minor.number" value="0" />
+			<entry key="version.major" type="int" operation="+" value="1" />
+			<entry key="version.minor" value="0" />
 		</propertyfile>
 	</target>
 
-	<target name="internal.increment.major">
+	<target name="increment.minor">
 		<propertyfile file="${version.file}">
-			<entry key="major.number" type="int" operation="+" value="1" />
-			<entry key="minor.number" value="0" />
+			<entry key="version.minor" type="int" operation="+" value="1" />
 		</propertyfile>
 	</target>
-
-	<target name="internal.increment.minor">
-		<propertyfile file="${version.file}">
-			<entry key="minor.number" type="int" operation="+" value="1" />
-		</propertyfile>
-	</target>
-	
-    <target name="internal.update.version">
-    	<property file="${version.file}" />
-    </target>
 
 	<!--===============================-->
 	<!-- Project -->
 	<!--===============================-->
 	
-    <target name="project.export" depends="build" description="Archive Project">
-        <svn svnkit="false" javahl="false">
-        	<export srcPath="${basedir}" destPath="${basedir}/temp" />
+    <target name="project.export" description="Archive Project">
+    	<property name="build.number.file" location="build.number" />
+    	<property file="${build.number.file}" />
+    	
+        <svn refid="svn.settings">
+        	<export srcPath="${basedir}" destPath="${basedir}/temp" force="true" />
     	</svn>
-    	<zip destfile="${basedir}/Log5F-${version.number}.${major.number}.${minor.number}.zip" basedir="${basedir}/temp">
+    	<zip destfile="${basedir}/Log5F-${version.major}.${version.minor}.zip" basedir="${basedir}/temp">
     		<exclude name="${basedir}/**.zip" />
     	</zip>
     	<delete dir="${basedir}/%SystemDrive%" />

@@ -14,6 +14,6 @@ package org.log5f
 	 */
 	public class Log5F
 	{
-		public static const VERSION:String = "1.0.0.35";
+		public static const VERSION:String = "1.0.55";
 	}
 }
