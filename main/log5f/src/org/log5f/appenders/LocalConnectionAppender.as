@@ -10,6 +10,7 @@ package org.log5f.appenders
 	import flash.events.StatusEvent;
 	import flash.net.LocalConnection;
 	
+	import org.log5f.LoggerManager;
 	import org.log5f.core.Appender;
 	import org.log5f.error.CallAbstractMethodError;
 	import org.log5f.events.LogEvent;
@@ -157,8 +158,7 @@ package org.log5f.appenders
 												 securityErrorHandler);
 			}
 			
-			this.connection.send.apply(this.connection, 
-				[this.connectionName, this.methodName, this.getParameters(event)]);
+			this.subAppend(event);
 		}
 		
 		/**
@@ -180,7 +180,15 @@ package org.log5f.appenders
 				removeEventListener(SecurityErrorEvent.SECURITY_ERROR,
 					securityErrorHandler);
 			
-			this.connection.close();
+			try
+			{
+				this.connection.close();
+			}
+			catch (error:ArgumentError)
+			{
+				if (LoggerManager.traceErrors)
+					trace("Log5F:", error);
+			}
 				
 			this.connection = null;
 		}
@@ -192,20 +200,26 @@ package org.log5f.appenders
 		//----------------------------------------------------------------------
 		
 		//-----------------------------------
-		//	Methods: Abstract
+		//	Methods
 		//-----------------------------------
 		
 		/**
-		 * Returns array containing parameters that will be passed as a third
-		 * argument into <coide>LocalConnection.send()<code> method.
+		 * Sending occurs directly here.
 		 * 
 		 * @param event The log event.
-		 * 
-		 * @return A list of parameters 
 		 */
-		protected function getParameters(event:LogEvent):Array
+		protected function subAppend(event:LogEvent):void
 		{
-			return [this.layout.format(event)];
+			try
+			{
+				this.connection.send(this.connectionName, this.methodName, 
+					this.layout.format(event));
+			}
+			catch (error:Error)
+			{
+				if (LoggerManager.traceErrors)
+					trace("Log5F:", error);
+			}
 		}
 		
 		//----------------------------------------------------------------------

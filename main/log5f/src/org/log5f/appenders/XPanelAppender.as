@@ -12,6 +12,7 @@ package org.log5f.appenders
 	import flash.utils.getTimer;
 	
 	import org.log5f.Level;
+	import org.log5f.LoggerManager;
 	import org.log5f.core.Appender;
 	import org.log5f.events.LogEvent;
 
@@ -32,6 +33,9 @@ package org.log5f.appenders
 		/** Default connection name for XPanel */
 		public static const DEFAULT_CONNECTION_NAME:String = "_xpanel1";
 
+		/** Default method name for XPanel */
+		public static const DEFAULT_METHOD_NAME:String = "dispatchMessage";
+		
 		//----------------------------------------------------------------------
 		//
 		//	Constructor
@@ -59,10 +63,10 @@ package org.log5f.appenders
 		{
 			var name:String = super.connectionName;
 			
-			var isDefaultOrNull:Boolean = 
-				!name || name == LocalConnectionAppender.DEFAULT_CONNECTION_NAME;
+			if (!name || name == LocalConnectionAppender.DEFAULT_CONNECTION_NAME)
+				return XPanelAppender.DEFAULT_CONNECTION_NAME;
 			
-			return isDefaultOrNull ? DEFAULT_CONNECTION_NAME : name;
+			return name;
 		}
 
 		//-----------------------------------
@@ -74,10 +78,10 @@ package org.log5f.appenders
 		{
 			var name:String = super.methodName;
 			
-			var isDefaultOrNull:Boolean = 
-				!name || name == LocalConnectionAppender.DEFAULT_METHOD_NAME;
+			if (!name || name == LocalConnectionAppender.DEFAULT_METHOD_NAME)
+				return XPanelAppender.DEFAULT_METHOD_NAME;
 			
-			return isDefaultOrNull ? DEFAULT_METHOD_NAME : name;
+			return name;
 		}
 		
 		//----------------------------------------------------------------------
@@ -87,56 +91,31 @@ package org.log5f.appenders
 		//----------------------------------------------------------------------
 
 		/** @inheritDoc */
-		override protected function getParameters(event:LogEvent):Array
+		override protected function subAppend(event:LogEvent):void
 		{
-			var level:int;
+			if (!this.connection) return;
 			
-			switch (event.level.toInt())
+			var levels:Object = {};
+			levels[Level.ALL.toString()] = 0x00;
+			levels[Level.DEBUG.toString()] = 0x01;
+			levels[Level.INFO.toString()] = 0x02;
+			levels[Level.WARN.toString()] = 0x04;
+			levels[Level.ERROR.toString()] = 0x08;
+			levels[Level.FATAL.toString()] = 0x08;
+			levels[Level.OFF.toString()] = 0xFF;
+			
+			var level:int = levels[event.level.toString()];
+			
+			try
 			{
-				case Level.ALL.toInt():
-				
-					level = 0x00;
-					
-					break;
-					
-				case Level.DEBUG.toInt():
-				
-					level = 0x01;
-					
-					break;
-					
-				case Level.INFO.toInt():
-				
-					level = 0x02;
-					
-					break;
-					
-				case Level.WARN.toInt():
-				
-					level = 0x04;
-					
-					break;
-					
-				case Level.ERROR.toInt():
-				
-					level = 0x08;
-					
-					break;
-					
-				case Level.FATAL.toInt():
-				
-					level = 0x08;
-					
-					break;
-					
-				case Level.OFF.toInt():
-				
-					level = 0xFF;
-					
-					break;
+				this.connection.send(this.connectionName, this.methodName, 
+					this.layout.format(event), level);
 			}
-			
-			return [getTimer(), this.layout.format(event), level];
+			catch (error:Error)
+			{
+				if (LoggerManager.traceErrors)
+					trace("Log5F:", error);
+			}
 		}
 	}
 }
