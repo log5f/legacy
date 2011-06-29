@@ -1,25 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2011, Transparent Language, Inc..
+All Rights Reserved.
+Transparent Language Confidential Information
+-->
+
 
 <!-- This is an auto generated file and is not intended for modification. -->
 
-<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
-			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:flexui="flexunit.flexui.*" creationComplete="onCreationComplete()">
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:flexui="flexunit.flexui.*"
+			   minWidth="955" minHeight="600" creationComplete="onCreationComplete()">
 	<fx:Script>
 		<![CDATA[
+			import org.log5f.core.net.ConfigLoaderTest;
+			import org.log5f.layouts.converter.CategoryConverterTest;
+			import org.log5f.core.managers.DeferredManagerTest;
+			import org.log5f.layouts.Log4JLayoutTest;
+			import org.log5f.layouts.converter.FileConverterTest;
+			import org.log5f.layouts.converter.StackConverterTest;
+			import org.log5f.core.config.configurators.xml.XMLConfiguratorTest;
+			import org.log5f.layouts.converter.MessageConverterTest;
+			import org.log5f.layouts.SimpleLayoutTest;
+			import org.log5f.layouts.PatternLayoutTest;
+			import org.log5f.layouts.converter.LineNumberConverterTest;
+			import org.log5f.layouts.converter.LevelConverterTest;
+			import org.log5f.layouts.converter.DateConverterTest;
+			import org.log5f.layouts.converter.ClassConverterTest;
+			import org.log5f.appenders.LocalConnectionAppenderTest;
+			import org.log5f.layouts.converter.MethodConverterTest;
+			import org.log5f.Log5FConfiguratorTest;
 			import org.log5f.Log5FTests;
 			
 			public function currentRunTestSuite():Array
 			{
 				var testsToRun:Array = new Array();
 				testsToRun.push(org.log5f.Log5FTests);
+				testsToRun.push(org.log5f.Log5FConfiguratorTest);
+				testsToRun.push(org.log5f.layouts.converter.MethodConverterTest);
+				testsToRun.push(org.log5f.appenders.LocalConnectionAppenderTest);
+				testsToRun.push(org.log5f.layouts.converter.ClassConverterTest);
+				testsToRun.push(org.log5f.layouts.converter.DateConverterTest);
+				testsToRun.push(org.log5f.layouts.converter.LevelConverterTest);
+				testsToRun.push(org.log5f.layouts.converter.LineNumberConverterTest);
+				testsToRun.push(org.log5f.layouts.PatternLayoutTest);
+				testsToRun.push(org.log5f.layouts.SimpleLayoutTest);
+				testsToRun.push(org.log5f.layouts.converter.MessageConverterTest);
+				testsToRun.push(org.log5f.core.config.configurators.xml.XMLConfiguratorTest);
+				testsToRun.push(org.log5f.layouts.converter.StackConverterTest);
+				testsToRun.push(org.log5f.layouts.converter.FileConverterTest);
+				testsToRun.push(org.log5f.layouts.Log4JLayoutTest);
+				testsToRun.push(org.log5f.core.managers.DeferredManagerTest);
+				testsToRun.push(org.log5f.layouts.converter.CategoryConverterTest);
+				testsToRun.push(org.log5f.core.net.ConfigLoaderTest);
 				return testsToRun;
 			}
 			
 			
 			private function onCreationComplete():void
 			{
-				testRunner.runWithFlexUnit4Runner(currentRunTestSuite(), "Log5FTest");
+				testRunner.runWithFlexUnit4Runner(currentRunTestSuite(), "log5f-tests");
 			}
 			
 		]]>

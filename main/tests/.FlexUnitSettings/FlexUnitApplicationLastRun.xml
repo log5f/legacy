@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testrun name="" >
-<testsuite  name="Default Test Suite" project="Log5FTest">
-<testsuite name="org.log5f:Log5FTests" type="testsuiteclass"/>
+<testsuite  name="Default Test Suite" project="log5f-tests">
+<testsuite name="org.log5f:Log5FConfiguratorTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts.converter:MethodConverterTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.appenders:LocalConnectionAppenderTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts.converter:ClassConverterTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts.converter:DateConverterTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts.converter:LevelConverterTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts.converter:LineNumberConverterTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts:PatternLayoutTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts:SimpleLayoutTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts.converter:MessageConverterTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.core.config.configurators.xml:XMLConfiguratorTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts.converter:StackConverterTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts.converter:FileConverterTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts:Log4JLayoutTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.core.managers:DeferredManagerTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.layouts.converter:CategoryConverterTest" type="testsuiteclass"/>
+<testsuite name="org.log5f.core.net:ConfigLoaderTest" type="testsuiteclass"/>
+<testsuite name="org.log5f:Log5FTests" type="testcaseclass"/>
 </testsuite>
 </testrun>
