@@ -76,17 +76,17 @@
 	<!-- Application -->
 	<!--===============================-->
 
-	<property name="app.debug" value="true" />
+	<property name="lib.debug" value="false" />
 
-	<property name="app.dir" location="${basedir}" />
-	<property name="app.src" location="${app.dir}/src/" />
-	<property name="app.bin" location="${app.dir}/bin/" />
-	<property name="app.bin.rsl" location="${app.dir}/bin/rsl/" />
-	<property name="app.libs" location="${app.dir}/libs/" />
-	<property name="app.temp" location="${basedir}/temp/" />
-	<property name="app.assets" location="${app.src}/assets/" />
-	<property name="app.input.mxml" location="${app.src}/index.mxml" />
-	<property name="app.output.swf" location="${app.bin}/index.swf" />
+	<property name="lib.dir" location="${basedir}" />
+	<property name="lib.src" location="${lib.dir}/src/" />
+	<property name="lib.bin" location="${lib.dir}/bin/" />
+	<property name="lib.bin.rsl" location="${lib.dir}/bin/rsl/" />
+	<property name="lib.libs" location="${lib.dir}/libs/" />
+	<property name="lib.temp" location="${basedir}/temp/" />
+	<property name="lib.assets" location="${lib.src}/assets/" />
+	<property name="lib.input.mxml" location="${lib.src}/index.mxml" />
+	<property name="lib.output.swf" location="${lib.bin}/index.swf" />
 	
 	<!--===============================-->
 	<!-- Metadata -->
@@ -101,8 +101,8 @@
 	<!-- ASDoc -->
 	<!--===============================-->
 
-	<property name="asdoc.src" location="${app.src}/" />
-	<property name="asdoc.output" location="${app.dir}/asdocs" />
+	<property name="asdoc.src" location="${lib.src}/" />
+	<property name="asdoc.output" location="${lib.dir}/asdocs" />
 	<property name="asdoc.main.title" value="${meta.contributor}" />
 	<property name="asdoc.window.title" value="${meta.description}" />
 	<property name="asdoc.window.footer" value="See more on http://log5f.wordpress.com" />
@@ -135,21 +135,31 @@
 	
 	<target name="build.buildnumber">
 		<buildnumber />
-		<replaceregexp file="${app.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${build.number}"' byline="true" />
+		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${build.number}"' byline="true" />
 	</target>
 
 	<target name="build.compile" depends="build.buildnumber" description="Compile Library">
-		<compc output="${app.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" locale="${LOCALE}">
-			<namespace uri="http://log5f.org" manifest="${app.src}/manifest.xml" />
-			<include-namespaces>http://log5f.org</include-namespaces>
-			<source-path path-element="${app.src}" />
-			<source-path path-element="${basedir}/locale/${LOCALE}" />
-			<include-libraries file="${app.libs}" /> 
-			<include-sources dir="${app.src}">
-				<include name="**/*.as" />
-				<include name="**/*.mxml" />
-				<exclude name="**/Log5F.as" />
-			</include-sources>
+		<compc 
+			output="${lib.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" 
+			locale="${LOCALE}"
+			debug="${lib.debug}">
+			
+			<source-path path-element="${lib.src}"/>
+            <source-path path-element="${basedir}/locale/${LOCALE}"/>
+			
+			<include-file name="design.xml" path="${lib.src}/design.xml"/>
+        	<include-file name="manifest.xml" path="${lib.src}/manifest.xml"/>
+			
+			<namespace uri="http://log5f.org" manifest="${lib.src}/manifest.xml" />
+			
+			<include-namespaces uri="http://log5f.org" />
+			
+			<include-sources dir="${lib.src}" includes="*" append="true">
+                <exclude name="*.xml" />
+                <exclude name="*.properties" />
+                <exclude name="*.xsd" />
+            </include-sources>
+			
 			<strict>true</strict>
 			<optimize>true</optimize>
 			<warnings>true</warnings>
@@ -158,24 +168,28 @@
 		<echo>${build.number}</echo>
 	</target>
 
+	<!--===============================-->
+	<!-- RSL -->
+	<!--===============================-->
+	
     <target name="build.rsl" depends="build.compile" description="Make RSL">
         <sequential>
-			<unzip src="${app.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" dest="${app.bin.rsl}">
+			<unzip src="${lib.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" dest="${lib.bin.rsl}">
 				<patternset>
 					<include name="library.swf" />
 				</patternset>
 			</unzip>
         	<java jar="${optimizer.jar}" fork="true" failonerror="true">
         		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
-        		<arg line="-input ${app.bin.rsl}/library.swf" />
-        		<arg line="-output ${app.bin.rsl}/log5f-${version.major}.${version.minor}.${build.number}.swf" />
+        		<arg line="-input ${lib.bin.rsl}/library.swf" />
+        		<arg line="-output ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${build.number}.swf" />
         		<arg line="-keep-as3-metadata='Bindable,Managed,ChangeEvent,NonCommittingChangeEvent,Transient'" />
     		</java>
-        	<delete file="${app.bin.rsl}/library.swf" />
+        	<delete file="${lib.bin.rsl}/library.swf" />
         	<java jar="${digest.jar}" fork="true" failonerror="true">
         		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
-        		<arg line="--digest.rsl-file  ${app.bin.rsl}/log5f-${version.major}.${version.minor}.${build.number}.swf" />
-        		<arg line="--digest.swc-path  ${app.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" />
+        		<arg line="--digest.rsl-file  ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${build.number}.swf" />
+        		<arg line="--digest.swc-path  ${lib.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" />
 			</java>
         </sequential>
     </target>
