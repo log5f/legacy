@@ -9,7 +9,6 @@
     <classEntry path="org.log5f.appenders.ArthropodAppender"/>
     <classEntry path="org.log5f.appenders.BrowserAppender"/>
     <classEntry path="org.log5f.appenders.LocalConnectionAppender"/>
-    <classEntry path="org.log5f.appenders.PysarAppender"/>
     <classEntry path="org.log5f.appenders.TraceAppender"/>
     <classEntry path="org.log5f.appenders.XMLSocketAppender"/>
     <classEntry path="org.log5f.appenders.XPanelAppender"/>

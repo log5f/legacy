@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2009 http://log5f.wordpress.com
+// Copyright (c) 2009 http://log5f.org
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -11,6 +11,7 @@ package org.log5f.appenders
 	import flash.net.LocalConnection;
 	
 	import org.log5f.core.Appender;
+	import org.log5f.error.CallAbstractMethodError;
 	import org.log5f.events.LogEvent;
 	
 	/**
@@ -80,7 +81,7 @@ package org.log5f.appenders
 		 * @private
 		 * Storage for the connectionName property.
 		 */
-		private var _connectionName:String;
+		private var _connectionName:String = null;
 
 		/**
 		 * The name of connection that used for connecting to a destination.
@@ -156,8 +157,8 @@ package org.log5f.appenders
 												 securityErrorHandler);
 			}
 			
-			this.connection.send(this.connectionName, this.methodName,
-								 this.layout.format(event));
+			this.connection.send.apply(this.connection, 
+				[this.connectionName, this.methodName, this.getParameters(event)]);
 		}
 		
 		/**
@@ -168,17 +169,43 @@ package org.log5f.appenders
 			if (!this.connection)
 				return;
 			
-			this.connection.removeEventListener(StatusEvent.STATUS, statusHandler);
+			this.connection.
+				removeEventListener(StatusEvent.STATUS, statusHandler);
 				
-			this.connection.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, 
-												asyncErrorHandler);
+			this.connection.
+				removeEventListener(AsyncErrorEvent.ASYNC_ERROR,
+					asyncErrorHandler);
 				
-			this.connection.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, 
-												securityErrorHandler);
+			this.connection.
+				removeEventListener(SecurityErrorEvent.SECURITY_ERROR,
+					securityErrorHandler);
 			
 			this.connection.close();
 				
 			this.connection = null;
+		}
+		
+		//----------------------------------------------------------------------
+		//
+		//	Methods
+		//
+		//----------------------------------------------------------------------
+		
+		//-----------------------------------
+		//	Methods: Abstract
+		//-----------------------------------
+		
+		/**
+		 * Returns array containing parameters that will be passed as a third
+		 * argument into <coide>LocalConnection.send()<code> method.
+		 * 
+		 * @param event The log event.
+		 * 
+		 * @return A list of parameters 
+		 */
+		protected function getParameters(event:LogEvent):Array
+		{
+			return [this.layout.format(event)];
 		}
 		
 		//----------------------------------------------------------------------

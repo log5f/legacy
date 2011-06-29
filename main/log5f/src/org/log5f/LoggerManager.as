@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2009 http://log5f.wordpress.com
+// Copyright (c) 2009 http://log5f.org
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -11,7 +11,6 @@ package org.log5f
     import org.log5f.appenders.BrowserAppender;
     import org.log5f.appenders.FirebugAppender;
     import org.log5f.appenders.LocalConnectionAppender;
-    import org.log5f.appenders.PysarAppender;
     import org.log5f.appenders.TraceAppender;
     import org.log5f.appenders.XMLSocketAppender;
     import org.log5f.appenders.XPanelAppender;
@@ -313,7 +312,6 @@ package org.log5f
 			LoggerManager.forceCompile(SimpleLayout);
 			LoggerManager.forceCompile(PatternLayout);
 			
-			LoggerManager.forceCompile(PysarAppender);
 			LoggerManager.forceCompile(TraceAppender);
 			LoggerManager.forceCompile(XPanelAppender);
 			LoggerManager.forceCompile(BrowserAppender);

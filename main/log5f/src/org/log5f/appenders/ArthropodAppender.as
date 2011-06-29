@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2009 http://log5f.wordpress.com
+// Copyright (c) 2009 http://log5f.org
 // This program is made available under the terms of the MIT License.
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -11,7 +11,9 @@ package org.log5f.appenders
 	import flash.net.LocalConnection;
 	
 	import org.log5f.Level;
+	import org.log5f.LoggerManager;
 	import org.log5f.events.LogEvent;
+	import org.log5f.log5f_internal;
 	
 	/**
 	 * The <code>ArthropodAppender</code> appends log events to the Arthropod
@@ -61,11 +63,15 @@ package org.log5f.appenders
 		//
 		//----------------------------------------------------------------------
 		
+		/** @inheritDoc */
 		override public function get connectionName():String
 		{
-			return super.connectionName == LocalConnectionAppender.DEFAULT_CONNECTION_NAME ?
-				   ArthropodAppender.DEFAULT_CONNECTION_NAME : 
-				   super.connectionName;
+			var name:String = super.connectionName;
+			
+			if (!name || name == LocalConnectionAppender.DEFAULT_CONNECTION_NAME)
+				return DEFAULT_CONNECTION_NAME;
+			
+			return name;
 		}
 		
 		//----------------------------------------------------------------------
@@ -103,7 +109,6 @@ package org.log5f.appenders
 			
 			this._password = value;
 		}
-
 		
 		//----------------------------------------------------------------------
 		//
@@ -111,9 +116,7 @@ package org.log5f.appenders
 		//
 		//----------------------------------------------------------------------
 		
-		/**
-		 * 
-		 */
+		/** @inheritDoc */
 		override protected function append(event:LogEvent):void
 		{
 			if (!this.connection)
@@ -202,7 +205,8 @@ package org.log5f.appenders
 			}
 			catch (error:Error)
 			{
-				trace(error);
+				if (LoggerManager.traceErrors)
+					trace(error);
 			}
 		}
 	}
