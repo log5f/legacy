@@ -445,7 +445,7 @@ package org.log5f.core
 				return;
 			}
 			
-			// if Log5F isn't configured - defer log entry
+			// defer log entry, if Log5F isn't configured yet
 			
 			if (Config.log5f_internal::needUpdate)
 			{
