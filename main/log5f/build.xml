@@ -236,9 +236,9 @@
 	<!-- SVN -->
 	<!--===============================-->
 	
-    <target name="clean" depends="" description="">
+    <target name="svn.revert" depends="" description="">
     	<svn refid="svn.settings">
-    		<revert recurse="true"/>
+    		<revert dir="${lib.src}" recurse="true"/>
     	</svn>
     </target>
 	
