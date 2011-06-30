@@ -236,7 +236,7 @@
 	<!-- SVN -->
 	<!--===============================-->
 	
-    <target name="svn.clean" depends="" description="">
+    <target name="clean" depends="" description="">
     	<svn refid="svn.settings">
     		<revert recurse="true"/>
     	</svn>
