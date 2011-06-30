@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Log5F" default="clean" basedir=".">
+<project name="Log5F" default="build" basedir=".">
 	
 	<!--=====================================================================-->
 	<!-- Libraries	-->
@@ -131,6 +131,9 @@
 	<!--	Conditions														 -->
 	<!--=====================================================================-->
 	
+	<!-- The build number 0000 means, that library was build as dev version -->
+	<property name="env.BUILD_NUMBER" value="0000" />
+	
 	<!--=====================================================================-->
 	<!--	Targets															 -->
 	<!--=====================================================================-->
@@ -143,12 +146,8 @@
     	<echo>${env.BUILD_NUMBER}</echo>
     </target>
 	
-	<target name="build.buildnumber">
-		<buildnumber />
-		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${env.BUILD_NUMBER}"' byline="true" />
-	</target>
-
-	<target name="build.compile" depends="build.buildnumber" description="Compile Library">
+	<target name="build.compile" description="Compile Library">
+		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${env.BUILD_NUMBER}"' byline="true" />
 		<compc 
 			output="${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" 
 			locale="${LOCALE}"
@@ -175,6 +174,7 @@
 			<warnings>true</warnings>
 			<compute-digest>true</compute-digest>
 		</compc>
+		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.0000"' byline="true" />
 		<echo>${env.BUILD_NUMBER}</echo>
 	</target>
 
