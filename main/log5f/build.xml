@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Log5F" default="build" basedir=".">
+<project name="Log5F" default="clean" basedir=".">
 	
 	<!--=====================================================================-->
 	<!-- Libraries	-->
