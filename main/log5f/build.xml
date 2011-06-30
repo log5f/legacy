@@ -147,7 +147,9 @@
     </target>
 	
 	<target name="build.compile" description="Compile Library">
+		
 		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${env.BUILD_NUMBER}"' byline="true" />
+		
 		<compc 
 			output="${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" 
 			locale="${LOCALE}"
@@ -174,7 +176,9 @@
 			<warnings>true</warnings>
 			<compute-digest>true</compute-digest>
 		</compc>
+		
 		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.0000"' byline="true" />
+		
 		<echo>${env.BUILD_NUMBER}</echo>
 	</target>
 
