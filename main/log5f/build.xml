@@ -122,6 +122,10 @@
 	<property file="${version.file}" />
 
 	<!--=====================================================================-->
+	<!--	Conditions														 -->
+	<!--=====================================================================-->
+	
+	<!--=====================================================================-->
 	<!--	Targets															 -->
 	<!--=====================================================================-->
 
@@ -129,18 +133,18 @@
 	<!-- Build -->
 	<!--===============================-->
 	
-    <target name="build" depends="build.rsl" description="Build Log5F">
-    	<echo>${build.number}</echo>
+    <target name="build" depends="build.rsl, build.api" description="Build Log5F">
+    	<echo>${env.BUILD_NUMBER}</echo>
     </target>
 	
 	<target name="build.buildnumber">
 		<buildnumber />
-		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${build.number}"' byline="true" />
+		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${env.BUILD_NUMBER}"' byline="true" />
 	</target>
 
 	<target name="build.compile" depends="build.buildnumber" description="Compile Library">
 		<compc 
-			output="${lib.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" 
+			output="${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" 
 			locale="${LOCALE}"
 			debug="${lib.debug}">
 			
@@ -165,7 +169,7 @@
 			<warnings>true</warnings>
 			<compute-digest>true</compute-digest>
 		</compc>
-		<echo>${build.number}</echo>
+		<echo>${env.BUILD_NUMBER}</echo>
 	</target>
 
 	<!--===============================-->
@@ -174,7 +178,7 @@
 	
     <target name="build.rsl" depends="build.compile" description="Make RSL">
         <sequential>
-			<unzip src="${lib.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" dest="${lib.bin.rsl}">
+			<unzip src="${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" dest="${lib.bin.rsl}">
 				<patternset>
 					<include name="library.swf" />
 				</patternset>
@@ -182,18 +186,29 @@
         	<java jar="${optimizer.jar}" fork="true" failonerror="true">
         		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
         		<arg line="-input ${lib.bin.rsl}/library.swf" />
-        		<arg line="-output ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${build.number}.swf" />
+        		<arg line="-output ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swf" />
         		<arg line="-keep-as3-metadata='Bindable,Managed,ChangeEvent,NonCommittingChangeEvent,Transient'" />
     		</java>
         	<delete file="${lib.bin.rsl}/library.swf" />
         	<java jar="${digest.jar}" fork="true" failonerror="true">
         		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
-        		<arg line="--digest.rsl-file  ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${build.number}.swf" />
-        		<arg line="--digest.swc-path  ${lib.bin}/log5f-${version.major}.${version.minor}.${build.number}.swc" />
+        		<arg line="--digest.rsl-file  ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swf" />
+        		<arg line="--digest.swc-path  ${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" />
 			</java>
         </sequential>
     </target>
 
+	<!--===============================-->
+	<!-- ASDoc -->
+	<!--===============================-->
+	
+    <target name="build.api" description="Build asdocs">
+    	<asdoc output="${asdoc.output}" lenient="true" failonerror="true"> 
+    		<doc-sources path-element="${asdoc.src}" />
+    		<namespace uri="http://log5f.org" manifest="${lib.src}/manifest.xml" />
+        </asdoc>
+    </target>
+	
 	<!--===============================-->
 	<!-- Version -->
 	<!--===============================-->
@@ -216,16 +231,12 @@
 	<!--===============================-->
 	
     <target name="project.export" description="Archive Project">
-    	<property name="build.number.file" location="build.number" />
-    	<property file="${build.number.file}" />
-    	
         <svn refid="svn.settings">
         	<export srcPath="${basedir}" destPath="${basedir}/temp" force="true" />
     	</svn>
     	<zip destfile="${basedir}/Log5F-${version.major}.${version.minor}.zip" basedir="${basedir}/temp">
     		<exclude name="${basedir}/**.zip" />
     	</zip>
-    	<delete dir="${basedir}/%SystemDrive%" />
     	<delete dir="${basedir}/temp" />
     </target>
 
