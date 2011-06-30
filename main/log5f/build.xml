@@ -15,7 +15,7 @@
 	<!-- FlexTasks (Compiling Flex Applications) -->
 	<!--===============================-->
 
-	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	<taskdef resource="flexTasks.tasks" classpath="ant-libs/flexTasks.jar" />
 	
 	<!--===============================-->
 	<!-- SVNAnt (http://subclipse.tigris.org/svnant/svn.html) -->
