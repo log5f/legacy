@@ -116,7 +116,7 @@ package org.log5f.filters
 		//----------------------------------------------------------------------
 		
 		/**
-		 * <p>If the decision is <code>DENY</code>, then the event will be
+		 * If the decision is <code>DENY</code>, then the event will be
 		 * dropped. If the decision is <code>NEUTRAL</code>, then the next
 		 * filter, if any, will be invoked. If the decision is ACCEPT then
 		 * the event will be logged without consulting with other filters in

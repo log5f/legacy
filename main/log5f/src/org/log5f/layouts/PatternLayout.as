@@ -37,7 +37,7 @@ package org.log5f.layouts
 	 * 
 	 * <p>
 	 * The recognized conversion characters are
-	 * <br />
+	 * </p>
 	 * 
 	 * <table class="innertable">
      * <tr><th>Conversion Character</th><th>Effect</th></tr>
@@ -53,7 +53,8 @@ package org.log5f.layouts
 	 * the category name is printed in full. 
 	 * <br></br>
 	 * For example, for the category name "<code>a.b.c</code>" the pattern 
-	 * <b>%c{2}</b> will output "<code>b.c</code>".</td>
+	 * <b>%c{2}</b> will output "<code>b.c</code>".
+	 * </td>
 	 * </tr>
      * <tr>
 	 * <td><b><code>C</code></b></td>
@@ -87,7 +88,8 @@ package org.log5f.layouts
 	 * <td>Used to output the file name where the logging request was issued.
 	 * <br></br>
 	 * <b>WARNING</b>: Generating caller location information is extremely slow 
-	 * and works only in debug version of Flash Player.</td>
+	 * and works only in debug version of Flash Player.
+	 * </td>
 	 * </tr>
      * <tr>
 	 * <td><b><code>L</code></b></td>
@@ -95,7 +97,7 @@ package org.log5f.layouts
 	 * issued.
 	 * <br></br>
 	 * <b>WARNING</b>: Generating caller location information is extremely slow 
-	 * and works only in debug version of Flash Player.</td>
+	 * and works only in debug version of Flash Player.
 	 * </td>
 	 * </tr>
      * <tr>
@@ -108,7 +110,7 @@ package org.log5f.layouts
 	 * <td>Used to output the method name where the logging request was issued.
 	 * <br></br>
 	 * <b>WARNING</b>: Generating caller location information is extremely slow 
-	 * and works only in debug version of Flash Player.</td>
+	 * and works only in debug version of Flash Player.
 	 * </td>
 	 * </tr>
      * <tr>

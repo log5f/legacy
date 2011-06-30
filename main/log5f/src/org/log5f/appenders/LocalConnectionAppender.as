@@ -12,7 +12,6 @@ package org.log5f.appenders
 	
 	import org.log5f.LoggerManager;
 	import org.log5f.core.Appender;
-	import org.log5f.error.CallAbstractMethodError;
 	import org.log5f.events.LogEvent;
 	
 	/**

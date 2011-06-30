@@ -14,7 +14,6 @@ package org.log5f.core.config
 	import org.log5f.core.config.configurators.IConfigurator;
 	import org.log5f.core.managers.DeferredManager;
 	import org.log5f.core.net.ConfigLoader;
-	import org.log5f.error.InvalidConfigError;
 	import org.log5f.log5f_internal;
 	import org.log5f.utils.LoaderInfoUtil;
 

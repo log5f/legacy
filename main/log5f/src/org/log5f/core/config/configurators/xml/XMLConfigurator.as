@@ -5,8 +5,6 @@
 
 package org.log5f.core.config.configurators.xml
 {
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
@@ -14,7 +12,6 @@ package org.log5f.core.config.configurators.xml
 	
 	import org.log5f.Level;
 	import org.log5f.LoggerManager;
-	import org.log5f.core.Appender;
 	import org.log5f.core.IAppender;
 	import org.log5f.core.config.configurators.IConfigurator;
 	import org.log5f.error.AppenderNotFoundError;
@@ -22,8 +19,6 @@ package org.log5f.core.config.configurators.xml
 	import org.log5f.error.IllegalArgumentError;
 	import org.log5f.error.InvalidAppenderError;
 	import org.log5f.error.InvalidConfigError;
-	import org.log5f.error.SingletonError;
-	import org.log5f.log5f_internal;
 	
 	[ExcludeClass]
 	
