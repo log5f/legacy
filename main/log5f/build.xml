@@ -227,6 +227,10 @@
     	<svn refid="svn.settings">
     		<revert dir="${lib.src}" recurse="true"/>
     		<cleanup dir="${lib.src}"/>
+    		<checkout
+    			url="http://log5f.googlecode.com/svn/trunk/main/log5f/src/org/log5f/Log5F.as"
+    			destpath="${lib.src}/org/log5f/"
+    			depth="files" force="true" />
     	</svn>
     </target>
 	
