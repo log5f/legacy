@@ -14,7 +14,6 @@ package org.log5f
     import org.log5f.appenders.TraceAppender;
     import org.log5f.appenders.XMLSocketAppender;
     import org.log5f.appenders.XPanelAppender;
-    import org.log5f.core.Category;
     import org.log5f.core.config.Config;
     import org.log5f.filters.DenyAllFilter;
     import org.log5f.filters.LevelRangeFilter;
@@ -22,6 +21,7 @@ package org.log5f
     import org.log5f.layouts.Log4JLayout;
     import org.log5f.layouts.PatternLayout;
     import org.log5f.layouts.SimpleLayout;
+    import org.log5f.layouts.ThunderBoltLayout;
 	
 	use namespace log5f_internal;
 	
@@ -311,6 +311,7 @@ package org.log5f
 			LoggerManager.forceCompile(Log4JLayout);
 			LoggerManager.forceCompile(SimpleLayout);
 			LoggerManager.forceCompile(PatternLayout);
+			LoggerManager.forceCompile(ThunderBoltLayout);
 			
 			LoggerManager.forceCompile(TraceAppender);
 			LoggerManager.forceCompile(XPanelAppender);
