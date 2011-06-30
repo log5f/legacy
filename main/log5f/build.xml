@@ -29,23 +29,6 @@
 	
 	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant" />
 	
-	<!--
-	<typedef 
-		resource="org/tigris/subversion/svnant/svnantlib.xml" 
-		classpathref="path.svnant" />
-	
-	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml">
-		<classpath>
-			<fileset dir="ant-libs">
-				<include name="svnjavahl.jar" />
-				<include name="svnClientAdapter.jar" />
-				<include name="svnkit.jar" />
-				<include name="svnant.jar" />
-			</fileset>
-		</classpath>
-	</typedef>
-	-->
-	
 	<!--=====================================================================-->
 	<!-- Propertiers -->
 	<!--=====================================================================-->
@@ -240,9 +223,10 @@
 	<!-- SVN -->
 	<!--===============================-->
 	
-    <target name="svn.revert" depends="" description="">
+    <target name="revert" depends="" description="">
     	<svn refid="svn.settings">
     		<revert dir="${lib.src}" recurse="true"/>
+    		<cleanup dir="${lib.src}"/>
     	</svn>
     </target>
 	
