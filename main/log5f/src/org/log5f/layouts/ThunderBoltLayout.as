@@ -10,11 +10,23 @@ package org.log5f.layouts
 	import org.log5f.core.ILayout;
 	import org.log5f.events.LogEvent;
 	import org.log5f.helpers.formatters.DateFormatter;
+	import org.log5f.layouts.converters.CategoryConverter;
+	import org.log5f.layouts.converters.ClassConverter;
+	import org.log5f.layouts.converters.LineNumberConverter;
 	
+	/**
+	 * This layout formats event objects into form that is recoginzible for 
+	 * ThunderBolt AS3 Console.
+	 * 
+	 * <b>Note</b>: this class has a <u>draft</u> status.
+	 * 
+	 * @see http://code.google.com/p/flash-thunderbolt/ ThunderBolt Home Page
+	 */
 	public class ThunderBoltLayout implements ILayout
 	{
 		private static const GROUP_START: String = "group";
 		private static const GROUP_END: String = "groupEnd";
+		private static const TIME: String = "time";
 		private static const FIELD_SEPERATOR: String = " :: ";
 		private static const MAX_DEPTH: int = 255;
 		
@@ -44,14 +56,14 @@ package org.log5f.layouts
 		/** @inheritDoc */
 		public function get isStackNeeded():Boolean
 		{
-			return false;
+			return this.showCaller;
 		}
 		
 		//-----------------------------------
 		//	includeTime
 		//-----------------------------------
 		
-		private var _includeTime:Boolean;
+		private var _includeTime:Boolean = true;
 
 		public function get includeTime():Boolean
 		{
@@ -61,6 +73,22 @@ package org.log5f.layouts
 		public function set includeTime(value:Boolean):void
 		{
 			_includeTime = value;
+		}
+		
+		//-----------------------------------
+		//	showCaller
+		//-----------------------------------
+		
+		private var _showCaller:Boolean = true;
+
+		public function get showCaller():Boolean
+		{
+			return _showCaller;
+		}
+
+		public function set showCaller(value:Boolean):void
+		{
+			_showCaller = value;
 		}
 		
 		//----------------------------------------------------------------------
@@ -93,9 +121,17 @@ package org.log5f.layouts
 			if (this.includeTime)
 			{
 				var formatter:DateFormatter = new DateFormatter();
-				formatter.formatString = "HH:MM:SS:Q";
+				formatter.formatString = "HH:MM:SS.Q";
 				
-				logMsg += formatter.format(new Date()) + FIELD_SEPERATOR;
+				logMsg += TIME + " " + formatter.format(new Date()) + FIELD_SEPERATOR;
+			}
+			
+			if (this.showCaller)
+			{
+				var cls:String = new ClassConverter().convert(event);
+				var ln:String = new LineNumberConverter().convert(event);
+				
+				logMsg += cls + " [" + ln + "]" + FIELD_SEPERATOR;
 			}
 			
 			var msg:String;
@@ -156,7 +192,7 @@ package org.log5f.layouts
 					result += logObject(event, logObj[element], element) + "\n";	
 				}
 				
-				result +=  event.level.toString().toLowerCase() + "." + GROUP_END + " " + "[Object] " + propID + "\n";
+				result +=  event.level.toString().toLowerCase() + "." + GROUP_END + " " + "[Object] " + propID;
 			}
 			else if (type == "Array")
 			{
@@ -168,7 +204,7 @@ package org.log5f.layouts
 					result += logObject(event, logObj[i]) + "\n";
 				}
 				
-				result +=  event.level.toString().toLowerCase() + "." + GROUP_END + " " + "[Array] " + propID + "\n";
+				result +=  event.level.toString().toLowerCase() + "." + GROUP_END + " " + "[Array] " + propID;
 			}
 			else
 			{
