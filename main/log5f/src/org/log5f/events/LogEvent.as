@@ -121,6 +121,5 @@ package org.log5f.events
 		{
 			return new LogEvent(this.category, this.level, this.message, this.stack);
 		}
-
 	}
 }
