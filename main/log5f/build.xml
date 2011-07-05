@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="Log5F" default="build" basedir=".">
-	
+
 	<!--=====================================================================-->
 	<!-- Libraries	-->
 	<!--=====================================================================-->
@@ -16,19 +16,19 @@
 	<!--===============================-->
 
 	<taskdef resource="flexTasks.tasks" classpath="ant-libs/flexTasks.jar" />
-	
+
 	<!--===============================-->
 	<!-- SVNAnt (http://subclipse.tigris.org/svnant/svn.html) -->
 	<!--===============================-->
 
 	<path id="path.svnant">
-	    <fileset dir="ant-libs">
-	        <include name="**/*.jar" />
-	    </fileset>
+		<fileset dir="ant-libs">
+			<include name="**/*.jar" />
+		</fileset>
 	</path>
-	
+
 	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant" />
-	
+
 	<!--=====================================================================-->
 	<!-- Propertiers -->
 	<!--=====================================================================-->
@@ -38,7 +38,7 @@
 	<!--===============================-->
 
 	<property file="build.properties" />
-	
+
 	<!--===============================-->
 	<!-- Flex -->
 	<!--===============================-->
@@ -46,15 +46,15 @@
 	<property name="FLEX_HOME" location="${flex.sdk}" />
 	<property name="APP_ROOT" location="${basedir}" />
 	<property name="LOCALE" value="en_US" />
-	
+
 	<!--===============================-->
 	<!-- JARs -->
 	<!--===============================-->
-	
+
 	<property name="asdoc.jar" location="${flex.sdk}/lib/asdoc.jar" />
 	<property name="digest.jar" location="${flex.sdk}/lib/digest.jar" />
 	<property name="optimizer.jar" location="${flex.sdk}/lib/optimizer.jar" />
-	
+
 	<!--===============================-->
 	<!-- Application -->
 	<!--===============================-->
@@ -70,7 +70,7 @@
 	<property name="lib.assets" location="${lib.src}/assets/" />
 	<property name="lib.input.mxml" location="${lib.src}/index.mxml" />
 	<property name="lib.output.swf" location="${lib.bin}/index.swf" />
-	
+
 	<!--===============================-->
 	<!-- Metadata -->
 	<!--===============================-->
@@ -89,13 +89,13 @@
 	<property name="asdoc.main.title" value="${meta.contributor}" />
 	<property name="asdoc.window.title" value="${meta.description}" />
 	<property name="asdoc.window.footer" value="See more on http://log5f.wordpress.com" />
-	
+
 	<!--===============================-->
 	<!-- SVN -->
 	<!--===============================-->
-	
+
 	<svnSetting svnkit="true" javahl="false" username="" password="" id="svn.settings" />
-	
+
 	<!--===============================-->
 	<!-- Version -->
 	<!--===============================-->
@@ -108,15 +108,15 @@
 	<!-- environment -->
 	<!--===============================-->
 
-	<property environment="env"/>
-	
+	<property environment="env" />
+
 	<!--=====================================================================-->
 	<!--	Conditions														 -->
 	<!--=====================================================================-->
-	
+
 	<!-- The build number 0000 means, that library was build as dev version -->
 	<property name="env.BUILD_NUMBER" value="0000" />
-	
+
 	<!--=====================================================================-->
 	<!--	Targets															 -->
 	<!--=====================================================================-->
@@ -124,88 +124,102 @@
 	<!--===============================-->
 	<!-- Build -->
 	<!--===============================-->
-	
-    <target name="build" depends="build.rsl, build.api" description="Build Log5F">
-    	<echo>${env.BUILD_NUMBER}</echo>
-    </target>
-	
+
+	<target name="build" depends="build.rsl, build.api, build.hudson.artifacts" description="Build Log5F">
+		<echo>${env.BUILD_NUMBER}</echo>
+	</target>
+
 	<target name="build.compile" description="Compile Library">
-		
+
 		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${env.BUILD_NUMBER}"' byline="true" />
-		
-		<compc 
-			output="${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" 
-			locale="${LOCALE}"
-			debug="${lib.debug}">
-			
-			<source-path path-element="${lib.src}"/>
-            <source-path path-element="${basedir}/locale/${LOCALE}"/>
-			
-			<include-file name="design.xml" path="${lib.src}/design.xml"/>
-        	<include-file name="manifest.xml" path="${lib.src}/manifest.xml"/>
-			
+
+		<compc output="${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" locale="${LOCALE}" debug="${lib.debug}">
+
+			<source-path path-element="${lib.src}" />
+			<source-path path-element="${basedir}/locale/${LOCALE}" />
+
+			<include-file name="design.xml" path="${lib.src}/design.xml" />
+			<include-file name="manifest.xml" path="${lib.src}/manifest.xml" />
+
 			<namespace uri="http://log5f.org" manifest="${lib.src}/manifest.xml" />
-			
+
 			<include-namespaces uri="http://log5f.org" />
-			
+
 			<include-sources dir="${lib.src}" includes="*" append="true">
-                <exclude name="*.xml" />
-                <exclude name="*.properties" />
-                <exclude name="*.xsd" />
-            </include-sources>
-			
+				<exclude name="*.xml" />
+				<exclude name="*.properties" />
+				<exclude name="*.xsd" />
+			</include-sources>
+
 			<strict>true</strict>
 			<optimize>true</optimize>
 			<warnings>true</warnings>
 			<compute-digest>true</compute-digest>
 		</compc>
-		
+
 		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.0000"' byline="true" />
-		
+
 		<echo>${env.BUILD_NUMBER}</echo>
 	</target>
 
 	<!--===============================-->
 	<!-- RSL -->
 	<!--===============================-->
-	
-    <target name="build.rsl" depends="build.compile" description="Make RSL">
-        <sequential>
+
+	<target name="build.rsl" depends="build.compile" description="Make RSL">
+		<sequential>
 			<unzip src="${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" dest="${lib.bin.rsl}">
 				<patternset>
 					<include name="library.swf" />
 				</patternset>
 			</unzip>
-        	<java jar="${optimizer.jar}" fork="true" failonerror="true">
-        		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
-        		<arg line="-input ${lib.bin.rsl}/library.swf" />
-        		<arg line="-output ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swf" />
-        		<arg line="-keep-as3-metadata='Bindable,Managed,ChangeEvent,NonCommittingChangeEvent,Transient'" />
-    		</java>
-        	<delete file="${lib.bin.rsl}/library.swf" />
-        	<java jar="${digest.jar}" fork="true" failonerror="true">
-        		<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
-        		<arg line="--digest.rsl-file  ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swf" />
-        		<arg line="--digest.swc-path  ${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" />
+			<java jar="${optimizer.jar}" fork="true" failonerror="true">
+				<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
+				<arg line="-input ${lib.bin.rsl}/library.swf" />
+				<arg line="-output ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swf" />
+				<arg line="-keep-as3-metadata='Bindable,Managed,ChangeEvent,NonCommittingChangeEvent,Transient'" />
 			</java>
-        </sequential>
-    </target>
+			<delete file="${lib.bin.rsl}/library.swf" />
+			<java jar="${digest.jar}" fork="true" failonerror="true">
+				<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
+				<arg line="--digest.rsl-file  ${lib.bin.rsl}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swf" />
+				<arg line="--digest.swc-path  ${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" />
+			</java>
+		</sequential>
+	</target>
 
 	<!--===============================-->
 	<!-- ASDoc -->
 	<!--===============================-->
-	
-    <target name="build.api" description="Build asdocs">
-    	<asdoc output="${asdoc.output}" lenient="true" failonerror="true"> 
-    		<doc-sources path-element="${asdoc.src}" />
-    		<namespace uri="http://log5f.org" manifest="${lib.src}/manifest.xml" />
-        </asdoc>
-    </target>
-	
+
+	<target name="build.api" description="Build asdocs">
+		<asdoc output="${asdoc.output}" lenient="true" failonerror="true">
+			<doc-sources path-element="${asdoc.src}" />
+			<namespace uri="http://log5f.org" manifest="${lib.src}/manifest.xml" />
+		</asdoc>
+	</target>
+
+	<!--===============================-->
+	<!-- HTML -->
+	<!--===============================-->
+
+	<target name="build.hudson.artifacts">
+		<copy file="${basedir}/build/artifacts.html" todir="${lib.bin}" overwrite="true" />
+		<move file="${lib.bin}/artifacts.html" tofile="${lib.bin}/index.html" overwrite="true" />
+		<tstamp>
+			<format property="touch.time" pattern="MM/dd/yyyy hh:mm:ss" offset="0" unit="hour" />
+		</tstamp>
+		<replaceregexp file="${lib.bin}/index.html" match='%ARTIFACT_ID%' replace='Log5F' byline="true" />
+		<replaceregexp file="${lib.bin}/index.html" match='%ARTIFACT_DESCRIPTION%' replace='Core Library' byline="true" />
+		<replaceregexp file="${lib.bin}/index.html" match='%BUILD_NUMBER%' replace='${version.major}.${version.minor}.${env.BUILD_NUMBER}' byline="true" />
+		<replaceregexp file="${lib.bin}/index.html" match='%BUILD_DATE%' replace='${touch.time}' byline="true" />
+		<replaceregexp file="${lib.bin}/index.html" match='%DOWNLOAD%' replace='log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc' byline="true" />
+	</target>
+
 	<!--===============================-->
 	<!-- Version -->
 	<!--===============================-->
-	
+
 	<target name="increment.major">
 		<propertyfile file="${version.file}">
 			<entry key="version.major" type="int" operation="+" value="1" />
@@ -222,28 +236,28 @@
 	<!--===============================-->
 	<!-- SVN -->
 	<!--===============================-->
-	
+
 	<target name="revert" depends="svn.revert, build" />
-	
-    <target name="svn.revert" depends="" description="">
-    	<svn refid="svn.settings">
-    		<revert dir="${lib.src}" recurse="true"/>
-    		<cleanup dir="${lib.src}"/>
-    	</svn>
-    </target>
-	
+
+	<target name="svn.revert" depends="" description="">
+		<svn refid="svn.settings">
+			<revert dir="${lib.src}" recurse="true" />
+			<cleanup dir="${lib.src}" />
+		</svn>
+	</target>
+
 	<!--===============================-->
 	<!-- Project -->
 	<!--===============================-->
-	
-    <target name="project.export" description="Archive Project">
-        <svn refid="svn.settings">
-        	<export srcPath="${basedir}" destPath="${basedir}/temp" force="true" />
-    	</svn>
-    	<zip destfile="${basedir}/Log5F-${version.major}.${version.minor}.zip" basedir="${basedir}/temp">
-    		<exclude name="${basedir}/**.zip" />
-    	</zip>
-    	<delete dir="${basedir}/temp" />
-    </target>
+
+	<target name="project.export" description="Archive Project">
+		<svn refid="svn.settings">
+			<export srcPath="${basedir}" destPath="${basedir}/temp" force="true" />
+		</svn>
+		<zip destfile="${basedir}/Log5F-${version.major}.${version.minor}.zip" basedir="${basedir}/temp">
+			<exclude name="${basedir}/**.zip" />
+		</zip>
+		<delete dir="${basedir}/temp" />
+	</target>
 
 </project>
