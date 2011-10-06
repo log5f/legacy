@@ -192,7 +192,7 @@ package org.log5f.appenders
 		/**  */
 		protected function post():void
 		{
-			if (!this.group || this.buffer) 
+			if (!this.group || !this.buffer) 
 				return;
 			
 			while (this.buffer.length > 0)
@@ -222,8 +222,9 @@ package org.log5f.appenders
 			{
 				const spec:GroupSpecifier = new GroupSpecifier(this.groupName);
 				spec.postingEnabled = true;
+				spec.serverChannelEnabled = true;
 				
-				this.group = new NetGroup(this.conn, spec.groupspecWithoutAuthorizations());
+				this.group = new NetGroup(this.conn, spec.groupspecWithAuthorizations());
 				this.group.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
 			}
 		}
@@ -254,8 +255,6 @@ package org.log5f.appenders
 		/** @private */
 		private function netStatusHandler(event:NetStatusEvent):void
 		{
-			trace(event.info.code);
-			
 			switch (event.info.code)
 			{
 				// NetConnection
@@ -270,6 +269,10 @@ package org.log5f.appenders
 				
 				case "NetGroup.Connect.Succcess" :
 					
+					break;
+				
+				case "NetGroup.Neighbor.Connect" :
+				
 					this.post();
 					
 					break;
