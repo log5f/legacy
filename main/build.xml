@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<project name="log5f" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	
+	<!--===============================-->
+	<!-- Build -->
+	<!--===============================-->
+
+	<property file="build.properties" />
+
+	<!--===============================-->
+	<!-- Flex -->
+	<!--===============================-->
+
+	<property name="FLEX_HOME" location="${flex.sdk}" />
+	<property name="LOCALE" value="en_US" />
+	
+	<target name="build">
+		<ant antfile="log5f/build.xml" />
+		<ant antfile="log5f-fp10.1/build.xml" />
+	</target>
+
+	<target name="log5f">
+        <ant antfile="build.xml" dir="log5f" />
+    </target>
+	
+	<target name="log5f-fp10.1">
+		<ant antfile="build.xml" dir="log5f-fp10.1">
+		</ant>
+	</target>
+
+	<!--===============================-->
+	<!-- SVN -->
+	<!--===============================-->
+	
+	<target name="revert">
+		<ant antfile="log5f/build.xml" target="revert" />
+		<ant antfile="log5f-fp10.1/build.xml" target="revert" />
+	</target>
+	
+	<!--===============================-->
+	<!-- Version -->
+	<!--===============================-->
+
+	<target name="increment.major">
+		<ant antfile="log5f/build.xml" target="increment.major" />
+		<ant antfile="log5f-fp10.1/build.xml" target="increment.major" />
+	</target>
+
+	<target name="increment.minor">
+		<ant antfile="log5f/build.xml" target="increment.minor" />
+		<ant antfile="log5f-fp10.1/build.xml" target="increment.minor" />
+	</target>
+	
+</project>
