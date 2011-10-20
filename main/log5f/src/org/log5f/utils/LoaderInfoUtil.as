@@ -8,8 +8,6 @@ package org.log5f.utils
 	import flash.display.LoaderInfo;
 	import flash.utils.getDefinitionByName;
 	
-	import mx.managers.SystemManager;
-	
 	import org.log5f.core.config.Config;
 
 	/**

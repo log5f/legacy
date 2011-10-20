@@ -12,8 +12,6 @@ package org.log5f.appenders
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
 	
-	import mx.core.EventPriority;
-	
 	import org.log5f.core.Appender;
 	import org.log5f.events.LogEvent;
 	
@@ -199,11 +197,11 @@ package org.log5f.appenders
 				
 				this.socket.addEventListener(IOErrorEvent.IO_ERROR, 
 											 ioErrorHandler, false,
-											 EventPriority.DEFAULT, true);
+											 0, true);
 				
 				this.socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
 											 securityErrorHandler, false,
-											 EventPriority.DEFAULT, true);
+											 0, true);
 				
 				this.socket.connect(this.host, this.port);
 			}
