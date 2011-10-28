@@ -3,19 +3,118 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.log5f</groupId>
 	<artifactId>main</artifactId>
-	<version>1.0</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>Log5F</name>
+	<url>http://log5f.org</url>
+	<description>ActionScript 3.0 Logging Tool</description>
+	
+	<parent>
+	    <groupId>org.sonatype.oss</groupId>
+	    <artifactId>oss-parent</artifactId>
+	    <version>7</version>
+	</parent>
+	
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	
 	<properties>
 		<flexmojos.version>4.0-RC2</flexmojos.version>
 		<fdk.version>4.1.0.16076</fdk.version>
 		<fp.version>10.0.42</fp.version>
 	</properties>
+	
 	<modules>
 		<module>log5f</module>
+		<module>log5f-fp10.1</module>
 	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+			<artifactId>flex-framework</artifactId>
+			<version>${fdk.version}</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>com.adobe.flexunit</groupId>
+			<artifactId>flexunit</artifactId>
+			<version>4.0-rc-1</version>
+			<type>swc</type>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<scm>
+	    <url>http://log5f.googlecode.com/svn/trunk/main/</url>
+		<connection>scm:svn:http://log5f.googlecode.com/svn/trunk/main/</connection>
+	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/trunk/main/</developerConnection>
+	</scm>
+	
+	<organization>
+		<name>Log5F</name>
+		<url>http://log5f.org</url>
+	</organization>
+	
+	<issueManagement>
+		<system>JIRA</system>
+		<url>kenai.com/jira/browse/LOG5F</url>
+	</issueManagement>
+	
+	<ciManagement>
+		<system>Hudson</system>
+		<url>http://hudson.fazend.com/hudson/job/log5f/</url>
+	</ciManagement>
+	
+	<developers>
+		<developer>
+			<id>max.rozdobudko</id>
+			<name>Max Rozdobudko</name>
+			<email>max.rozdobudko@gmail.com</email>
+			<roles>
+				<role>owner</role>
+			</roles>
+		</developer>
+	</developers>
+	
+	<!-- Build Information -->
+	
+	<!--
+	<repositories>
+		<repository>
+			<id>sonatype-repository</id>
+			<url>https://repository.sonatype.org/content/groups/flexgroup/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	-->
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>sonatype-repository</id>
+			<url>https://repository.sonatype.org/content/groups/flexgroup/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	
 	<build>
-		<sourceDirectory>src/main/flex</sourceDirectory>
-		<testSourceDirectory>src/test/flex</testSourceDirectory>
+		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>src</testSourceDirectory>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -46,71 +145,21 @@
 						</compilerWarnings>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<executions>
+					  <execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+						  <goal>sign</goal>
+						</goals>
+					  </execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-
-	<dependencies>
-		<dependency>
-			<groupId>com.adobe.flex.framework</groupId>
-			<artifactId>flex-framework</artifactId>
-			<version>${fdk.version}</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>com.adobe.flexunit</groupId>
-			<artifactId>flexunit</artifactId>
-			<version>4.0-rc-1</version>
-			<type>swc</type>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>sonatype-repository</id>
-			<url>https://repository.sonatype.org/content/groups/flexgroup/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>sonatype-repository</id>
-			<url>https://repository.sonatype.org/content/groups/flexgroup/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
-	<scm>
-		<developerConnection>max.rozdobudko@gmail.com</developerConnection>
-		<url>http://log5f.googlecode.com/svn/trunk/main</url>
-		<connection>http</connection>
-	</scm>
 	
-	<organization>
-		<name>Log5F</name>
-		<url>http://log5f.org</url>
-	</organization>
-	
-	<issueManagement>
-		<system>JIRA</system>
-		<url>kenai.com/jira/browse/LOG5F</url>
-	</issueManagement>
-	
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://hudson.fazend.com/hudson/job/log5f/</url>
-	</ciManagement>
-
 </project>

@@ -1,40 +1,64 @@
 <?xml version="1.0"?>
 <project name="log5f" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 	
-	<!--===============================-->
-	<!-- Build -->
+<!--===============================-->
+	<!-- Version -->
 	<!--===============================-->
 
-	<property file="build.properties" />
-
+	<property name="version.file" location="version.number" />
+	
 	<!--===============================-->
 	<!-- Flex -->
 	<!--===============================-->
 
-	<property name="FLEX_HOME" location="${flex.sdk}" />
 	<property name="LOCALE" value="en_US" />
 	
-	<target name="build">
-		<ant antfile="log5f/build.xml" />
-		<ant antfile="log5f-fp10.1/build.xml" />
+	<!--===============================-->
+	<!-- Build -->
+	<!--===============================-->
+	
+	<target name="build" depends="log5f, log5f-fp10.1">
 	</target>
-
+	
 	<target name="log5f">
         <ant antfile="build.xml" dir="log5f" />
     </target>
 	
 	<target name="log5f-fp10.1">
 		<ant antfile="build.xml" dir="log5f-fp10.1">
+			<property name="dependencies" location="log5f/bin"/>
 		</ant>
 	</target>
 
 	<!--===============================-->
-	<!-- SVN -->
+	<!-- Artifacts -->
 	<!--===============================-->
-	
-	<target name="revert">
-		<ant antfile="log5f/build.xml" target="revert" />
-		<ant antfile="log5f-fp10.1/build.xml" target="revert" />
+
+	<target name="build.hudson.artifacts">
+		<copy file="${basedir}/log5f/build/artifacts.html" todir="output" overwrite="true" />
+		<move file="output/artifacts.html" tofile="output/index.html" overwrite="true" />
+		
+		<!-- log5f -->
+		
+		<ant dir="log5f" antfile="build.xml" target="artifact.create.table">
+			<property name="artifact.tmpl.file" location="build/artifact.tmpl" />
+		</ant>
+		<loadfile property="artifact.template.log5f" srcfile="${basedir}/log5f/temp/artifact.tmpl" />
+		<delete file="${basedir}/log5f/temp/artifact.tmpl" />
+		
+		<!-- log5f-fp10.1 -->
+		
+		<ant dir="log5f-fp10.1" antfile="build.xml" target="artifact.create.table">
+			<property name="artifact.tmpl.file" location="build/artifact.tmpl" />
+		</ant>
+		<loadfile property="artifact.template.log5f-fp10.1" srcfile="${basedir}/log5f-fp10.1/temp/artifact.tmpl" />
+		<delete file="${basedir}/log5f-fp10.1/temp/artifact.tmpl" />
+		
+		<!-- insert -->
+		
+		<replaceregexp file="output/index.html" match='&lt;!-- CONTENT PLACE --&gt;' replace='${artifact.template.log5f}\n&lt;!-- CONTENT PLACE --&gt;' byline="true" />
+		<replaceregexp file="output/index.html" match='&lt;!-- CONTENT PLACE --&gt;' replace='${artifact.template.log5f-fp10.1}\n&lt;!-- CONTENT PLACE --&gt;' byline="true" />
+		
 	</target>
 	
 	<!--===============================-->
@@ -42,13 +66,25 @@
 	<!--===============================-->
 
 	<target name="increment.major">
-		<ant antfile="log5f/build.xml" target="increment.major" />
-		<ant antfile="log5f-fp10.1/build.xml" target="increment.major" />
+		<propertyfile file="${version.file}">
+			<entry key="version.major" type="int" operation="+" value="1" />
+			<entry key="version.minor" value="0" />
+		</propertyfile>
 	</target>
 
 	<target name="increment.minor">
-		<ant antfile="log5f/build.xml" target="increment.minor" />
-		<ant antfile="log5f-fp10.1/build.xml" target="increment.minor" />
+		<propertyfile file="${version.file}">
+			<entry key="version.minor" type="int" operation="+" value="1" />
+		</propertyfile>
+	</target>
+	
+	<!--===============================-->
+	<!-- SVN -->
+	<!--===============================-->
+	
+	<target name="revert">
+		<ant antfile="log5f/build.xml" target="revert" />
+		<ant antfile="log5f-fp10.1/build.xml" target="revert" />
 	</target>
 	
 </project>
