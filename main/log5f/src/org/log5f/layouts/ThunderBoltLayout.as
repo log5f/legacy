@@ -10,7 +10,6 @@ package org.log5f.layouts
 	import org.log5f.core.ILayout;
 	import org.log5f.events.LogEvent;
 	import org.log5f.helpers.formatters.DateFormatter;
-	import org.log5f.layouts.converters.CategoryConverter;
 	import org.log5f.layouts.converters.ClassConverter;
 	import org.log5f.layouts.converters.LineNumberConverter;
 	

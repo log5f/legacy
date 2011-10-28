@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Log5F" default="build" basedir=".">
+<project name="log5f-core" default="build" basedir=".">
 
 	<!--=====================================================================-->
 	<!-- Libraries	-->
@@ -33,6 +33,10 @@
 	<!-- Propertiers -->
 	<!--=====================================================================-->
 
+	<property name="project" value="log5f" />
+	<property name="dependencies" value="" />
+	<property name="artifact.tmpl.file" value="" />
+	
 	<!--===============================-->
 	<!-- Build -->
 	<!--===============================-->
@@ -76,9 +80,9 @@
 	<!--===============================-->
 
 	<property name="meta.creator" value="max.rozdobudko@gmail.com" />
-	<property name="meta.contributor" value="Log5F" />
+	<property name="meta.contributor" value="log5f.org" />
 	<property name="meta.language" value="EN" />
-	<property name="meta.description" value="Log5F ActionScript 3.0 Logging Framework" />
+	<property name="meta.description" value="Log5F Flash Logging Tool" />
 
 	<!--===============================-->
 	<!-- ASDoc -->
@@ -88,7 +92,7 @@
 	<property name="asdoc.output" location="${lib.dir}/asdocs" />
 	<property name="asdoc.main.title" value="${meta.contributor}" />
 	<property name="asdoc.window.title" value="${meta.description}" />
-	<property name="asdoc.window.footer" value="See more on http://log5f.wordpress.com" />
+	<property name="asdoc.window.footer" value="http://log5f.org" />
 
 	<!--===============================-->
 	<!-- SVN -->
@@ -100,7 +104,7 @@
 	<!-- Version -->
 	<!--===============================-->
 
-	<property name="version.file" location="version.number" />
+	<property name="version.file" location="../version.number" />
 
 	<property file="${version.file}" />
 
@@ -215,35 +219,27 @@
 		<replaceregexp file="${lib.bin}/index.html" match='%BUILD_DATE%' replace='${touch.time}' byline="true" />
 		<replaceregexp file="${lib.bin}/index.html" match='%DOWNLOAD%' replace='log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc' byline="true" />
 	</target>
+	
 
 	<!--===============================-->
-	<!-- Version -->
+	<!-- Artifacts -->
 	<!--===============================-->
-
-	<target name="increment.major">
-		<propertyfile file="${version.file}">
-			<entry key="version.major" type="int" operation="+" value="1" />
-			<entry key="version.minor" value="0" />
-		</propertyfile>
-	</target>
-
-	<target name="increment.minor">
-		<propertyfile file="${version.file}">
-			<entry key="version.minor" type="int" operation="+" value="1" />
-		</propertyfile>
-	</target>
-
-	<!--===============================-->
-	<!-- SVN -->
-	<!--===============================-->
-
-	<target name="revert" depends="svn.revert, build" />
-
-	<target name="svn.revert" depends="" description="">
-		<svn refid="svn.settings">
-			<revert dir="${lib.src}" recurse="true" />
-			<cleanup dir="${lib.src}" />
-		</svn>
+	
+	<target name="artifact.create.table">
+		<tstamp>
+			<format property="touch.time" pattern="MM/dd/yyyy hh:mm:ss" offset="0" unit="hour" />
+		</tstamp>
+		<copy file="${artifact.tmpl.file}" toFile="${lib.temp}/artifact.tmpl">
+			<filterchain>  
+				<replacetokens>  
+					<token key="ARTIFACT_ID" value="Log5F"/>  
+					<token key="ARTIFACT_DESCRIPTION" value="Core Library"/>
+					<token key="BUILD_NUMBER" value="${version.major}.${version.minor}.${env.BUILD_NUMBER}"/>
+					<token key="BUILD_DATE" value="${touch.time}"/>
+					<token key="DOWNLOAD" value="log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc"/>
+				</replacetokens>  
+			</filterchain>  
+		</copy>
 	</target>
 
 	<!--===============================-->
