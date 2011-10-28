@@ -5,7 +5,7 @@
 	<artifactId>log5f</artifactId>
 	<packaging>swc</packaging>
 	<name>Log5F</name>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<description>The log5F Core Library</description>
 	<url>http://maven.apache.org</url>
 
@@ -49,9 +49,9 @@
 	</dependencies>
 
 	<scm>
-	    <url>http://log5f.googlecode.com/svn/trunk/main/log5f</url>
-		<connection>scm:svn:http://log5f.googlecode.com/svn/trunk/main/log5f</connection>
-	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/trunk/main/log5f</developerConnection>
+	    <url>http://log5f.googlecode.com/svn/tags/log5f-1.0</url>
+		<connection>scm:svn:http://log5f.googlecode.com/svn/tags/log5f-1.0</connection>
+	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/tags/log5f-1.0</developerConnection>
 	</scm>
 
 </project>
