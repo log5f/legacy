@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<project name="log5f-fp10.1" default="build">
+
+	<!--=====================================================================-->
+	<!-- Libraries	-->
+	<!--=====================================================================-->
+
+	<!--===============================-->
+	<!-- FlexAntTasks (Flex Applications Unit Testing) -->
+	<!--===============================-->
+
+	<taskdef resource="com/adobe/ac/ant/tasks/tasks.properties" classpath="../ant-libs/FlexAntTasks.jar" />
+
+	<!--===============================-->
+	<!-- FlexTasks (Compiling Flex Applications) -->
+	<!--===============================-->
+
+	<taskdef resource="flexTasks.tasks" classpath="../ant-libs/flexTasks.jar" />
+
+	<!--===============================-->
+	<!-- SVNAnt (http://subclipse.tigris.org/svnant/svn.html) -->
+	<!--===============================-->
+
+	<path id="path.svnant">
+		<fileset dir="../ant-libs">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant" />
+
+	<!--=====================================================================-->
+	<!-- Propertiers -->
+	<!--=====================================================================-->
+
+	<property name="project" value="log5f-fp10.1" />
+	<property name="dependencies" value="" />
+	<property name="artifact.tmpl.file" value="" />
+	
+	<!--===============================-->
+	<!-- Build -->
+	<!--===============================-->
+
+	<property file="build.properties" />
+
+	<!--===============================-->
+	<!-- Flex -->
+	<!--===============================-->
+
+	<property name="FLEX_HOME" location="${flex.sdk}" />
+	<property name="LOCALE" value="en_US" />
+
+	<!--===============================-->
+	<!-- JARs -->
+	<!--===============================-->
+
+	<property name="asdoc.jar" location="${flex.sdk}/lib/asdoc.jar" />
+	<property name="digest.jar" location="${flex.sdk}/lib/digest.jar" />
+	<property name="optimizer.jar" location="${flex.sdk}/lib/optimizer.jar" />
+
+	<!--===============================-->
+	<!-- Application -->
+	<!--===============================-->
+
+	<property name="lib.debug" value="false" />
+
+	<property name="lib.dir" location="${basedir}/" />
+	<property name="lib.src" location="${lib.dir}/src/" />
+	<property name="lib.bin" location="${lib.dir}/bin/" />
+	<property name="lib.bin.rsl" location="${lib.dir}/bin/rsl/" />
+	<property name="lib.libs" location="${lib.dir}/libs/" />
+	<property name="lib.temp" location="${basedir}/temp/" />
+	<property name="lib.assets" location="${lib.src}/assets/" />
+	<property name="lib.input.mxml" location="${lib.src}/index.mxml" />
+	<property name="lib.output.swf" location="${lib.bin}/index.swf" />
+
+	<!--===============================-->
+	<!-- Metadata -->
+	<!--===============================-->
+
+	<property name="meta.creator" value="max.rozdobudko@gmail.com" />
+	<property name="meta.contributor" value="log5f.org" />
+	<property name="meta.language" value="EN" />
+	<property name="meta.description" value="Log5F Flash Logging Tool" />
+
+	<!--===============================-->
+	<!-- ASDoc -->
+	<!--===============================-->
+
+	<property name="asdoc.src" location="${lib.src}/" />
+	<property name="asdoc.output" location="${lib.dir}/asdocs" />
+	<property name="asdoc.main.title" value="${meta.contributor}" />
+	<property name="asdoc.window.title" value="${meta.description}" />
+	<property name="asdoc.window.footer" value="http://log5f.org" />
+
+	<!--===============================-->
+	<!-- SVN -->
+	<!--===============================-->
+
+	<svnSetting svnkit="true" javahl="false" username="" password="" id="svn.settings" />
+
+	<!--===============================-->
+	<!-- Version -->
+	<!--===============================-->
+
+	<property name="version.file" location="../version.number" />
+
+	<property file="${version.file}" />
+
+	<!--===============================-->
+	<!-- environment -->
+	<!--===============================-->
+
+	<property environment="env" />
+
+	<!--=====================================================================-->
+	<!--	Conditions														 -->
+	<!--=====================================================================-->
+
+	<!-- The build number 0000 means, that library was build as dev version -->
+	<property name="env.BUILD_NUMBER" value="0000" />
+
+	<!--=====================================================================-->
+	<!--	Targets															 -->
+	<!--=====================================================================-->
+
+	<!--===============================-->
+	<!-- Build -->
+	<!--===============================-->
+
+	<target name="build" depends="build.api" description="Build Log5F">
+		<echo>${env.BUILD_NUMBER}</echo>
+	</target>
+
+	<target name="build.compile" description="Compile Library">
+		
+		<compc output="${lib.bin}/${project}-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" locale="${LOCALE}" debug="${lib.debug}">
+
+			<compiler.library-path dir="${dependencies}">
+				<include name="*.swc" />
+		    </compiler.library-path>
+			
+			<source-path path-element="${lib.src}" />
+			<source-path path-element="${basedir}/locale/${LOCALE}" />
+
+			<!--
+			<include-file name="design.xml" path="${lib.src}/design.xml" />
+			<include-file name="manifest.xml" path="${lib.src}/manifest.xml" />
+
+			<namespace uri="http://log5f.org" manifest="${lib.src}/manifest.xml" />
+
+			<include-namespaces uri="http://log5f.org" />
+			-->
+
+			<include-sources dir="${lib.src}" includes="*" append="true">
+				<exclude name="*.xml" />
+				<exclude name="*.properties" />
+				<exclude name="*.xsd" />
+			</include-sources>
+
+			<strict>true</strict>
+			<optimize>true</optimize>
+			<warnings>true</warnings>
+			<compute-digest>true</compute-digest>
+		</compc>
+
+		<echo>${env.BUILD_NUMBER}</echo>
+	</target>
+
+	<!--===============================-->
+	<!-- RSL -->
+	<!--===============================-->
+
+	<target name="build.rsl" depends="build.compile" description="Make RSL">
+		<sequential>
+			<unzip src="${lib.bin}/${project}-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" dest="${lib.bin.rsl}">
+				<patternset>
+					<include name="library.swf" />
+				</patternset>
+			</unzip>
+			<java jar="${optimizer.jar}" fork="true" failonerror="true">
+				<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
+				<arg line="-input ${lib.bin.rsl}/library.swf" />
+				<arg line="-output ${lib.bin.rsl}/${project}-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swf" />
+				<arg line="-keep-as3-metadata='Bindable,Managed,ChangeEvent,NonCommittingChangeEvent,Transient'" />
+			</java>
+			<delete file="${lib.bin.rsl}/library.swf" />
+			<java jar="${digest.jar}" fork="true" failonerror="true">
+				<jvmarg line="-ea -DAS3 -DAVMPLUS -Xms32m -Xmx384m -Dsun.io.useCanonCaches=false" />
+				<arg line="--digest.rsl-file  ${lib.bin.rsl}/${project}-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swf" />
+				<arg line="--digest.swc-path  ${lib.bin}/${project}-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" />
+			</java>
+		</sequential>
+	</target>
+
+	<!--===============================-->
+	<!-- ASDoc -->
+	<!--===============================-->
+
+	<target name="build.api" description="Build asdocs">
+		<asdoc output="${asdoc.output}" lenient="true" failonerror="true">
+			<doc-sources path-element="${asdoc.src}" />
+			<namespace uri="http://log5f.org" manifest="${lib.src}/manifest.xml" />
+		</asdoc>
+	</target>
+
+	<!--===============================-->
+	<!-- Artifacts -->
+	<!--===============================-->
+	
+	<target name="artifact.create.table">
+		<tstamp>
+			<format property="touch.time" pattern="MM/dd/yyyy hh:mm:ss" offset="0" unit="hour" />
+		</tstamp>
+		<copy file="${artifact.tmpl.file}" toFile="${lib.temp}/artifact.tmpl">
+			<filterchain>  
+				<replacetokens>  
+					<token key="ARTIFACT_ID" value="Log5F for Flash Player 10.1"/>  
+					<token key="ARTIFACT_DESCRIPTION" value="Extentions for Log5F that use Flash Player 10.1 feautures"/>
+					<token key="BUILD_NUMBER" value="${version.major}.${version.minor}.${env.BUILD_NUMBER}"/>
+					<token key="BUILD_DATE" value="${touch.time}"/>
+					<token key="DOWNLOAD" value="log5f-fp10.1-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc"/>
+				</replacetokens>  
+			</filterchain>  
+		</copy>
+	</target>
+	
+</project>
