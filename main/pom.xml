@@ -84,7 +84,6 @@
 	
 	<!-- Build Information -->
 	
-	<!--
 	<repositories>
 		<repository>
 			<id>sonatype-repository</id>
@@ -97,7 +96,6 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	-->
 	
 	<pluginRepositories>
 		<pluginRepository>

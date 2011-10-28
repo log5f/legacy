@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>log5f</artifactId>
@@ -48,9 +47,9 @@
 	</dependencies>
 
 	<scm>
-	    <url>http://log5f.googlecode.com/svn/trunk/main/log5f/</url>
-		<connection>scm:svn:http://log5f.googlecode.com/svn/trunk/main/log5f/</connection>
-	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/trunk/main/log5f/</developerConnection>
+	    <url>http://log5f.googlecode.com/svn/tags/1.0</url>
+		<connection>scm:svn:http://log5f.googlecode.com/svn/tags/1.0</connection>
+	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/tags/1.0</developerConnection>
 	</scm>
 
 </project>
