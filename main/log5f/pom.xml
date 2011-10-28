@@ -51,7 +51,7 @@
 	<scm>
 	    <url>http://log5f.googlecode.com/svn/trunk/main/log5f</url>
 		<connection>scm:svn:http://log5f.googlecode.com/svn/trunk/main/log5f</connection>
-	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/trunk/main/log5f</developerConnection>
+	    <developerConnection>scm:svn:http://log5f.googlecode.com/svn/trunk/main/log5f</developerConnection>
 	</scm>
 
 </project>
