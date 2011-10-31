@@ -1,7 +1,20 @@
 <?xml version="1.0"?>
 <project name="log5f" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 	
-<!--===============================-->
+	<!--===============================-->
+	<!-- Build -->
+	<!--===============================-->
+
+	<property file="build.properties" />
+
+	<!--===============================-->
+	<!-- Flex -->
+	<!--===============================-->
+
+	<property name="FLEX_HOME" location="${flex.sdk}" />
+	<property name="APP_ROOT" location="${basedir}" />
+	
+	<!--===============================-->
 	<!-- Version -->
 	<!--===============================-->
 
@@ -18,15 +31,20 @@
 	<!--===============================-->
 	
 	<target name="build" depends="log5f, log5f-fp10.1">
+		
 	</target>
 	
 	<target name="log5f">
-        <ant antfile="build.xml" dir="log5f" />
+        <ant antfile="build.xml" dir="log5f">
+        	<property name="lib.bin" location="${basedir}/bin" />
+        	<property name="asdoc.output" location="${basedir}/asdocs" />
+    	</ant>
     </target>
 	
 	<target name="log5f-fp10.1">
 		<ant antfile="build.xml" dir="log5f-fp10.1">
-			<property name="dependencies" location="log5f/bin"/>
+			<property name="lib.bin" location="${basedir}/bin" />
+			<property name="asdoc.output" location="${basedir}/asdocs" />
 		</ant>
 	</target>
 
@@ -35,24 +53,23 @@
 	<!--===============================-->
 
 	<target name="build.hudson.artifacts">
-		<copy file="${basedir}/log5f/build/artifacts.html" todir="output" overwrite="true" />
-		<move file="output/artifacts.html" tofile="output/index.html" overwrite="true" />
+		<copy file="${basedir}/build/artifacts.html" tofile="${basedir}/output/index.html" overwrite="true" />
 		
 		<!-- log5f -->
 		
 		<ant dir="log5f" antfile="build.xml" target="artifact.create.table">
-			<property name="artifact.tmpl.file" location="build/artifact.tmpl" />
+			<property name="artifact.tmpl.file" location="${basedir}/build/artifact.tmpl" />
 		</ant>
 		<loadfile property="artifact.template.log5f" srcfile="${basedir}/log5f/temp/artifact.tmpl" />
-		<delete file="${basedir}/log5f/temp/artifact.tmpl" />
+		<delete dir="${basedir}/log5f/temp" />
 		
 		<!-- log5f-fp10.1 -->
 		
 		<ant dir="log5f-fp10.1" antfile="build.xml" target="artifact.create.table">
-			<property name="artifact.tmpl.file" location="build/artifact.tmpl" />
+			<property name="artifact.tmpl.file" location="${basedir}/build/artifact.tmpl" />
 		</ant>
 		<loadfile property="artifact.template.log5f-fp10.1" srcfile="${basedir}/log5f-fp10.1/temp/artifact.tmpl" />
-		<delete file="${basedir}/log5f-fp10.1/temp/artifact.tmpl" />
+		<delete dir="${basedir}/log5f-fp10.1/temp" />
 		
 		<!-- insert -->
 		

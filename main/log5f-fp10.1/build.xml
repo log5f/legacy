@@ -34,7 +34,6 @@
 	<!--=====================================================================-->
 
 	<property name="project" value="log5f-fp10.1" />
-	<property name="dependencies" value="" />
 	<property name="artifact.tmpl.file" value="" />
 	
 	<!--===============================-->
@@ -128,7 +127,7 @@
 	<!-- Build -->
 	<!--===============================-->
 
-	<target name="build" depends="build.api" description="Build Log5F">
+	<target name="build" depends="build.compile, build.api" description="Build Log5F">
 		<echo>${env.BUILD_NUMBER}</echo>
 	</target>
 
@@ -136,7 +135,7 @@
 		
 		<compc output="${lib.bin}/${project}-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" locale="${LOCALE}" debug="${lib.debug}">
 
-			<compiler.library-path dir="${dependencies}">
+			<compiler.library-path dir="${lib.bin}" append="true">
 				<include name="*.swc" />
 		    </compiler.library-path>
 			
@@ -199,6 +198,9 @@
 
 	<target name="build.api" description="Build asdocs">
 		<asdoc output="${asdoc.output}" lenient="true" failonerror="true">
+			<compiler.library-path dir="${lib.bin}" append="true">
+				<include name="*.swc" />
+		    </compiler.library-path>
 			<doc-sources path-element="${asdoc.src}" />
 			<namespace uri="http://log5f.org" manifest="${lib.src}/manifest.xml" />
 		</asdoc>
@@ -215,8 +217,8 @@
 		<copy file="${artifact.tmpl.file}" toFile="${lib.temp}/artifact.tmpl">
 			<filterchain>  
 				<replacetokens>  
-					<token key="ARTIFACT_ID" value="Log5F for Flash Player 10.1"/>  
-					<token key="ARTIFACT_DESCRIPTION" value="Extentions for Log5F that use Flash Player 10.1 feautures"/>
+					<token key="ARTIFACT_ID" value="Log5F for FP 10.1"/>  
+					<token key="ARTIFACT_DESCRIPTION" value="based on Flash Player 10.1 feautres"/>
 					<token key="BUILD_NUMBER" value="${version.major}.${version.minor}.${env.BUILD_NUMBER}"/>
 					<token key="BUILD_DATE" value="${touch.time}"/>
 					<token key="DOWNLOAD" value="log5f-fp10.1-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc"/>

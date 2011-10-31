@@ -129,7 +129,7 @@
 	<!-- Build -->
 	<!--===============================-->
 
-	<target name="build" depends="build.rsl, build.api, build.hudson.artifacts" description="Build Log5F">
+	<target name="build" depends="build.rsl, build.api" description="Build Log5F">
 		<echo>${env.BUILD_NUMBER}</echo>
 	</target>
 
@@ -138,7 +138,7 @@
 		<replaceregexp file="${lib.src}/org/log5f/Log5F.as" match='public static const VERSION:String = "*.*.*"' replace='public static const VERSION:String = "${version.major}.${version.minor}.${env.BUILD_NUMBER}"' byline="true" />
 
 		<compc output="${lib.bin}/log5f-${version.major}.${version.minor}.${env.BUILD_NUMBER}.swc" locale="${LOCALE}" debug="${lib.debug}">
-
+			
 			<source-path path-element="${lib.src}" />
 			<source-path path-element="${basedir}/locale/${LOCALE}" />
 
