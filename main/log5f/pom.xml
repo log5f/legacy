@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<!-- Header -->
 
@@ -14,15 +13,15 @@
 	<parent>
 		<groupId>org.log5f</groupId>
 		<artifactId>main</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 
 	<!-- Project Specific -->
 	
 	<scm>
-	    <url>http://log5f.googlecode.com/svn/trunk/log5f-1.0</url>
-		<connection>scm:svn:http://log5f.googlecode.com/svn/trunk/log5f-1.</connection>
-	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/trunk/log5f-1.</developerConnection>
+	    <url>http://log5f.googlecode.com/svn/tags/main-1.0/log5f-1.0</url>
+		<connection>scm:svn:http://log5f.googlecode.com/svn/tags/main-1.0/log5f-1.</connection>
+	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/tags/main-1.0/log5f-1.</developerConnection>
 	</scm>
 
 	<!-- Build Information -->
