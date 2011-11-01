@@ -55,6 +55,7 @@
 				<groupId>org.log5f</groupId>
 				<artifactId>log5f</artifactId>
 				<version>${project.version}</version>
+				<type>swc</type>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
