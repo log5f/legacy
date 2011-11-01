@@ -23,6 +23,7 @@
 		<dependency>
 			<groupId>org.log5f</groupId>
 			<artifactId>log5f</artifactId>
+			<type>swc</type>
 		</dependency>
 	</dependencies>
 	
