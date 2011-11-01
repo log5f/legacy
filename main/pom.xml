@@ -1,13 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<!-- Header -->
+	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.log5f</groupId>
 	<artifactId>main</artifactId>
-	<version>1.0</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Log5F</name>
 	<url>http://log5f.org</url>
 	<description>ActionScript 3.0 Logging Tool</description>
+	
+	<!-- Parent -->
 	
 	<parent>
 	    <groupId>org.sonatype.oss</groupId>
@@ -15,13 +20,7 @@
 	    <version>7</version>
 	</parent>
 	
-	<licenses>
-		<license>
-			<name>MIT</name>
-			<url>http://www.opensource.org/licenses/mit-license.php</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+	<!-- Dependencies -->
 	
 	<properties>
 		<flexmojos.version>4.0-RC2</flexmojos.version>
@@ -49,6 +48,26 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.log5f</groupId>
+				<artifactId>log5f</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<!-- Project Specific -->
+	
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<scm>
 	    <url>http://log5f.googlecode.com/svn/trunk/main/</url>
