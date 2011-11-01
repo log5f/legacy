@@ -15,7 +15,6 @@
 		<groupId>org.log5f</groupId>
 		<artifactId>main</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<!-- Project Specific -->
@@ -26,4 +25,17 @@
 	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/trunk/log5f-1.</developerConnection>
 	</scm>
 
+	<!-- Build Information -->
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<configuration>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
 </project>
