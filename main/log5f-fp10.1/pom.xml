@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.log5f</groupId>
 		<artifactId>main</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 	
 	<!-- Dependencies -->
@@ -30,9 +30,9 @@
 	<!-- Project Specific -->
 	
 	<scm>
-	    <url>http://log5f.googlecode.com/svn/trunk/main/log5f-fp10.1</url>
-		<connection>scm:svn:http://log5f.googlecode.com/svn/trunk/main/log5f-fp10.1</connection>
-	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/trunk/main/log5f-fp10.1</developerConnection>
+	    <url>http://log5f.googlecode.com/svn/tags/1.0/log5f-fp10.1</url>
+		<connection>scm:svn:http://log5f.googlecode.com/svn/tags/1.0/log5f-fp10.1</connection>
+	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/tags/1.0/log5f-fp10.1</developerConnection>
 	</scm>
 	
 	<!-- Build Information -->
