@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.log5f</groupId>
 	<artifactId>main</artifactId>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Log5F</name>
 	<url>http://log5f.org</url>
@@ -70,9 +70,9 @@
 	</licenses>
 
 	<scm>
-	    <url>http://log5f.googlecode.com/svn/tags/1.0</url>
-		<connection>scm:svn:http://log5f.googlecode.com/svn/tags/1.0</connection>
-	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/tags/1.0</developerConnection>
+	    <url>http://log5f.googlecode.com/svn/trunk/main</url>
+		<connection>scm:svn:http://log5f.googlecode.com/svn/trunk/main</connection>
+	    <developerConnection>scm:svn:https://log5f.googlecode.com/svn/trunk/main</developerConnection>
 	</scm>
 	
 	<organization>
